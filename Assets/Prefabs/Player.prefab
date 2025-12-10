@@ -51,7 +51,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rb: {fileID: 5586000654341092205}
   _moveSpeedX: 5
-  _jumpSpeed: 10
+  _jumpSpeed: 8
+  _jumpAccel: 10
   _groundChecker: {fileID: 7427499878688929372}
 --- !u!50 &5586000654341092205
 Rigidbody2D:
