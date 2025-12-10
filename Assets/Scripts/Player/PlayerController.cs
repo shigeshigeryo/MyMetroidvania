@@ -39,18 +39,26 @@ public class PlayerController : MonoBehaviour
         _inputActions.Player.Jump.started += OnJump;
     }
 
+    private void DisposeInputAction()
+    {
+        _inputActions.Player.Jump.started -= OnJump;
+    }
+
     /// <summary>
     /// ジャンプボタンを押した瞬間に発火
     /// </summary>
     private void OnJump(InputAction.CallbackContext _)
     {
-        Debug.Log("triggered");
         if (_groundChecker.IsCasted)
         {
-            Debug.Log(true);
             var newVelocity = _rb.linearVelocity;
             newVelocity.y = _jumpSpeed;
             _rb.linearVelocity = newVelocity;
         }
+    }
+
+    private void OnDestroy()
+    {
+        DisposeInputAction();
     }
 }
