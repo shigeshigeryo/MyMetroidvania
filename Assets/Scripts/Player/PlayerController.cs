@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     private PlayerInputActions _inputActions;　// PlayerInputのイベント
     [SerializeField] private Rigidbody2D _rb;
     [SerializeField, Tooltip("x軸の移動の速さ")] private float _moveSpeedX = 5f;
-    [SerializeField, Tooltip("ジャンプの初速")] private float _jumpSpeed = 5f;
+    [SerializeField, Tooltip("ジャンプの初速")] private float _jumpSpeed = 10f;
     [SerializeField, Tooltip("地面の接地判定")] private BoxCaster _groundChecker;
 
     private void Awake()
