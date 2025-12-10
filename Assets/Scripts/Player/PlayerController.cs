@@ -1,10 +1,13 @@
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーの全ての挙動を管理する
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
     private PlayerInputActions _inputActions;　// PlayerInputのイベント
     [SerializeField] private Rigidbody2D _rb;
-    [SerializeField, Tooltip("x軸の移動の速さ")] private float _moveSpeedX = 1f;
+    [SerializeField, Tooltip("x軸の移動の速さ")] private float _moveSpeedX = 5f;
 
     private void Awake()
     {
