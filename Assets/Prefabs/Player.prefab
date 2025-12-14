@@ -57,6 +57,8 @@ MonoBehaviour:
   _groundChecker: {fileID: 7427499878688929372}
   _hookOriginTransform: {fileID: 6973764488693215733}
   _hookChecker: {fileID: 6644061440913065282}
+  _hookSpeed: 15
+  _hookCancelRange: 0.5
 --- !u!50 &5586000654341092205
 Rigidbody2D:
   serializedVersion: 5
@@ -276,6 +278,7 @@ MonoBehaviour:
   _targetLayers:
     serializedVersion: 2
     m_Bits: 64
+  _gizmoColor: {r: 0.016995352, g: 0.81886786, b: 0.7955697, a: 1}
 --- !u!1 &7103435875267763355
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,6 +360,7 @@ MonoBehaviour:
   _targetLayers:
     serializedVersion: 2
     m_Bits: 64
+  _gizmoColor: {r: 1, g: 0.94259167, b: 0, a: 1}
 --- !u!1 &8725894772445421228
 GameObject:
   m_ObjectHideFlags: 0

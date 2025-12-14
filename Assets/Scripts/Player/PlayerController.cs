@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     [Header("フック")]
     [SerializeField, Tooltip("フックの原点")] private Transform _hookOriginTransform;
     [SerializeField, Tooltip("フックの判定")] private LineCaster _hookChecker;
-    [SerializeField, Tooltip("フックが引き寄せる時の早さ")] private float _hookSpeed = 80f;
+    [SerializeField, Tooltip("フックが引き寄せる時の早さ")] private float _hookSpeed = 15f;
     [SerializeField, Tooltip("フックが切れる長さ")] private float _hookCancelRange = 0.5f;
     private Vector2 _hookPosition;
 
@@ -54,36 +54,21 @@ public class PlayerController : MonoBehaviour
         _inputDirection = _inputActions.Player.Move.ReadValue<Vector2>();
 
         // 移動入力の方向にフック原点を回転させる。
-        if(_inputDirection != Vector2.zero)
+        if (_inputDirection != Vector2.zero)
         {
             var degDir = Mathf.Atan2(_inputDirection.y, _inputDirection.x) * Mathf.Rad2Deg;
             Vector3 newRotate = new Vector3(0, 0, degDir);
             _hookOriginTransform.transform.rotation = Quaternion.Euler(newRotate);
         }
-    }
-
-    private void FixedUpdate()
-    {
-        if(_currentState != ActionState.Hook)
-        {
-            _rb.linearVelocityX = _moveSpeedX * _inputDirection.x;
-        }
 
         switch (_currentState)
         {
             case ActionState.Walk:
-                break;
             case ActionState.JumpAnticipation:
                 if (!_groundChecker.IsCasted)
                 {
                     _currentState = ActionState.Jump;
                     break;
-                }
-
-                // ジャンプボタンを押している間は上向きの微量な加速をさせ、落下を遅らせる
-                if (_isPushedJumpButton)
-                {
-                    AccelerateJump();
                 }
                 break;
 
@@ -93,7 +78,26 @@ public class PlayerController : MonoBehaviour
                     _currentState = ActionState.Walk;
                     break;
                 }
+                break;
 
+            case ActionState.Hook:
+                break;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (_currentState != ActionState.Hook)
+        {
+            _rb.linearVelocityX = _moveSpeedX * _inputDirection.x;
+        }
+
+        switch (_currentState)
+        {
+            case ActionState.Walk:
+                break;
+            case ActionState.JumpAnticipation:
+            case ActionState.Jump:
                 // ジャンプボタンを押している間は上向きの微量な加速をさせ、落下を遅らせる
                 if (_isPushedJumpButton)
                 {
@@ -104,7 +108,7 @@ public class PlayerController : MonoBehaviour
             case ActionState.Hook:
                 // 常にフックの向きに向かって速度を出す
                 var dir = _hookPosition - (Vector2)transform.position;
-                if(dir.magnitude < _hookCancelRange)
+                if (dir.magnitude < _hookCancelRange)
                 {
                     _currentState = ActionState.Walk;
                     break;
