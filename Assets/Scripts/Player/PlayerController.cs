@@ -13,7 +13,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Tooltip("ジャンプボタン押下時にかかる+yの加速度")] private float _jumpAccel = 10f;
     [SerializeField, Tooltip("地面の接地判定")] private BoxCaster _groundChecker;
 
-
+    [Header("フック")]
+    [SerializeField, Tooltip("フックの原点")] private Transform _hookOriginTransform;
     [SerializeField, Tooltip("フックの判定")] private BoxCaster _hookChecker;
 
     private Vector2 _inputDirection = Vector2.zero;
@@ -48,6 +49,14 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         _inputDirection = _inputActions.Player.Move.ReadValue<Vector2>();
+
+        // 移動入力の方向にフック原点を回転させる。
+        if(_inputDirection != Vector2.zero)
+        {
+            var degDir = Mathf.Atan2(_inputDirection.y, _inputDirection.x) * Mathf.Rad2Deg;
+            Vector3 newRotate = new Vector3(0, 0, degDir);
+            _hookOriginTransform.transform.rotation = Quaternion.Euler(newRotate);
+        }
     }
 
     private void FixedUpdate()
