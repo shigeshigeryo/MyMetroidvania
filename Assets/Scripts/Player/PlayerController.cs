@@ -16,6 +16,9 @@ public class PlayerController : MonoBehaviour
     [Header("フック")]
     [SerializeField, Tooltip("フックの原点")] private Transform _hookOriginTransform;
     [SerializeField, Tooltip("フックの判定")] private LineCaster _hookChecker;
+    [SerializeField, Tooltip("フックが引き寄せる時の早さ")] private float _hookSpeed = 80f;
+    [SerializeField, Tooltip("フックが切れる長さ")] private float _hookCancelRange = 0.5f;
+    private Vector2 _hookPosition;
 
     private Vector2 _inputDirection = Vector2.zero;
     private bool _isPushedJumpButton = false;
@@ -25,7 +28,7 @@ public class PlayerController : MonoBehaviour
         Walk,
         JumpAnticipation,
         Jump,
-        Attack,
+        Hook,
     }
     private ActionState _currentState = ActionState.Walk;
 
@@ -61,7 +64,10 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _rb.linearVelocityX = _moveSpeedX * _inputDirection.x;
+        if(_currentState != ActionState.Hook)
+        {
+            _rb.linearVelocityX = _moveSpeedX * _inputDirection.x;
+        }
 
         switch (_currentState)
         {
@@ -95,8 +101,17 @@ public class PlayerController : MonoBehaviour
                 }
                 break;
 
-            case ActionState.Attack:
+            case ActionState.Hook:
+                // 常にフックの向きに向かって速度を出す
+                var dir = _hookPosition - (Vector2)transform.position;
+                if(dir.magnitude < _hookCancelRange)
+                {
+                    _currentState = ActionState.Walk;
+                    break;
+                }
+                _rb.linearVelocity = dir.normalized * _hookSpeed;
                 break;
+
             default:
                 break;
         }
@@ -108,14 +123,16 @@ public class PlayerController : MonoBehaviour
         _inputActions.Enable();
         _inputActions.Player.Jump.started += OnJump;
         _inputActions.Player.Jump.canceled += OnJump;
-        _inputActions.Player.Hook.started += OnHook;
+        _inputActions.Player.Hook.performed += OnHook;
+        _inputActions.Player.Hook.canceled += OnHook;
     }
 
     private void DisposeInputAction()
     {
         _inputActions.Player.Jump.started -= OnJump;
         _inputActions.Player.Jump.canceled -= OnJump;
-        _inputActions.Player.Hook.started -= OnHook;
+        _inputActions.Player.Hook.performed -= OnHook;
+        _inputActions.Player.Hook.canceled -= OnHook;
     }
 
 
@@ -176,18 +193,27 @@ public class PlayerController : MonoBehaviour
      * ------------------------------------------------------------------
      */
     /// <summary>
-    /// start時に発火　フック処理
+    /// フック処理
+    /// ボタン長押し中は引っ張られる
+    /// ボタンを離したときはステートを戻す
     /// </summary>
     /// <param name="context"></param>
     private void OnHook(InputAction.CallbackContext context)
     {
-        if (!context.started) return;
-        if (!_hookChecker.IsCasted) return;
-
-        var hit = _hookChecker.GetRaycastHit();
-        if (hit.collider != null)
+        if (context.performed)
         {
-            transform.position = hit.point;
+            if (!_hookChecker.IsCasted) return;
+
+            var hit = _hookChecker.GetRaycastHit();
+            if (hit.collider != null)
+            {
+                _currentState = ActionState.Hook;
+                _hookPosition = hit.point;
+            }
+        }
+        else if (context.canceled)
+        {
+            _currentState = ActionState.Walk;
         }
     }
 
