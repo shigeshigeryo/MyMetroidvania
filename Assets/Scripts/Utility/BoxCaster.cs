@@ -38,14 +38,21 @@ public class BoxCaster : MonoBehaviour
     public bool TryGetClosestCollider(out Collider2D result)
     {
         Vector2 center = transform.TransformPoint(_offset);
-        //Vector2 halfExtents = Vector3.Scale(_range * 0.5f, transform.lossyScale); // *0.5f 半分の大きさを指定する必要があるため
-
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(center, _size, 0, _targetLayers);
+        var size = this._size;
+        size.x *= transform.lossyScale.x;
+        size.y *= transform.lossyScale.y;
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(center, size, transform.eulerAngles.z, _targetLayers);
         
+        if(colliders.Length < 0)
+        {
+            result = null;
+            return false;
+        }
+
         // プレイヤーとの距離が近いcolliderを取得
         result = colliders.OrderBy(c => (c.transform.position - transform.position).sqrMagnitude)
-                         .First();
-        
+                          .FirstOrDefault();
+
         return result != null;
     }
 
