@@ -15,6 +15,9 @@ public class BoxCaster : MonoBehaviour
     [SerializeField]
     [Tooltip("判定対象のレイヤーを指定")]
     private LayerMask _targetLayers = default;
+    [SerializeField]
+    [Tooltip("ギズモの色を指定")]
+    private Color _gizmoColor = Color.white;
 
     /// <summary>
     /// 判定対象と交差している場合はtrue、交差していない場合はfalse
@@ -69,7 +72,7 @@ public class BoxCaster : MonoBehaviour
         };
         transform.TransformPoints(controlPoints);
         // 判定ラインを描画
-        Gizmos.color = Color.yellow;
+        Gizmos.color = _gizmoColor;
         Gizmos.DrawLineStrip(controlPoints, true);
     }
 }
