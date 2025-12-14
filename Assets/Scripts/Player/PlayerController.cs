@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("フック")]
     [SerializeField, Tooltip("フックの原点")] private Transform _hookOriginTransform;
-    [SerializeField, Tooltip("フックの判定")] private BoxCaster _hookChecker;
+    [SerializeField, Tooltip("フックの判定")] private LineCaster _hookChecker;
 
     private Vector2 _inputDirection = Vector2.zero;
     private bool _isPushedJumpButton = false;
@@ -184,10 +184,10 @@ public class PlayerController : MonoBehaviour
         if (!context.started) return;
         if (!_hookChecker.IsCasted) return;
 
-        if (_hookChecker.TryGetClosestCollider(out var col))
+        var hit = _hookChecker.GetRaycastHit();
+        if (hit.collider != null)
         {
-            Debug.Log($"colPos:{col.transform.position}", col.gameObject);
-            transform.position = col.ClosestPoint(transform.position);
+            transform.position = hit.point;
         }
     }
 
