@@ -89,7 +89,14 @@ public class PlayerController : MonoBehaviour
     {
         if (_currentState != ActionState.Hook)
         {
-            _rb.linearVelocityX = _moveSpeedX * _inputDirection.x;
+            // フック後で速度が出ている場合はそのままの速度を保たせる
+            // TODO：フック後に移動していないと不自然に止まるので、直すかどうか検討
+            if (Mathf.Abs(_moveSpeedX * _inputDirection.x) > Mathf.Abs(_rb.linearVelocityX) // 入力値が現在の早さを上回るか
+                || Mathf.Sign(_inputDirection.x) != Mathf.Sign(_rb.linearVelocityX) // 速度方向は一致していないか
+                || Mathf.Abs(_inputDirection.x) < 0.01f) // x軸の入力が0付近か
+            {
+                _rb.linearVelocityX = _moveSpeedX * _inputDirection.x;
+            }
         }
 
         switch (_currentState)
