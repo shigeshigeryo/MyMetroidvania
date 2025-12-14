@@ -13,6 +13,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Tooltip("ジャンプボタン押下時にかかる+yの加速度")] private float _jumpAccel = 10f;
     [SerializeField, Tooltip("地面の接地判定")] private BoxCaster _groundChecker;
 
+
+    [SerializeField, Tooltip("フックの判定")] private BoxCaster _hookChecker;
+
     private Vector2 _inputDirection = Vector2.zero;
     private bool _isPushedJumpButton = false;
 
@@ -45,7 +48,6 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         _inputDirection = _inputActions.Player.Move.ReadValue<Vector2>();
-
     }
 
     private void FixedUpdate()
@@ -97,12 +99,14 @@ public class PlayerController : MonoBehaviour
         _inputActions.Enable();
         _inputActions.Player.Jump.started += OnJump;
         _inputActions.Player.Jump.canceled += OnJump;
+        _inputActions.Player.Hook.started += OnHook;
     }
 
     private void DisposeInputAction()
     {
         _inputActions.Player.Jump.started -= OnJump;
         _inputActions.Player.Jump.canceled -= OnJump;
+        _inputActions.Player.Hook.started -= OnHook;
     }
 
 
@@ -154,6 +158,28 @@ public class PlayerController : MonoBehaviour
 
         tmpVelocity.y += _jumpAccel * Time.fixedDeltaTime;
         _rb.linearVelocity = tmpVelocity;
+    }
+
+
+    /*
+     * ------------------------------------------------------------------
+     * フック機能を制御
+     * ------------------------------------------------------------------
+     */
+    /// <summary>
+    /// start時に発火　フック処理
+    /// </summary>
+    /// <param name="context"></param>
+    private void OnHook(InputAction.CallbackContext context)
+    {
+        if (!context.started) return;
+        if (!_hookChecker.IsCasted) return;
+
+        if (_hookChecker.TryGetClosestCollider(out var col))
+        {
+            Debug.Log($"colPos:{col.transform.position}", col.gameObject);
+            transform.position = col.ClosestPoint(transform.position);
+        }
     }
 
     private void OnDestroy()
