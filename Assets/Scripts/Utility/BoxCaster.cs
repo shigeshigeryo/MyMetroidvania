@@ -10,7 +10,11 @@ public class BoxCaster : MonoBehaviour
     [Tooltip("判定対象のレイヤーを指定")]
     private LayerMask _targetLayers = default;
 
+    // TODO：カスタムでフラグの値によって表示、非表示を切り替えられると良い
     [Header("Overlap")]
+    [SerializeField]
+    [Tooltip("OverlapBoxを使用するか")]
+    private bool useOverlapBox = true;
     [SerializeField]
     [Tooltip("ボックスの中心座標のオフセットを指定")]
     private Vector2 _offsetOverlap = new(0, 0);
@@ -22,6 +26,9 @@ public class BoxCaster : MonoBehaviour
     private Color _gizmoColorOverlap = Color.white;
 
     [Header("BoxCast")]
+    [SerializeField]
+    [Tooltip("BoxCastを使用するか")]
+    private bool useBoxCast = true;
     [SerializeField]
     [Tooltip("ボックスの中心座標のオフセットを指定")]
     private Vector2 _offsetCast = new(0, 0);
@@ -42,11 +49,14 @@ public class BoxCaster : MonoBehaviour
 
     void FixedUpdate()
     {
-        // 交差判定用のポイントを指定
-        var point = transform.TransformPoint(_offsetOverlap);
-        var size = _sizeOverlap * transform.lossyScale;
-        // 交差を判定
-        IsCasted = Physics2D.OverlapBox(point, size, transform.eulerAngles.z, _targetLayers);
+        if (useOverlapBox)
+        {
+            // 交差判定用のポイントを指定
+            var point = transform.TransformPoint(_offsetOverlap);
+            var size = _sizeOverlap * transform.lossyScale;
+            // 交差を判定
+            IsCasted = Physics2D.OverlapBox(point, size, transform.eulerAngles.z, _targetLayers);
+        }
     }
 
     /// <summary>
@@ -92,19 +102,25 @@ public class BoxCaster : MonoBehaviour
     {
         var angle = transform.eulerAngles.z;
         // OverlapBoxのギズモ
-        var sizeOverlap = _sizeOverlap * transform.lossyScale;
-        DrawBox((Vector2)transform.TransformPoint(_offsetOverlap), sizeOverlap, angle, _gizmoColorOverlap);
+        if (useOverlapBox)
+        {
+            var sizeOverlap = _sizeOverlap * transform.lossyScale;
+            DrawBox((Vector2)transform.TransformPoint(_offsetOverlap), sizeOverlap, angle, _gizmoColorOverlap);
+        }
 
         // BoxCastのギズモ
-        // BoxCastは中心点までを参照するので外側半分に当たり判定がないことに注意
-        var dir = transform.right;
-        var size = _sizeCast * transform.lossyScale;
-        Vector2 center = (Vector2)transform.TransformPoint(_offsetCast);
-        Vector2 endCenter = center + (Vector2)dir * _distanceCast;
+        // BoxCastは中心点までを参照するので、外側半分に当たり判定がないことに注意
+        if (useBoxCast)
+        {
+            var dir = transform.right;
+            var size = _sizeCast * transform.lossyScale;
+            Vector2 center = (Vector2)transform.TransformPoint(_offsetCast);
+            Vector2 endCenter = center + (Vector2)dir * _distanceCast;
 
-        DrawBox(center, size, angle, _gizmoColorCast);
-        DrawBox(endCenter, size, angle, _gizmoColorCast);
-        Gizmos.DrawLine(center, endCenter);
+            DrawBox(center, size, angle, _gizmoColorCast);
+            DrawBox(endCenter, size, angle, _gizmoColorCast);
+            Gizmos.DrawLine(center, endCenter);
+        }
     }
 
     /// <summary>

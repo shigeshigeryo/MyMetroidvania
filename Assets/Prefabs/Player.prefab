@@ -276,9 +276,11 @@ MonoBehaviour:
   _targetLayers:
     serializedVersion: 2
     m_Bits: 64
+  useOverlapBox: 1
   _offsetOverlap: {x: 2.5, y: 0}
   _sizeOverlap: {x: 5, y: 0.5}
   _gizmoColorOverlap: {r: 1, g: 1, b: 1, a: 1}
+  useBoxCast: 1
   _offsetCast: {x: 0, y: 0}
   _sizeCast: {x: 0.5, y: 0.5}
   _distanceCast: 5
@@ -362,9 +364,11 @@ MonoBehaviour:
   _targetLayers:
     serializedVersion: 2
     m_Bits: 64
+  useOverlapBox: 1
   _offsetOverlap: {x: 0, y: -0.25}
   _sizeOverlap: {x: 1, y: 0.5}
   _gizmoColorOverlap: {r: 1, g: 0.83209616, b: 0, a: 1}
+  useBoxCast: 0
   _offsetCast: {x: 0, y: 0}
   _sizeCast: {x: 1, y: 1}
   _distanceCast: 5
