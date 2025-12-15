@@ -56,7 +56,7 @@ MonoBehaviour:
   _jumpAccel: 10
   _groundChecker: {fileID: 7427499878688929372}
   _hookOriginTransform: {fileID: 6973764488693215733}
-  _hookChecker: {fileID: 6644061440913065282}
+  _hookCheckerBox: {fileID: 3426274402833423214}
   _hookSpeed: 15
   _hookCancelRange: 0.5
 --- !u!50 &5586000654341092205
@@ -238,7 +238,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8506724971402704079}
-  - component: {fileID: 6644061440913065282}
+  - component: {fileID: 3426274402833423214}
   m_Layer: 6
   m_Name: HookChecker
   m_TagString: Untagged
@@ -261,7 +261,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6973764488693215733}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6644061440913065282
+--- !u!114 &3426274402833423214
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -270,15 +270,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 2444710448338996650}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76672df6b26ce6d488fcb533561db417, type: 3}
+  m_Script: {fileID: 11500000, guid: 5e26cbbc8d84fa4459c8203240148acd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startOffset: {x: 0, y: 0, z: 0}
-  _endOffset: {x: 5, y: 0, z: 0}
   _targetLayers:
     serializedVersion: 2
     m_Bits: 64
-  _gizmoColor: {r: 0.016995352, g: 0.81886786, b: 0.7955697, a: 1}
+  _offsetOverlap: {x: 2.5, y: 0}
+  _sizeOverlap: {x: 5, y: 0.5}
+  _gizmoColorOverlap: {r: 1, g: 1, b: 1, a: 1}
+  _offsetCast: {x: 0, y: 0}
+  _sizeCast: {x: 0.5, y: 0.5}
+  _distanceCast: 5
+  _gizmoColorCast: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &7103435875267763355
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,12 +359,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e26cbbc8d84fa4459c8203240148acd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _offset: {x: 0, y: -0.25}
-  _size: {x: 1, y: 0.5}
   _targetLayers:
     serializedVersion: 2
     m_Bits: 64
-  _gizmoColor: {r: 1, g: 0.94259167, b: 0, a: 1}
+  _offsetOverlap: {x: 0, y: -0.25}
+  _sizeOverlap: {x: 1, y: 0.5}
+  _gizmoColorOverlap: {r: 1, g: 0.83209616, b: 0, a: 1}
+  _offsetCast: {x: 0, y: 0}
+  _sizeCast: {x: 1, y: 1}
+  _distanceCast: 5
+  _gizmoColorCast: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &8725894772445421228
 GameObject:
   m_ObjectHideFlags: 0

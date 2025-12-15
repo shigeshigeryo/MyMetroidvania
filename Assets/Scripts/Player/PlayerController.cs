@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("フック")]
     [SerializeField, Tooltip("フックの原点")] private Transform _hookOriginTransform;
-    [SerializeField, Tooltip("フックの判定")] private LineCaster _hookChecker;
+    [SerializeField, Tooltip("フックの箱判定")] private BoxCaster _hookCheckerBox;
     [SerializeField, Tooltip("フックが引き寄せる時の早さ")] private float _hookSpeed = 15f;
     [SerializeField, Tooltip("フックが切れる長さ")] private float _hookCancelRange = 0.5f;
     private Vector2 _hookPosition;
@@ -213,9 +213,14 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            if (!_hookChecker.IsCasted) return;
+            if (!_hookCheckerBox.IsCasted) return;
 
-            var hit = _hookChecker.GetRaycastHit();
+            RaycastHit2D hit = default;
+            if (_hookCheckerBox != null)
+            {
+                hit = _hookCheckerBox.GetBoxCast();
+            }
+            
             if (hit.collider != null)
             {
                 _currentState = ActionState.Hook;

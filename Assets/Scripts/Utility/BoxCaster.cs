@@ -7,17 +7,33 @@ using UnityEngine;
 public class BoxCaster : MonoBehaviour
 {
     [SerializeField]
-    [Tooltip("ボックスの中心座標のオフセットを指定")]
-    private Vector2 _offset = new(0, 0);
-    [SerializeField]
-    [Tooltip("ボックスのサイズを指定")]
-    private Vector2 _size = new(1, 1);
-    [SerializeField]
     [Tooltip("判定対象のレイヤーを指定")]
     private LayerMask _targetLayers = default;
+
+    [Header("Overlap")]
+    [SerializeField]
+    [Tooltip("ボックスの中心座標のオフセットを指定")]
+    private Vector2 _offsetOverlap = new(0, 0);
+    [SerializeField]
+    [Tooltip("ボックスのサイズを指定")]
+    private Vector2 _sizeOverlap = new(1, 1);
     [SerializeField]
     [Tooltip("ギズモの色を指定")]
-    private Color _gizmoColor = Color.white;
+    private Color _gizmoColorOverlap = Color.white;
+
+    [Header("BoxCast")]
+    [SerializeField]
+    [Tooltip("ボックスの中心座標のオフセットを指定")]
+    private Vector2 _offsetCast = new(0, 0);
+    [SerializeField]
+    [Tooltip("ボックスのサイズを指定")]
+    private Vector2 _sizeCast = new(1, 1);
+    [SerializeField]
+    [Tooltip("キャスト距離を指定")]
+    private float _distanceCast = 5f;
+    [SerializeField]
+    [Tooltip("ギズモの色を指定")]
+    private Color _gizmoColorCast = Color.blue;
 
     /// <summary>
     /// 判定対象と交差している場合はtrue、交差していない場合はfalse
@@ -27,10 +43,8 @@ public class BoxCaster : MonoBehaviour
     void FixedUpdate()
     {
         // 交差判定用のポイントを指定
-        var point = transform.TransformPoint(_offset);
-        var size = this._size;
-        size.x *= transform.lossyScale.x;
-        size.y *= transform.lossyScale.y;
+        var point = transform.TransformPoint(_offsetOverlap);
+        var size = _sizeOverlap * transform.lossyScale;
         // 交差を判定
         IsCasted = Physics2D.OverlapBox(point, size, transform.eulerAngles.z, _targetLayers);
     }
@@ -40,13 +54,11 @@ public class BoxCaster : MonoBehaviour
     /// </summary>
     public bool TryGetClosestCollider(out Collider2D result)
     {
-        Vector2 center = transform.TransformPoint(_offset);
-        var size = this._size;
-        size.x *= transform.lossyScale.x;
-        size.y *= transform.lossyScale.y;
+        Vector2 center = transform.TransformPoint(_offsetOverlap);
+        var size = _sizeOverlap * transform.lossyScale;
         Collider2D[] colliders = Physics2D.OverlapBoxAll(center, size, transform.eulerAngles.z, _targetLayers);
-        
-        if(colliders.Length < 0)
+
+        if (colliders.Length == 0)
         {
             result = null;
             return false;
@@ -59,20 +71,71 @@ public class BoxCaster : MonoBehaviour
         return result != null;
     }
 
+    /// <summary>
+    /// 検知したオブジェクトを返すBoxCas\t
+    /// </summary>
+    public RaycastHit2D GetBoxCast()
+    {
+        var dir = transform.right;
+        Vector2 center = (Vector2)transform.TransformPoint(_offsetCast);
+        var size = _sizeCast * transform.lossyScale;
+
+        return Physics2D.BoxCast(center,
+                                 size,
+                                 transform.eulerAngles.z,
+                                 dir,
+                                 _distanceCast,
+                                 _targetLayers);
+    }
+
     private void OnDrawGizmos()
     {
+        var angle = transform.eulerAngles.z;
+        // OverlapBoxのギズモ
+        var sizeOverlap = _sizeOverlap * transform.lossyScale;
+        DrawBox((Vector2)transform.TransformPoint(_offsetOverlap), sizeOverlap, angle, _gizmoColorOverlap);
+
+        // BoxCastのギズモ
+        // BoxCastは中心点までを参照するので外側半分に当たり判定がないことに注意
+        var dir = transform.right;
+        var size = _sizeCast * transform.lossyScale;
+        Vector2 center = (Vector2)transform.TransformPoint(_offsetCast);
+        Vector2 endCenter = center + (Vector2)dir * _distanceCast;
+
+        DrawBox(center, size, angle, _gizmoColorCast);
+        DrawBox(endCenter, size, angle, _gizmoColorCast);
+        Gizmos.DrawLine(center, endCenter);
+    }
+
+    /// <summary>
+    /// ボックスのギズモを生成
+    /// 中心座標はワールド準拠で渡す
+    /// </summary>
+    /// <param name="center"></param>
+    /// <param name="size"></param>
+    /// <param name="angle" ></param>
+    /// <param name="color"></param>
+    private void DrawBox(Vector2 center, Vector2 size, float angle, Color color)
+    {
         // 交差判定用のポイントを設定
-        var halfSize = _size / 2;
+        var halfSize = size / 2;
+        var angelAxis = Quaternion.AngleAxis(angle, Vector3.forward);
+        var a = angelAxis * new Vector3(-halfSize.x, +halfSize.y, 0);
         var controlPoints = new Vector3[]
         {
-        _offset + new Vector2(-halfSize.x, +halfSize.y), // 左上
-        _offset + new Vector2(+halfSize.x, +halfSize.y), // 右上
-        _offset + new Vector2(+halfSize.x, -halfSize.y), // 右下
-        _offset + new Vector2(-halfSize.x, -halfSize.y), // 左下
+            new Vector2(-halfSize.x, +halfSize.y), // 左上
+            new Vector2(+halfSize.x, +halfSize.y), // 右上
+            new Vector2(+halfSize.x, -halfSize.y), // 右下
+            new Vector2(-halfSize.x, -halfSize.y), // 左下
         };
-        transform.TransformPoints(controlPoints);
+
+        for (int i = 0; i < controlPoints.Length; i++)
+        {
+            controlPoints[i] = (angelAxis * controlPoints[i]) + (Vector3)center;
+        }
+
         // 判定ラインを描画
-        Gizmos.color = _gizmoColor;
+        Gizmos.color = color;
         Gizmos.DrawLineStrip(controlPoints, true);
     }
 }
