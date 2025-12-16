@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Tooltip("フックが切れる長さ")] private float _hookCancelRange = 0.5f;
     private Vector2 _hookPosition;
 
+    [Header("インタラクト")]
+    [SerializeField, Tooltip("インタラクト検知範囲")] private BoxCaster _interactChecker;
+
     private Vector2 _inputDirection = Vector2.zero;
     private bool _isPushedJumpButton = false;
 
@@ -136,6 +139,7 @@ public class PlayerController : MonoBehaviour
         _inputActions.Player.Jump.canceled += OnJump;
         _inputActions.Player.Hook.performed += OnHook;
         _inputActions.Player.Hook.canceled += OnHook;
+        _inputActions.Player.Interact.started += OnInteract;
     }
 
     private void DisposeInputAction()
@@ -144,6 +148,7 @@ public class PlayerController : MonoBehaviour
         _inputActions.Player.Jump.canceled -= OnJump;
         _inputActions.Player.Hook.performed -= OnHook;
         _inputActions.Player.Hook.canceled -= OnHook;
+        _inputActions.Player.Interact.started -= OnInteract;
     }
 
 
@@ -220,7 +225,7 @@ public class PlayerController : MonoBehaviour
             {
                 hit = _hookCheckerBox.GetBoxCast();
             }
-            
+
             if (hit.collider != null)
             {
                 _currentState = ActionState.Hook;
@@ -230,6 +235,21 @@ public class PlayerController : MonoBehaviour
         else if (context.canceled)
         {
             _currentState = ActionState.Walk;
+        }
+    }
+
+    /*
+     * ------------------------------------------------------------------
+     * インタラクト機能を制御
+     * ------------------------------------------------------------------
+     */
+    private void OnInteract(InputAction.CallbackContext _)
+    {
+        if (!_interactChecker.TryGetClosestCollider(out var obj)) return;
+
+        if (obj.TryGetComponent<IInteractable>(out var interactable))
+        {
+            interactable.Interact();
         }
     }
 
