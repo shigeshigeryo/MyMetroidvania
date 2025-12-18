@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5586000654341092205}
   - component: {fileID: 6694266751139183803}
   - component: {fileID: 1375662090908667574}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -35,6 +35,7 @@ Transform:
   m_Children:
   - {fileID: 8798324937417993377}
   - {fileID: 6559117908098786999}
+  - {fileID: 7517443358725526563}
   - {fileID: 6973764488693215733}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -59,6 +60,7 @@ MonoBehaviour:
   _hookCheckerBox: {fileID: 3426274402833423214}
   _hookSpeed: 15
   _hookCancelRange: 0.5
+  _interactChecker: {fileID: 323699590221333887}
 --- !u!50 &5586000654341092205
 Rigidbody2D:
   serializedVersion: 5
@@ -121,7 +123,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0.75}
-  m_Size: {x: 1, y: 1.5}
+  m_Size: {x: 0.5, y: 1.5}
   m_Direction: 0
 --- !u!114 &1375662090908667574
 MonoBehaviour:
@@ -239,7 +241,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8506724971402704079}
   - component: {fileID: 3426274402833423214}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: HookChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,6 +287,62 @@ MonoBehaviour:
   _sizeCast: {x: 0.5, y: 0.5}
   _distanceCast: 5
   _gizmoColorCast: {r: 0, g: 0, b: 1, a: 1}
+--- !u!1 &3062206704870334567
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7517443358725526563}
+  - component: {fileID: 323699590221333887}
+  m_Layer: 7
+  m_Name: InteractChecker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7517443358725526563
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3062206704870334567}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4763088312607136753}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &323699590221333887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3062206704870334567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e26cbbc8d84fa4459c8203240148acd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  useOverlapBox: 1
+  _offsetOverlap: {x: 0, y: 0.75}
+  _sizeOverlap: {x: 2, y: 2}
+  _gizmoColorOverlap: {r: 0, g: 1, b: 0.6920314, a: 1}
+  useBoxCast: 0
+  _offsetCast: {x: 0, y: 0}
+  _sizeCast: {x: 1, y: 1}
+  _distanceCast: 5
+  _gizmoColorCast: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &7103435875267763355
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,7 +352,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6973764488693215733}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HookOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -327,7 +385,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6559117908098786999}
   - component: {fileID: 7427499878688929372}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: GroundChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -383,7 +441,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8798324937417993377}
   - component: {fileID: 8989043578910406599}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
