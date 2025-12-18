@@ -4,20 +4,25 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// プレイヤーの全ての挙動を管理する
 /// </summary>
-public class PlayerController : MonoBehaviour
+public class Player : MonoBehaviour
 {
     private PlayerInputActions _inputActions;　// PlayerInputのイベント
+    [SerializeField] private AudioSource _audioSource;
     [SerializeField] private Rigidbody2D _rb;
     [SerializeField, Tooltip("x軸の移動の速さ")] private float _moveSpeedX = 5f;
     [SerializeField, Tooltip("ジャンプの初速")] private float _jumpSpeed = 8f;
     [SerializeField, Tooltip("ジャンプボタン押下時にかかる+yの加速度")] private float _jumpAccel = 10f;
     [SerializeField, Tooltip("地面の接地判定")] private BoxCaster _groundChecker;
+    [SerializeField, Tooltip("ジャンプ音源ファイル名")] private string _jumpSoundName = "SE_PlayerJump";
+    private SoundData _jumpSound;
 
     [Header("フック")]
     [SerializeField, Tooltip("フックの原点")] private Transform _hookOriginTransform;
     [SerializeField, Tooltip("フックの箱判定")] private BoxCaster _hookCheckerBox;
     [SerializeField, Tooltip("フックが引き寄せる時の早さ")] private float _hookSpeed = 15f;
     [SerializeField, Tooltip("フックが切れる長さ")] private float _hookCancelRange = 0.5f;
+    [SerializeField, Tooltip("フック音源ファイル名")] private string _hookSoundName = "SE_PlayerHook";
+    private SoundData _hookSound;
     private Vector2 _hookPosition;
 
     [Header("インタラクト")]
@@ -50,6 +55,9 @@ public class PlayerController : MonoBehaviour
         _currentState = ActionState.Walk;
         _isPushedJumpButton = false;
         InitializeInputAction();
+
+        _jumpSound = AudioManager.Instance.GetSe(_jumpSoundName.GetHashCode());
+        _hookSound = AudioManager.Instance.GetSe(_hookSoundName.GetHashCode());
     }
 
     private void Update()
@@ -184,6 +192,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Jump()
     {
+        _audioSource.PlayOneShot(_jumpSound.Clip, _jumpSound.Volume);
+
         var newVelocity = _rb.linearVelocity;
         newVelocity.y = _jumpSpeed;
         _rb.linearVelocity = newVelocity; ;
@@ -229,6 +239,7 @@ public class PlayerController : MonoBehaviour
             if (hit.collider != null)
             {
                 _currentState = ActionState.Hook;
+                _audioSource.PlayOneShot(_hookSound.Clip, _hookSound.Volume);
                 _hookPosition = hit.point;
             }
         }
