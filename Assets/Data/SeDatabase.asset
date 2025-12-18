@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: SeDatabase
   m_EditorClassIdentifier: Assembly-CSharp::SoundDatabase
-  _soundDataList: []
+  _soundDataList:
+  - _clip: {fileID: 8300000, guid: ae2a7b1698c93554aa88965a3935e2dd, type: 3}
+    _volume: 0.5
+    _isLoop: 0
