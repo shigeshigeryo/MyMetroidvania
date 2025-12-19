@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private Rigidbody2D _rb;
     [SerializeField, Tooltip("x軸の移動の速さ")] private float _moveSpeedX = 5f;
+    [SerializeField, Tooltip("Walk中に移動速度を超えたときに抵抗としてかかる毎秒の速度")]
+    private float _deceleration = 10f;
     [SerializeField, Tooltip("ジャンプの初速")] private float _jumpSpeed = 8f;
     [SerializeField, Tooltip("ジャンプボタン押下時にかかる+yの加速度")] private float _jumpAccel = 10f;
     [SerializeField, Tooltip("地面の接地判定")] private BoxCaster _groundChecker;
@@ -113,6 +115,12 @@ public class Player : MonoBehaviour
         switch (_currentState)
         {
             case ActionState.Walk:
+                // 現在の速さが規定の移動速を超えていた場合に徐々に速さを減らす
+                if(Mathf.Abs(_rb.linearVelocityX) > _moveSpeedX)
+                {
+                    float flg = _rb.linearVelocityX >= 0 ? -1 : 1;
+                    _rb.linearVelocityX += flg * _deceleration * Time.fixedDeltaTime;
+                }
                 break;
             case ActionState.JumpAnticipation:
             case ActionState.Jump:
