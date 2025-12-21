@@ -169,6 +169,11 @@ public class Player : MonoBehaviour
         _inputActions.Player.Interact.started -= OnInteract;
     }
 
+    public void UnlockAbility(AbilityType type)
+    {
+        _abilityManager.UnlockAbility(type);
+    }
+
 
     /*
      * ------------------------------------------------------------------
