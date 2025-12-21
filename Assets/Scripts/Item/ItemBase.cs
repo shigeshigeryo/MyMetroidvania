@@ -1,0 +1,22 @@
+using UnityEngine;
+
+public abstract class ItemBase : MonoBehaviour
+{
+    [SerializeField, Tooltip("アイテム取得音源ファイル名")] private string _getSoundName;
+    private SoundData _getSoundData;
+
+    protected virtual void Start()
+    {
+        _getSoundData = AudioManager.Instance.GetSe(_getSoundName.GetHashCode());
+    }
+
+    // 取得したときの処理内容
+    protected abstract void Apply(Collider2D collision);
+
+    protected void OnTriggerEnter2D(Collider2D collision)
+    {
+        Apply(collision);
+        AudioManager.Instance.PlayOneShotSe(_getSoundData);
+        Destroy(gameObject);
+    }
+}
