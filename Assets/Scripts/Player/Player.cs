@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     [SerializeField, Tooltip("地面の接地判定")] private BoxCaster _groundChecker;
     [SerializeField, Tooltip("ジャンプ音源ファイル名")] private string _jumpSoundName = "SE_PlayerJump";
     private SoundData _jumpSound;
+    [SerializeField, Tooltip("アビリティの取得状況を管理")]
+    private AbilityManager _abilityManager;
 
     [Header("フック")]
     [SerializeField, Tooltip("フックの原点")] private Transform _hookOriginTransform;
@@ -234,6 +236,8 @@ public class Player : MonoBehaviour
     /// <param name="context"></param>
     private void OnHook(InputAction.CallbackContext context)
     {
+        if (!_abilityManager.HasAbility(AbilityType.Hook)) return;
+
         if (context.performed)
         {
             if (!_hookCheckerBox.IsCasted) return;
