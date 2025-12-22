@@ -13,7 +13,8 @@ public static class JsonHandler
         // Newtonsoft.Json ÇÕ try-catchêÑèß
         try
         {
-            if (TryGetJsonText(Application.persistentDataPath + "/" + fileName + ".json", out var text))
+            //if (TryGetJsonText(Application.persistentDataPath + "/" + fileName + ".json", out var text))
+            if (TryGetJsonText(Application.streamingAssetsPath + "/" + fileName + ".json", out var text))
             {
                 return JsonConvert.DeserializeObject<T>(text);
             }
