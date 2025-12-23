@@ -40,6 +40,7 @@ public class AreaManager : MonoBehaviour
 
     /// <summary>
     /// 現在のエリアの状態を保存する
+    /// 各オブジェクトステートは、そのオブジェクトに紐づいているスクリプトで更新済み
     /// </summary>
     private void SaveAreaStateData()
     {
