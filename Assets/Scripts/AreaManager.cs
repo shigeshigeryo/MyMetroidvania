@@ -1,18 +1,22 @@
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// エリアの状態を管理するスクリプト
+/// WorldManagerよりも処理順を遅くする
+/// </summary>
 public class AreaManager : MonoBehaviour
 {
-    public static AreaManager Instance { get; private set; }
-
     [SerializeField, Tooltip("エリアID")] private string _areaId;
-
-    // 世界共通の状態データ
-    private Dictionary<string, TargetStateData> _worldStateData;
-    public Dictionary<string, TargetStateData> WorldStateData => _worldStateData;
+    public static AreaManager Instance { get; private set; }
     // エリアの初期の状態データ
     private AreaStateData _areaStateData;
     public AreaStateData AreaStateData => _areaStateData;
+    private string _areaStateDataPath;
+
+#if UNITY_EDITOR
+    [SerializeField, Tooltip("デバッグ用にステージ状態の更新を行いたくない場合true")]
+    private bool _isDebug = false;
+#endif
 
     private void Awake()
     {
@@ -25,16 +29,34 @@ public class AreaManager : MonoBehaviour
             Destroy(gameObject);
         }
         
-        // 世界全ての情報
-        var stateData = JsonHandler.LoadResourcesJsonFile<WorldStateData>("WorldData/WorldStateData");
-        Debug.Assert(stateData != default);
-
-        // エリア共通の情報のみ取得
-        _worldStateData = stateData.AllAreaTargetStateDataList;
-        // 特定エリアのみの取得
-        if(stateData.TryGetAreaDataPath(_areaId, out var path))
+        // 特定エリアの情報を取得
+        if(WorldManager.Instance.WorldStateData.TryGetAreaDataPath(_areaId, out _areaStateDataPath))
         {
-            _areaStateData = JsonHandler.LoadResourcesJsonFile<AreaStateData>(path);
+            _areaStateData = JsonHandler.LoadJsonFile<AreaStateData>(_areaStateDataPath);
         }
+        // ファイルが存在しなかった場合に初期値のファイルをロードし、
+        // その値で新規にJSONファイルを作成する
+        if(_areaStateData == default)
+        {
+            _areaStateData = JsonHandler.LoadResourcesJsonFile<AreaStateData>(_areaStateDataPath);
+            SaveAreaStateData();
+        }
+    }
+
+    /// <summary>
+    /// 現在のエリアの状態を保存する
+    /// 各オブジェクトステートは、そのオブジェクトに紐づいているスクリプトで更新済み
+    /// </summary>
+    private void SaveAreaStateData()
+    {
+#if UNITY_EDITOR
+        if (_isDebug) return;
+#endif
+        JsonHandler.WriteJsonFile(_areaStateDataPath, _areaStateData);
+    }
+
+    private void OnDestroy()
+    {
+        SaveAreaStateData();
     }
 }

@@ -8,30 +8,29 @@ using UnityEngine;
 public static class JsonHandler
 {
     // ResourcesフォルダからJsonファイルのデータを取得する
-    public static T LoadResourcesJsonFile<T>(string fileName)
+    public static T LoadResourcesJsonFile<T>(string path)
     {
         // Newtonsoft.Json は try-catch推奨
         try
         {
-            var text = Resources.Load<TextAsset>(fileName).text;
+            var text = Resources.Load<TextAsset>(path).text;
             return JsonConvert.DeserializeObject<T>(text);
         }
         catch (Exception e)
         {
-            Debug.LogError($"{fileName}.jsonの取得に失敗しました。");
+            Debug.LogError($"{path}.jsonの取得に失敗しました。");
             Debug.LogError(e.ToString());
             return default;
         }
     }
 
     // Jsonファイルからデータを取得する
-    public static T LoadJsonFile<T>(string fileName)
+    public static T LoadJsonFile<T>(string path)
     {
         // Newtonsoft.Json は try-catch推奨
         try
         {
-            //if (TryGetJsonText(Application.persistentDataPath + "/" + fileName + ".json", out var text))
-            if (TryGetJsonText(Application.streamingAssetsPath + "/" + fileName + ".json", out var text))
+            if (TryGetJsonText(Application.persistentDataPath + "/" + path + ".json", out var text))
             {
                 return JsonConvert.DeserializeObject<T>(text);
             }
@@ -42,24 +41,37 @@ public static class JsonHandler
         }
         catch (Exception e)
         {
-            Debug.LogError($"{fileName}.jsonの取得に失敗しました。");
+            Debug.LogError($"{path}.jsonの取得に失敗しました。");
             Debug.LogError(e.ToString());
             return default;
         }
     }
 
     // Jsonファイルにデータを書き込む
-    public static void WriteJsonFile<T>(string fileName, T obj)
+    public static void WriteJsonFile<T>(string path, T obj)
     {
-        string path = Application.persistentDataPath + "/" + fileName + ".json";
+        string fullPath = Application.persistentDataPath + "/" + path + ".json";
 
-        if (!TryGetJsonText(path, out var _))
+        if (!TryGetJsonText(fullPath, out var _))
         {
-            Debug.Log($"{fileName}が存在しないため、新規作成をします。");
+            Debug.Log($"{path}が存在しないため、新規作成をします。");
+
+            // ディレクトリから作成する
+            string[] array = path.Split('/');
+            string tmpPath = Application.persistentDataPath;
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                tmpPath += "/" + array[i];
+                if (!Directory.Exists(tmpPath))
+                {
+                    Directory.CreateDirectory(tmpPath);
+                    Debug.Log($"ディレクトリ '{tmpPath}' を作成しました。");
+                }
+            }
         }
         string json = JsonConvert.SerializeObject(obj);
         // 書き込み処理
-        File.WriteAllText(path, json);
+        File.WriteAllText(fullPath, json);
     }
 
 

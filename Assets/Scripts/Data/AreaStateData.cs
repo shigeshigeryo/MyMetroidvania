@@ -41,4 +41,9 @@ public class TargetStateData
         _targetId = targetId;
         _state = state;
     }
+
+    public void SetState(int value)
+    {
+        _state = value;
+    }
 }
