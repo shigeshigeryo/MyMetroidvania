@@ -1,16 +1,40 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AreaManager : MonoBehaviour
 {
-    void Start()
-    {
-        var test = JsonHandler.LoadResourcesJsonFile<WorldStateData>("WorldData/WorldStateData");
-        test.TryGetAllAreaTargetState("Ability", out var testTarget);
-        Debug.Log(testTarget.TargetId);
+    public static AreaManager Instance { get; private set; }
 
-        test.TryGetAreaDataPath("Area_001", out var path);
-        var areaTest = JsonHandler.LoadResourcesJsonFile<AreaStateData>(path);
-        areaTest.TryGetTargetState("Door_001", out var doorData);
-        Debug.Log(doorData.TargetId);
+    [SerializeField, Tooltip("エリアID")] private string _areaId;
+
+    // 世界共通の状態データ
+    private Dictionary<string, TargetStateData> _worldStateData;
+    public Dictionary<string, TargetStateData> WorldStateData => _worldStateData;
+    // エリアの初期の状態データ
+    private AreaStateData _areaStateData;
+    public AreaStateData AreaStateData => _areaStateData;
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
+        // 世界全ての情報
+        var stateData = JsonHandler.LoadResourcesJsonFile<WorldStateData>("WorldData/WorldStateData");
+        Debug.Assert(stateData != default);
+
+        // エリア共通の情報のみ取得
+        _worldStateData = stateData.AllAreaTargetStateDataList;
+        // 特定エリアのみの取得
+        if(stateData.TryGetAreaDataPath(_areaId, out var path))
+        {
+            _areaStateData = JsonHandler.LoadResourcesJsonFile<AreaStateData>(path);
+        }
     }
 }
