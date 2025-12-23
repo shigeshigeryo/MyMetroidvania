@@ -13,6 +13,11 @@ public class AreaManager : MonoBehaviour
     public AreaStateData AreaStateData => _areaStateData;
     private string _areaStateDataPath;
 
+#if UNITY_EDITOR
+    [SerializeField, Tooltip("デバッグ用にステージ状態の更新を行いたくない場合true")]
+    private bool _isDebug = false;
+#endif
+
     private void Awake()
     {
         if(Instance == null)
@@ -44,6 +49,9 @@ public class AreaManager : MonoBehaviour
     /// </summary>
     private void SaveAreaStateData()
     {
+#if UNITY_EDITOR
+        if (_isDebug) return;
+#endif
         JsonHandler.WriteJsonFile(_areaStateDataPath, _areaStateData);
     }
 
