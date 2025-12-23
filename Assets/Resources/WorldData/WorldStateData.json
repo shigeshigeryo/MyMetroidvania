@@ -1,0 +1,17 @@
+{
+  "allAreaTargetStateDataList": {
+    "Ability": {
+      "targetId": "Ability",
+      "state": 1
+    },
+    "GlobalSwitch_001": {
+      "targetId": "GlobalSwitch_001",
+      "state": 2
+    }
+  },
+
+  "areaStateDataPathList": {
+    "Area_001": "WorldData/Area_001",
+    "Area_002": "WorldData/Area_002"
+  }
+}
