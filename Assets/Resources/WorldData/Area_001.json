@@ -1,0 +1,13 @@
+{
+  "areaId": "Area_001",
+  "objectStateDataList": {
+    "Door_001": {
+      "targetId": "Door_001",
+      "state": 1
+    },
+    "Switch_001": {
+      "targetId": "Switch_001",
+      "state": 0
+    }
+  }
+}
