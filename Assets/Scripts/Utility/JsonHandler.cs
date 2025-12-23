@@ -7,6 +7,23 @@ using UnityEngine;
 // com.unity.nuget.newtonsoft-json
 public static class JsonHandler
 {
+    // ResourcesフォルダからJsonファイルのデータを取得する
+    public static T LoadResourcesJsonFile<T>(string fileName)
+    {
+        // Newtonsoft.Json は try-catch推奨
+        try
+        {
+            var text = Resources.Load<TextAsset>(fileName).text;
+            return JsonConvert.DeserializeObject<T>(text);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"{fileName}.jsonの取得に失敗しました。");
+            Debug.LogError(e.ToString());
+            return default;
+        }
+    }
+
     // Jsonファイルからデータを取得する
     public static T LoadJsonFile<T>(string fileName)
     {
