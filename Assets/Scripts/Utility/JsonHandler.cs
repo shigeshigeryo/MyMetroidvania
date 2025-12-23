@@ -55,6 +55,19 @@ public static class JsonHandler
         if (!TryGetJsonText(fullPath, out var _))
         {
             Debug.Log($"{path}が存在しないため、新規作成をします。");
+
+            // ディレクトリから作成する
+            string[] array = path.Split('/');
+            string tmpPath = Application.persistentDataPath;
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                tmpPath += "/" + array[i];
+                if (!Directory.Exists(tmpPath))
+                {
+                    Directory.CreateDirectory(tmpPath);
+                    Debug.Log($"ディレクトリ '{tmpPath}' を作成しました。");
+                }
+            }
         }
         string json = JsonConvert.SerializeObject(obj);
         // 書き込み処理

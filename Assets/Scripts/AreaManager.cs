@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -12,6 +11,7 @@ public class AreaManager : MonoBehaviour
     // エリアの初期の状態データ
     private AreaStateData _areaStateData;
     public AreaStateData AreaStateData => _areaStateData;
+    private string _areaStateDataPath;
 
     private void Awake()
     {
@@ -25,9 +25,29 @@ public class AreaManager : MonoBehaviour
         }
         
         // 特定エリアの情報を取得
-        if(WorldManager.Instance.WorldStateData.TryGetAreaDataPath(_areaId, out var path))
+        if(WorldManager.Instance.WorldStateData.TryGetAreaDataPath(_areaId, out _areaStateDataPath))
         {
-            _areaStateData = JsonHandler.LoadResourcesJsonFile<AreaStateData>(path);
+            _areaStateData = JsonHandler.LoadJsonFile<AreaStateData>(_areaStateDataPath);
         }
+        // ファイルが存在しなかった場合に初期値のファイルをロードし、
+        // その値で新規にJSONファイルを作成する
+        if(_areaStateData == default)
+        {
+            _areaStateData = JsonHandler.LoadResourcesJsonFile<AreaStateData>(_areaStateDataPath);
+            SaveAreaStateData();
+        }
+    }
+
+    /// <summary>
+    /// 現在のエリアの状態を保存する
+    /// </summary>
+    private void SaveAreaStateData()
+    {
+        JsonHandler.WriteJsonFile(_areaStateDataPath, _areaStateData);
+    }
+
+    private void OnDestroy()
+    {
+        SaveAreaStateData();
     }
 }
