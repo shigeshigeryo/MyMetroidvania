@@ -2,7 +2,6 @@ using UnityEngine;
 
 /// <summary>
 /// 世界の状態を管理するスクリプト
-/// 処理順は最も早くする　project settings > Script Execution Order
 /// </summary>
 public class WorldManager : MonoBehaviour
 {
@@ -11,6 +10,9 @@ public class WorldManager : MonoBehaviour
     // 世界共通の状態データ
     private WorldStateData _worldStateData;
     public WorldStateData WorldStateData => _worldStateData;
+
+    // 現在アクティブになっているエリア
+    public AreaManager CurrentAreaManager;
 
     private void Awake()
     {
@@ -27,5 +29,11 @@ public class WorldManager : MonoBehaviour
         // 世界全ての情報
         _worldStateData = JsonHandler.LoadResourcesJsonFile<WorldStateData>("WorldData/WorldStateData");
         Debug.Assert(_worldStateData != default);
+    }
+
+    private void Start()
+    {
+        CurrentAreaManager = AreaManager.AreaManagerList["Area_001"]; // 仮 JSONデータから取得
+        CurrentAreaManager.gameObject.SetActive(true);
     }
 }
