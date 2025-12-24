@@ -14,6 +14,8 @@ public class WorldManager : MonoBehaviour
     // 現在アクティブになっているエリア
     public AreaManager CurrentAreaManager;
 
+    [SerializeField] private Player _player;
+
     private void Awake()
     {
         if (Instance == null)
@@ -35,5 +37,23 @@ public class WorldManager : MonoBehaviour
     {
         CurrentAreaManager = AreaManager.AreaManagerList["Area_001"]; // 仮 JSONデータから取得
         CurrentAreaManager.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// エリア間移動の通知
+    /// </summary>
+    /// <param name="areaId">移動先エリア</param>
+    /// <param name="spawnPosition">移動先のスポーン地点</param>
+    public void ChangeArea(string areaId, Vector3 spawnPosition)
+    {
+        // 移動前エリアをInactive
+        CurrentAreaManager.gameObject.SetActive(false);
+
+        CurrentAreaManager = AreaManager.AreaManagerList[areaId];
+        // 移動後のエリアをActive
+        CurrentAreaManager.gameObject.SetActive(true);
+
+        // 移動先にスポーンさせる
+        _player.transform.position = spawnPosition;
     }
 }

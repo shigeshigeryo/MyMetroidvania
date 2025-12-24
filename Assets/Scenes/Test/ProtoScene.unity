@@ -1441,7 +1441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nextAreaId: Area_001
-  _spawnPosition: {fileID: 255073131}
+  _spawnPoint: {fileID: 255073131}
 --- !u!1 &880231629
 GameObject:
   m_ObjectHideFlags: 0
@@ -1937,7 +1937,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nextAreaId: Area_002
-  _spawnPosition: {fileID: 752895966}
+  _spawnPoint: {fileID: 752895966}
 --- !u!1 &922475361
 GameObject:
   m_ObjectHideFlags: 0
@@ -2069,7 +2069,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nextAreaId: Area_002
-  _spawnPosition: {fileID: 1105948784}
+  _spawnPoint: {fileID: 1105948784}
 --- !u!1 &985159960
 GameObject:
   m_ObjectHideFlags: 0
@@ -2501,6 +2501,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 833ed5da0bdfb084c90a45f629d6237d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentAreaManager: {fileID: 0}
+  _player: {fileID: 6200967431743478429}
 --- !u!4 &1063851720
 Transform:
   m_ObjectHideFlags: 0
@@ -3301,7 +3303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nextAreaId: Area_001
-  _spawnPosition: {fileID: 507914977}
+  _spawnPoint: {fileID: 507914977}
 --- !u!1 &1638089532
 GameObject:
   m_ObjectHideFlags: 0
@@ -3944,6 +3946,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4763088312607136753, guid: 6ee4bda9166c747468795b3b6a52a4e2, type: 3}
   m_PrefabInstance: {fileID: 6200967431743478421}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6200967431743478429 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8848839338403636000, guid: 6ee4bda9166c747468795b3b6a52a4e2, type: 3}
+  m_PrefabInstance: {fileID: 6200967431743478421}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dd973ffbbb4b7d4bbe38180d7156aaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6308800765704426022
 GameObject:
   m_ObjectHideFlags: 0
