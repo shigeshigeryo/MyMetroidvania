@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// プレイヤーの全ての挙動を管理する
 /// </summary>
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
     private PlayerInputActions _inputActions = null;　// PlayerInputのイベント
     [SerializeField] private AudioSource _audioSource = null;
@@ -53,8 +53,6 @@ public class Player : MonoBehaviour
     void Start()
     {
         Initialize();
-        Debug.Log($"life:{_statusManager.CurrentStatus.Life}");
-        Debug.Log($"attackPower:{_statusManager.CurrentStatus.AttackPower}");
     }
 
     private void Initialize()
@@ -121,7 +119,7 @@ public class Player : MonoBehaviour
         {
             case ActionState.Walk:
                 // 現在の速さが規定の移動速を超えていた場合に徐々に速さを減らす
-                if(Mathf.Abs(_rb.linearVelocityX) > _moveSpeedX)
+                if (Mathf.Abs(_rb.linearVelocityX) > _moveSpeedX)
                 {
                     float flg = _rb.linearVelocityX >= 0 ? -1 : 1;
                     _rb.linearVelocityX += flg * _deceleration * Time.fixedDeltaTime;
@@ -170,6 +168,25 @@ public class Player : MonoBehaviour
         _inputActions.Player.Hook.performed -= OnHook;
         _inputActions.Player.Hook.canceled -= OnHook;
         _inputActions.Player.Interact.started -= OnInteract;
+    }
+
+    /*
+     * ------------------------------------------------------------------
+     * ステータスを制御
+     * ------------------------------------------------------------------
+     */
+    public void TakeDamage(int damage)
+    {
+        _statusManager.TakeDamage(damage);
+        if (_statusManager.IsDead)
+        {
+            Dead();
+        }
+    }
+    private void Dead()
+    {
+        Debug.Log("player死亡");
+        Destroy(gameObject); // 仮
     }
 
     public void UnlockAbility(AbilityType type)
