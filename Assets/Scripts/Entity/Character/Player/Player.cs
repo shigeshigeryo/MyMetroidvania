@@ -6,9 +6,10 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class Player : MonoBehaviour
 {
-    private PlayerInputActions _inputActions;　// PlayerInputのイベント
-    [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private Rigidbody2D _rb;
+    private PlayerInputActions _inputActions = null;　// PlayerInputのイベント
+    [SerializeField] private AudioSource _audioSource = null;
+    [SerializeField] private Rigidbody2D _rb = null;
+    [SerializeField] private StatusManager _statusManager = null;
     [SerializeField, Tooltip("x軸の移動の速さ")] private float _moveSpeedX = 5f;
     [SerializeField, Tooltip("Walk中に移動速度を超えたときに抵抗としてかかる毎秒の速度")]
     private float _deceleration = 10f;
@@ -21,12 +22,12 @@ public class Player : MonoBehaviour
     private AbilityManager _abilityManager;
 
     [Header("フック")]
-    [SerializeField, Tooltip("フックの原点")] private Transform _hookOriginTransform;
-    [SerializeField, Tooltip("フックの箱判定")] private BoxCaster _hookCheckerBox;
+    [SerializeField, Tooltip("フックの原点")] private Transform _hookOriginTransform = null;
+    [SerializeField, Tooltip("フックの箱判定")] private BoxCaster _hookCheckerBox = null;
     [SerializeField, Tooltip("フックが引き寄せる時の早さ")] private float _hookSpeed = 15f;
     [SerializeField, Tooltip("フックが切れる長さ")] private float _hookCancelRange = 0.5f;
     [SerializeField, Tooltip("フック音源ファイル名")] private string _hookSoundName = "SE_PlayerHook";
-    private SoundData _hookSound;
+    private SoundData _hookSound = null;
     private Vector2 _hookPosition;
 
     [Header("インタラクト")]
@@ -52,6 +53,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         Initialize();
+        Debug.Log($"life:{_statusManager.CurrentStatus.Life}");
+        Debug.Log($"attackPower:{_statusManager.CurrentStatus.AttackPower}");
     }
 
     private void Initialize()
