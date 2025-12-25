@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4763088312607136753}
   - component: {fileID: 8848839338403636000}
+  - component: {fileID: 5697400064710948249}
   - component: {fileID: 5809375478146826560}
   - component: {fileID: 5586000654341092205}
   - component: {fileID: 5282021193531062381}
@@ -56,6 +57,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _audioSource: {fileID: 4174282207552990810}
   _rb: {fileID: 5586000654341092205}
+  _statusManager: {fileID: 5697400064710948249}
   _moveSpeedX: 5
   _deceleration: 10
   _jumpSpeed: 8
@@ -69,6 +71,19 @@ MonoBehaviour:
   _hookCancelRange: 0.25
   _hookSoundName: SE_PlayerHook
   _interactChecker: {fileID: 323699590221333887}
+--- !u!114 &5697400064710948249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422691174592518709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b24cfea9e01ae5749b75829f18ef80ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultStatus: {fileID: 11400000, guid: 6c53c3d8b222a7949b564ff130723783, type: 2}
 --- !u!114 &5809375478146826560
 MonoBehaviour:
   m_ObjectHideFlags: 0
