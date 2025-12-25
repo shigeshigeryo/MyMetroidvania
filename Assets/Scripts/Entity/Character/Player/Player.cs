@@ -119,7 +119,7 @@ public class Player : MonoBehaviour, IDamageable
         {
             case ActionState.Walk:
                 // Œ»Ý‚Ì‘¬‚³‚ª‹K’è‚ÌˆÚ“®‘¬‚ð’´‚¦‚Ä‚¢‚½ê‡‚É™X‚É‘¬‚³‚ðŒ¸‚ç‚·
-                if(Mathf.Abs(_rb.linearVelocityX) > _moveSpeedX)
+                if (Mathf.Abs(_rb.linearVelocityX) > _moveSpeedX)
                 {
                     float flg = _rb.linearVelocityX >= 0 ? -1 : 1;
                     _rb.linearVelocityX += flg * _deceleration * Time.fixedDeltaTime;
@@ -178,6 +178,15 @@ public class Player : MonoBehaviour, IDamageable
     public void TakeDamage(int damage)
     {
         _statusManager.TakeDamage(damage);
+        if (_statusManager.IsDead)
+        {
+            Dead();
+        }
+    }
+    private void Dead()
+    {
+        Debug.Log("playerŽ€–S");
+        Destroy(gameObject); // ‰¼
     }
 
     public void UnlockAbility(AbilityType type)

@@ -9,6 +9,8 @@ public class StatusManager : MonoBehaviour
     private Status _currentStatus = null;
     public Status CurrentStatus => _currentStatus;
     private bool _isInvincible = false;
+    private bool _isDead = false;
+    public bool IsDead => _isDead;
 
     void Start()
     {
@@ -21,6 +23,11 @@ public class StatusManager : MonoBehaviour
         if (_isInvincible) return;
 
         _currentStatus.UpdateLife(-damage); //ダメージなので負の数で計算
+        if (_currentStatus.Life <= 0)
+        {
+            _isDead = true;
+            return;
+        }
         StartCoroutine(OnTakeDamage());
         Debug.Log($"life:{_currentStatus.Life}");
         Debug.Log($"attackPower:{_currentStatus.AttackPower}");
