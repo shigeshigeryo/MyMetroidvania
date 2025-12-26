@@ -34,14 +34,13 @@ public class AreaManager : MonoBehaviour
         // 特定エリアの情報を取得
         if (WorldManager.Instance.WorldStateData.TryGetAreaDataPath(_areaId, out _areaStateDataPath))
         {
-            _areaStateData = JsonHandler.LoadJsonFile<AreaStateData>(_areaStateDataPath);
-        }
-        // ファイルが存在しなかった場合に初期値のファイルをロードし、
-        // その値で新規にJSONファイルを作成する
-        if (_areaStateData == default)
-        {
-            _areaStateData = JsonHandler.LoadResourcesJsonFile<AreaStateData>(_areaStateDataPath);
-            SaveAreaStateData();
+            // ファイルが存在しなかった場合に初期値のファイルをロードし、
+            // その値で新規にJSONファイルを作成する
+            if(!JsonHandler.TryLoadJsonFile<AreaStateData>(_areaStateDataPath, out _areaStateData))
+            {
+                _areaStateData = JsonHandler.LoadResourcesJsonFile<AreaStateData>(_areaStateDataPath);
+                SaveAreaStateData();
+            }
         }
 
         InitializeAllGimmicks();

@@ -24,26 +24,29 @@ public static class JsonHandler
         }
     }
 
-    // Jsonファイルからデータを取得する
-    public static T LoadJsonFile<T>(string path)
+    /// Jsonファイルからデータを取得し、その成否を返す
+    public static bool TryLoadJsonFile<T>(string path, out T data)
     {
         // Newtonsoft.Json は try-catch推奨
         try
         {
             if (TryGetJsonText(Application.persistentDataPath + "/" + path + ".json", out var text))
             {
-                return JsonConvert.DeserializeObject<T>(text);
+                data = JsonConvert.DeserializeObject<T>(text);
+                return true;
             }
             else
             {
-                return default;
+                data = default;
+                return false;
             }
         }
         catch (Exception e)
         {
             Debug.LogError($"{path}.jsonの取得に失敗しました。");
             Debug.LogError(e.ToString());
-            return default;
+            data = default;
+            return false;
         }
     }
 
