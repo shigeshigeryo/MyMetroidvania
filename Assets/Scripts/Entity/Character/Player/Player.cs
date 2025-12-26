@@ -16,8 +16,6 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField, Tooltip("ジャンプの初速")] private float _jumpSpeed = 8f;
     [SerializeField, Tooltip("ジャンプボタン押下時にかかる+yの加速度")] private float _jumpAccel = 10f;
     [SerializeField, Tooltip("地面の接地判定")] private BoxCaster _groundChecker;
-    [SerializeField, Tooltip("ジャンプ音源ファイル名")] private string _jumpSoundName = "SE_PlayerJump";
-    private SoundData _jumpSound;
     [SerializeField, Tooltip("アビリティの取得状況を管理")]
     private AbilityManager _abilityManager;
 
@@ -26,8 +24,6 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField, Tooltip("フックの箱判定")] private BoxCaster _hookCheckerBox = null;
     [SerializeField, Tooltip("フックが引き寄せる時の早さ")] private float _hookSpeed = 15f;
     [SerializeField, Tooltip("フックが切れる長さ")] private float _hookCancelRange = 0.5f;
-    [SerializeField, Tooltip("フック音源ファイル名")] private string _hookSoundName = "SE_PlayerHook";
-    private SoundData _hookSound = null;
     private Vector2 _hookPosition;
 
     [Header("インタラクト")]
@@ -35,6 +31,14 @@ public class Player : MonoBehaviour, IDamageable
 
     private Vector2 _inputDirection = Vector2.zero;
     private bool _isPushedJumpButton = false;
+
+    [Header("サウンド")]
+    [SerializeField, Tooltip("ジャンプ音源ファイル名")] private string _jumpSoundName = "SE_PlayerJump";
+    private SoundData _jumpSound = null;
+    [SerializeField, Tooltip("フック音源ファイル名")] private string _hookSoundName = "SE_PlayerHook";
+    private SoundData _hookSound = null;
+    [SerializeField, Tooltip("死亡時音源ファイル名")] private string _deadSoundName = "SE_PlayerDead";
+    private SoundData _deadSound = null;
 
     private enum ActionState
     {
@@ -63,6 +67,7 @@ public class Player : MonoBehaviour, IDamageable
 
         _jumpSound = AudioManager.Instance.GetSe(_jumpSoundName.GetHashCode());
         _hookSound = AudioManager.Instance.GetSe(_hookSoundName.GetHashCode());
+        _deadSound = AudioManager.Instance.GetSe(_deadSoundName.GetHashCode());
     }
 
     private void Update()
@@ -186,7 +191,9 @@ public class Player : MonoBehaviour, IDamageable
     private void Dead()
     {
         Debug.Log("player死亡");
-        Destroy(gameObject); // 仮
+        _statusManager.InitializeStatus();
+        AudioManager.Instance.PlayOneShotSe(_deadSound);
+        WorldManager.Instance.RespawnPlayer();
     }
 
     public void UnlockAbility(AbilityType type)

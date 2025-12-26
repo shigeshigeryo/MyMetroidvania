@@ -15,6 +15,7 @@ public class WorldManager : MonoBehaviour
     public AreaManager CurrentAreaManager;
 
     [SerializeField] private Player _player;
+    private Vector3 _respawnPosition; // リスポーン地点
 
     private void Awake()
     {
@@ -37,6 +38,9 @@ public class WorldManager : MonoBehaviour
     {
         CurrentAreaManager = AreaManager.AreaManagerList["Area_001"]; // 仮 JSONデータから取得
         CurrentAreaManager.gameObject.SetActive(true);
+
+        // TODO:セーブからロードする方式に直す
+        _respawnPosition = _player.transform.position;
     }
 
     /// <summary>
@@ -52,8 +56,18 @@ public class WorldManager : MonoBehaviour
         CurrentAreaManager = AreaManager.AreaManagerList[areaId];
         // 移動後のエリアをActive
         CurrentAreaManager.gameObject.SetActive(true);
-
+        // エリア移動のタイミングでリスポーン場所の更新（仮）
+        // TODO:リスポーン処理の変更に合わせて改修必須
+        _respawnPosition = spawnPosition;
         // 移動先にスポーンさせる
         _player.transform.position = spawnPosition;
+    }
+
+    /// <summary>
+    /// プレイヤーをリスポーンする
+    /// </summary>
+    public void RespawnPlayer()
+    {
+        _player.transform.position = _respawnPosition;
     }
 }
