@@ -1,7 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
-public class StatusManager : MonoBehaviour
+public class StatusManager : MonoBehaviour, IDamageable
 {
     [SerializeField, Tooltip("ステータスの初期値")]
     private Status _defaultStatus = null;
@@ -9,8 +10,9 @@ public class StatusManager : MonoBehaviour
     private Status _currentStatus = null;
     public Status CurrentStatus => _currentStatus;
     private bool _isInvincible = false;
-    private bool _isDead = false;
-    public bool IsDead => _isDead;
+
+    public event Action OnDamaged;
+    public event Action OnDead;
 
     void Start()
     {
@@ -23,10 +25,13 @@ public class StatusManager : MonoBehaviour
         _currentStatus.UpdateLife(-damage); //ダメージなので負の数で計算
         if (_currentStatus.Life <= 0)
         {
-            _isDead = true;
-            return;
+            OnDead?.Invoke();
         }
-        StartCoroutine(OnTakeDamage());
+        else
+        {
+            OnDamaged?.Invoke();
+            StartCoroutine(OnTakeDamage());
+        }
     }
 
     /// <summary>
@@ -40,12 +45,10 @@ public class StatusManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ステータスの初期化、主にスポーン時に発火
+    /// 現在のステータス用にインスタンス化
     /// </summary>
     public void InitializeStatus()
     {
-        _isDead = false;
-        // 現在のステータス用にインスタンス化
         _currentStatus = _defaultStatus.CreateCurrentStatus();
     }
 }

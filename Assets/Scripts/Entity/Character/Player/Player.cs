@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// プレイヤーの全ての挙動を管理する
 /// </summary>
-public class Player : MonoBehaviour, IDamageable
+public class Player : MonoBehaviour
 {
     private PlayerInputActions _inputActions = null;　// PlayerInputのイベント
     [SerializeField] private AudioSource _audioSource = null;
@@ -37,6 +37,8 @@ public class Player : MonoBehaviour, IDamageable
     private SoundData _jumpSound = null;
     [SerializeField, Tooltip("フック音源ファイル名")] private string _hookSoundName = "SE_PlayerHook";
     private SoundData _hookSound = null;
+    [SerializeField, Tooltip("被弾時音源ファイル名")] private string _takeDamageSoundName = "SE_PlayerTakeDamage";
+    private SoundData _takeDamageSound = null;
     [SerializeField, Tooltip("死亡時音源ファイル名")] private string _deadSoundName = "SE_PlayerDead";
     private SoundData _deadSound = null;
 
@@ -63,10 +65,11 @@ public class Player : MonoBehaviour, IDamageable
     {
         _currentState = ActionState.Walk;
         _isPushedJumpButton = false;
-        InitializeInputAction();
+        InitializeEvents();
 
         _jumpSound = AudioManager.Instance.GetSe(_jumpSoundName.GetHashCode());
         _hookSound = AudioManager.Instance.GetSe(_hookSoundName.GetHashCode());
+        _takeDamageSound = AudioManager.Instance.GetSe(_takeDamageSoundName.GetHashCode());
         _deadSound = AudioManager.Instance.GetSe(_deadSoundName.GetHashCode());
     }
 
@@ -156,23 +159,33 @@ public class Player : MonoBehaviour, IDamageable
         Debug.Log(_currentState);
     }
 
-    private void InitializeInputAction()
+    private void InitializeEvents()
     {
+        // プレイヤーの操作
         _inputActions.Enable();
         _inputActions.Player.Jump.started += OnJump;
         _inputActions.Player.Jump.canceled += OnJump;
         _inputActions.Player.Hook.performed += OnHook;
         _inputActions.Player.Hook.canceled += OnHook;
         _inputActions.Player.Interact.started += OnInteract;
+
+        // ステータス周り
+        _statusManager.OnDamaged += Damaged;
+        _statusManager.OnDead += Dead;
     }
 
-    private void DisposeInputAction()
+    private void DisposeEvents()
     {
+        // プレイヤーの操作
         _inputActions.Player.Jump.started -= OnJump;
         _inputActions.Player.Jump.canceled -= OnJump;
         _inputActions.Player.Hook.performed -= OnHook;
         _inputActions.Player.Hook.canceled -= OnHook;
         _inputActions.Player.Interact.started -= OnInteract;
+
+        // ステータス周り
+        _statusManager.OnDamaged -= Damaged;
+        _statusManager.OnDead -= Dead;
     }
 
     /*
@@ -180,25 +193,33 @@ public class Player : MonoBehaviour, IDamageable
      * ステータスを制御
      * ------------------------------------------------------------------
      */
-    public void TakeDamage(int damage)
-    {
-        _statusManager.TakeDamage(damage);
-        if (_statusManager.IsDead)
-        {
-            Dead();
-        }
-    }
-    private void Dead()
-    {
-        Debug.Log("player死亡");
-        _statusManager.InitializeStatus();
-        AudioManager.Instance.PlayOneShotSe(_deadSound);
-        WorldManager.Instance.RespawnPlayer();
-    }
-
     public void UnlockAbility(AbilityType type)
     {
         _abilityManager.UnlockAbility(type);
+    }
+
+
+    /*
+     * ------------------------------------------------------------------
+     * リアクションを制御
+     * ------------------------------------------------------------------
+     */
+    /// <summary>
+    /// 被弾時のリアクション
+    /// </summary>
+    private void Damaged()
+    {
+        AudioManager.Instance.PlayOneShotSe(_takeDamageSound);
+    }
+
+    /// <summary>
+    /// 死亡時のリアクション
+    /// </summary>
+    private void Dead()
+    {
+        _statusManager.InitializeStatus();
+        AudioManager.Instance.PlayOneShotSe(_deadSound);
+        WorldManager.Instance.RespawnPlayer();
     }
 
 
@@ -310,6 +331,6 @@ public class Player : MonoBehaviour, IDamageable
 
     private void OnDestroy()
     {
-        DisposeInputAction();
+        DisposeEvents();
     }
 }
