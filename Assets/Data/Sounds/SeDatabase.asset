@@ -25,3 +25,9 @@ MonoBehaviour:
   - _clip: {fileID: 8300000, guid: a6f5e3246a7d8ef4ea61f82e9b1a99ba, type: 3}
     _volume: 0.5
     _isLoop: 0
+  - _clip: {fileID: 8300000, guid: 4930190427d877640bf06a33699919e6, type: 3}
+    _volume: 0.5
+    _isLoop: 0
+  - _clip: {fileID: 8300000, guid: 8e8119352f732234e85a9efbe3f1aa26, type: 3}
+    _volume: 0.5
+    _isLoop: 0

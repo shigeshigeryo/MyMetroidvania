@@ -37,6 +37,8 @@ public class Player : MonoBehaviour
     private SoundData _jumpSound = null;
     [SerializeField, Tooltip("フック音源ファイル名")] private string _hookSoundName = "SE_PlayerHook";
     private SoundData _hookSound = null;
+    [SerializeField, Tooltip("被弾時音源ファイル名")] private string _takeDamageSoundName = "SE_PlayerTakeDamage";
+    private SoundData _takeDamageSound = null;
     [SerializeField, Tooltip("死亡時音源ファイル名")] private string _deadSoundName = "SE_PlayerDead";
     private SoundData _deadSound = null;
 
@@ -67,6 +69,7 @@ public class Player : MonoBehaviour
 
         _jumpSound = AudioManager.Instance.GetSe(_jumpSoundName.GetHashCode());
         _hookSound = AudioManager.Instance.GetSe(_hookSoundName.GetHashCode());
+        _takeDamageSound = AudioManager.Instance.GetSe(_takeDamageSoundName.GetHashCode());
         _deadSound = AudioManager.Instance.GetSe(_deadSoundName.GetHashCode());
     }
 
@@ -206,7 +209,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Damaged()
     {
-        Debug.Log("被弾");
+        AudioManager.Instance.PlayOneShotSe(_takeDamageSound);
     }
 
     /// <summary>
@@ -214,7 +217,6 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Dead()
     {
-        Debug.Log("player死亡");
         _statusManager.InitializeStatus();
         AudioManager.Instance.PlayOneShotSe(_deadSound);
         WorldManager.Instance.RespawnPlayer();
