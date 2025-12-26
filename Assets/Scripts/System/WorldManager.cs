@@ -7,6 +7,7 @@ public class WorldManager : MonoBehaviour
 {
     public static WorldManager Instance { get; private set; }
 
+    private const string WORLD_STATE_DATA_PATH = "WorldData/WorldStateData";
     // 世界共通の状態データ
     private WorldStateData _worldStateData;
     public WorldStateData WorldStateData => _worldStateData;
@@ -18,6 +19,10 @@ public class WorldManager : MonoBehaviour
     // リスポーン地点は全てセーブポイントでない可能性があるため別で保持しておく
     private Vector3 _respawnPosition;
     private SavePoint _currentSavePoint = null;
+
+#if UNITY_EDITOR
+    [SerializeField] private bool _isDebug = false;
+#endif
 
     private void Awake()
     {
@@ -32,13 +37,17 @@ public class WorldManager : MonoBehaviour
         }
 
         // 世界全ての情報
-        _worldStateData = JsonHandler.LoadResourcesJsonFile<WorldStateData>("WorldData/WorldStateData");
+        if(!JsonHandler.TryLoadJsonFile<WorldStateData>(WORLD_STATE_DATA_PATH, out _worldStateData))
+        {
+            _worldStateData = JsonHandler.LoadResourcesJsonFile<WorldStateData>(WORLD_STATE_DATA_PATH);
+            SaveWorldStateData();
+        }
         Debug.Assert(_worldStateData != default);
     }
 
     private void Start()
     {
-        CurrentAreaManager = AreaManager.AreaManagerList["Area_001"]; // 仮 JSONデータから取得
+        CurrentAreaManager = AreaManager.AreaManagerList["Area_001"];
         CurrentAreaManager.gameObject.SetActive(true);
 
         // TODO:セーブからロードする方式に直す
@@ -85,5 +94,18 @@ public class WorldManager : MonoBehaviour
         _currentSavePoint = newSavePoint;
 
         _respawnPosition = newSavePoint.transform.position;
+    }
+
+    private void SaveWorldStateData()
+    {
+#if UNITY_EDITOR
+        if (_isDebug) return;
+#endif
+        JsonHandler.WriteJsonFile(WORLD_STATE_DATA_PATH, _worldStateData);
+    }
+
+    private void OnDestroy()
+    {
+        SaveWorldStateData();
     }
 }
