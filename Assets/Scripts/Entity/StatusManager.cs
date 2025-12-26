@@ -14,14 +14,12 @@ public class StatusManager : MonoBehaviour
 
     void Start()
     {
-        // 現在のステータス用にインスタンス化
-        _currentStatus = _defaultStatus.CreateCurrentStatus();
+        InitializeStatus();
     }
 
     public void TakeDamage(int damage)
     {
         if (_isInvincible) return;
-
         _currentStatus.UpdateLife(-damage); //ダメージなので負の数で計算
         if (_currentStatus.Life <= 0)
         {
@@ -29,8 +27,6 @@ public class StatusManager : MonoBehaviour
             return;
         }
         StartCoroutine(OnTakeDamage());
-        Debug.Log($"life:{_currentStatus.Life}");
-        Debug.Log($"attackPower:{_currentStatus.AttackPower}");
     }
 
     /// <summary>
@@ -41,5 +37,15 @@ public class StatusManager : MonoBehaviour
         _isInvincible = true;
         yield return new WaitForSeconds(_currentStatus.InvincibleSec);
         _isInvincible = false;
+    }
+
+    /// <summary>
+    /// ステータスの初期化、主にスポーン時に発火
+    /// </summary>
+    public void InitializeStatus()
+    {
+        _isDead = false;
+        // 現在のステータス用にインスタンス化
+        _currentStatus = _defaultStatus.CreateCurrentStatus();
     }
 }
