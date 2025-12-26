@@ -15,7 +15,9 @@ public class WorldManager : MonoBehaviour
     public AreaManager CurrentAreaManager;
 
     [SerializeField] private Player _player;
-    private Vector3 _respawnPosition; // リスポーン地点
+    // リスポーン地点は全てセーブポイントでない可能性があるため別で保持しておく
+    private Vector3 _respawnPosition;
+    private SavePoint _currentSavePoint = null;
 
     private void Awake()
     {
@@ -56,9 +58,6 @@ public class WorldManager : MonoBehaviour
         CurrentAreaManager = AreaManager.AreaManagerList[areaId];
         // 移動後のエリアをActive
         CurrentAreaManager.gameObject.SetActive(true);
-        // エリア移動のタイミングでリスポーン場所の更新（仮）
-        // TODO:リスポーン処理の変更に合わせて改修必須
-        _respawnPosition = spawnPosition;
         // 移動先にスポーンさせる
         _player.transform.position = spawnPosition;
     }
@@ -69,5 +68,22 @@ public class WorldManager : MonoBehaviour
     public void RespawnPlayer()
     {
         _player.transform.position = _respawnPosition;
+    }
+
+    /// <summary>
+    /// 最近でアクセスしたセーブポイントの更新
+    /// </summary>
+    /// <param name="newSavePoint"></param>
+    public void SetCurrentSavePoint(SavePoint newSavePoint)
+    {
+        if (_currentSavePoint != null)
+        {
+            // 最近でアクセスしたセーブポイントを更新するため
+            // 現在最新状態として保存されているStateを更新
+            _currentSavePoint.ChangeState(SavePoint.State.Accessed);
+        }
+        _currentSavePoint = newSavePoint;
+
+        _respawnPosition = newSavePoint.transform.position;
     }
 }

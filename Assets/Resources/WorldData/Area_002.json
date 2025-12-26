@@ -8,6 +8,10 @@
     "Door_002": {
       "targetId": "Door_002",
       "state": 0
+    },
+    "Save_001": {
+      "targetId": "Save_001",
+      "state": 0
     }
   }
 }
