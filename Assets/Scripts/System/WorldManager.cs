@@ -7,15 +7,24 @@ public class WorldManager : MonoBehaviour
 {
     public static WorldManager Instance { get; private set; }
 
+    private const string WORLD_STATE_DATA_PATH = "WorldData/WorldStateData";
     // 世界共通の状態データ
     private WorldStateData _worldStateData;
     public WorldStateData WorldStateData => _worldStateData;
+    private string _lastRespawnAreaId;
 
     // 現在アクティブになっているエリア
     public AreaManager CurrentAreaManager;
 
     [SerializeField] private Player _player;
-    private Vector3 _respawnPosition; // リスポーン地点
+    // リスポーン地点は全てセーブポイントでない可能性があるため別で保持しておく
+    private Vector3 _respawnPosition;
+    private SavePoint _currentSavePoint = null;
+    private bool _isInitializeSpawn = false;
+
+#if UNITY_EDITOR
+    [SerializeField] private bool _isDebug = false;
+#endif
 
     private void Awake()
     {
@@ -30,17 +39,20 @@ public class WorldManager : MonoBehaviour
         }
 
         // 世界全ての情報
-        _worldStateData = JsonHandler.LoadResourcesJsonFile<WorldStateData>("WorldData/WorldStateData");
+        if(!JsonHandler.TryLoadJsonFile<WorldStateData>(WORLD_STATE_DATA_PATH, out _worldStateData))
+        {
+            _worldStateData = JsonHandler.LoadResourcesJsonFile<WorldStateData>(WORLD_STATE_DATA_PATH);
+            _lastRespawnAreaId = _worldStateData.LastRespawnAreaId;
+            SaveWorldStateData();
+        }
         Debug.Assert(_worldStateData != default);
     }
 
     private void Start()
     {
-        CurrentAreaManager = AreaManager.AreaManagerList["Area_001"]; // 仮 JSONデータから取得
+        _lastRespawnAreaId = _worldStateData.LastRespawnAreaId;
+        CurrentAreaManager = AreaManager.AreaManagerList[_lastRespawnAreaId];
         CurrentAreaManager.gameObject.SetActive(true);
-
-        // TODO:セーブからロードする方式に直す
-        _respawnPosition = _player.transform.position;
     }
 
     /// <summary>
@@ -56,9 +68,6 @@ public class WorldManager : MonoBehaviour
         CurrentAreaManager = AreaManager.AreaManagerList[areaId];
         // 移動後のエリアをActive
         CurrentAreaManager.gameObject.SetActive(true);
-        // エリア移動のタイミングでリスポーン場所の更新（仮）
-        // TODO:リスポーン処理の変更に合わせて改修必須
-        _respawnPosition = spawnPosition;
         // 移動先にスポーンさせる
         _player.transform.position = spawnPosition;
     }
@@ -69,5 +78,44 @@ public class WorldManager : MonoBehaviour
     public void RespawnPlayer()
     {
         _player.transform.position = _respawnPosition;
+    }
+
+    /// <summary>
+    /// 最近でアクセスしたセーブポイントの更新
+    /// </summary>
+    /// <param name="newSavePoint"></param>
+    public void SetCurrentSavePoint(SavePoint newSavePoint)
+    {
+        if (_currentSavePoint != null)
+        {
+            // 最近でアクセスしたセーブポイントを更新するため
+            // 現在最新状態として保存されているStateを更新
+            _currentSavePoint.ChangeState(SavePoint.State.Accessed);
+        }
+        _currentSavePoint = newSavePoint;
+        _respawnPosition = newSavePoint.transform.position;
+        // アクセスされるセーブポイントがあるエリアは必ず現在のエリアになる
+        _lastRespawnAreaId = CurrentAreaManager.AreaId;
+
+        // 初回はプレイヤーをスポーンさせる
+        if (!_isInitializeSpawn)
+        {
+            _isInitializeSpawn = true;
+            RespawnPlayer();
+        }
+    }
+
+    private void SaveWorldStateData()
+    {
+#if UNITY_EDITOR
+        if (_isDebug) return;
+#endif
+        _worldStateData.SetLastRespawnAreaId(_lastRespawnAreaId);
+        JsonHandler.WriteJsonFile(WORLD_STATE_DATA_PATH, _worldStateData);
+    }
+
+    private void OnDestroy()
+    {
+        SaveWorldStateData();
     }
 }

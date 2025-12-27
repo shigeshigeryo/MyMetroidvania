@@ -198,6 +198,11 @@ public class Player : MonoBehaviour
         _abilityManager.UnlockAbility(type);
     }
 
+    public void Heal()
+    {
+        _statusManager.Heal();
+    }
+
 
     /*
      * ------------------------------------------------------------------
@@ -325,7 +330,7 @@ public class Player : MonoBehaviour
 
         if (obj.TryGetComponent<IInteractable>(out var interactable))
         {
-            interactable.Interact();
+            interactable.Interact(this);
         }
     }
 

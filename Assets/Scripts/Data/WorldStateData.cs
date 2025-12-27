@@ -2,15 +2,28 @@ using System.Collections.Generic;
 
 public class WorldStateData
 {
+    // 直近のリスポーン地点のエリアのID
+    private string _lastRespawnAreaId;
+    public string LastRespawnAreaId => _lastRespawnAreaId;
     // 全エリア共通の状態の管理
     // key：対象のID
-    private Dictionary<string, TargetStateData> _allAreaTargetStateDataList = new Dictionary<string, TargetStateData>();
+    private Dictionary<string, TargetStateData> _allAreaTargetStateDataList = new();
     public Dictionary<string, TargetStateData> AllAreaTargetStateDataList => _allAreaTargetStateDataList;
 
     // エリアの状態の管理
     // key：対象エリアのID 
-    private Dictionary<string, string> _areaStateDataPathList = new Dictionary<string, string>();
+    private Dictionary<string, string> _areaStateDataPathList = new();
     public Dictionary<string, string> AreaStateDataPathList => _areaStateDataPathList;
+
+    public WorldStateData(
+        string lastRespawnAreaId,
+        Dictionary<string, TargetStateData> allAreaTargetStateDataList,
+        Dictionary<string, string> areaStateDataPathList)
+    {
+        _lastRespawnAreaId = lastRespawnAreaId;
+        _allAreaTargetStateDataList = allAreaTargetStateDataList ?? new();
+        _areaStateDataPathList = areaStateDataPathList ?? new();
+    }
 
     /// <summary>
     /// IDで検索して存在の可否とエリアの状態データを返却する（全てのエリア共通の対象）
@@ -32,5 +45,10 @@ public class WorldStateData
     public bool TryGetAreaDataPath(string areaId, out string path)
     {
         return AreaStateDataPathList.TryGetValue(areaId, out path);
+    }
+
+    public void SetLastRespawnAreaId(string id)
+    {
+        _lastRespawnAreaId = id;
     }
 }
