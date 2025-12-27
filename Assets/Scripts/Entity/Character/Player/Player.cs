@@ -325,7 +325,7 @@ public class Player : MonoBehaviour
 
         if (obj.TryGetComponent<IInteractable>(out var interactable))
         {
-            interactable.Interact();
+            interactable.Interact(this);
         }
     }
 

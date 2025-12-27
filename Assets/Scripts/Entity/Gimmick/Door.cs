@@ -42,7 +42,7 @@ public class Door : GimmickBase, IInteractable
         }
     }
 
-    public void Interact()
+    public void Interact(Player _)
     {
         AudioManager.Instance.PlayOneShotSe(_openSoundData);
         Open();
