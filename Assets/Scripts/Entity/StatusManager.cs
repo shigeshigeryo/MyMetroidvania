@@ -19,6 +19,13 @@ public class StatusManager : MonoBehaviour, IDamageable
         InitializeStatus();
     }
 
+    public void Heal()
+    {
+        int healValue = _defaultStatus.Life - _currentStatus.Life;
+        _currentStatus.UpdateLife(healValue);
+        Debug.Log($"‰ñ•œ:{healValue}");
+    }
+
     public void TakeDamage(int damage)
     {
         if (_isInvincible) return;

@@ -198,6 +198,11 @@ public class Player : MonoBehaviour
         _abilityManager.UnlockAbility(type);
     }
 
+    public void Heal()
+    {
+        _statusManager.Heal();
+    }
+
 
     /*
      * ------------------------------------------------------------------

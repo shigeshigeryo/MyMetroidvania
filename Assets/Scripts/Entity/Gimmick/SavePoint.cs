@@ -30,10 +30,11 @@ public class SavePoint : GimmickBase, IInteractable
         }
     }
 
-    public void Interact()
+    public void Interact(Player player)
     {
         Debug.Log($"インタラクト:{_id}");
 
+        player.Heal();
         //最近アクセスしたセーブポイントがこのセーブポイントでない場合に更新
         if (_currentState != State.AccessedNow)
         {
