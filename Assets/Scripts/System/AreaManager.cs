@@ -9,6 +9,7 @@ public class AreaManager : MonoBehaviour
     public static Dictionary<string, AreaManager> AreaManagerList = new Dictionary<string, AreaManager>();
 
     [SerializeField, Tooltip("エリアID")] private string _areaId;
+    public string AreaId => _areaId;
     // エリアの初期の状態データ
     private AreaStateData _areaStateData;
     public AreaStateData AreaStateData => _areaStateData;

@@ -11,6 +11,7 @@ public class WorldManager : MonoBehaviour
     // 世界共通の状態データ
     private WorldStateData _worldStateData;
     public WorldStateData WorldStateData => _worldStateData;
+    private string _lastRespawnAreaId;
 
     // 現在アクティブになっているエリア
     public AreaManager CurrentAreaManager;
@@ -19,6 +20,7 @@ public class WorldManager : MonoBehaviour
     // リスポーン地点は全てセーブポイントでない可能性があるため別で保持しておく
     private Vector3 _respawnPosition;
     private SavePoint _currentSavePoint = null;
+    private bool _isInitializeSpawn = false;
 
 #if UNITY_EDITOR
     [SerializeField] private bool _isDebug = false;
@@ -40,6 +42,7 @@ public class WorldManager : MonoBehaviour
         if(!JsonHandler.TryLoadJsonFile<WorldStateData>(WORLD_STATE_DATA_PATH, out _worldStateData))
         {
             _worldStateData = JsonHandler.LoadResourcesJsonFile<WorldStateData>(WORLD_STATE_DATA_PATH);
+            _lastRespawnAreaId = _worldStateData.LastRespawnAreaId;
             SaveWorldStateData();
         }
         Debug.Assert(_worldStateData != default);
@@ -47,11 +50,9 @@ public class WorldManager : MonoBehaviour
 
     private void Start()
     {
-        CurrentAreaManager = AreaManager.AreaManagerList["Area_001"];
+        _lastRespawnAreaId = _worldStateData.LastRespawnAreaId;
+        CurrentAreaManager = AreaManager.AreaManagerList[_lastRespawnAreaId];
         CurrentAreaManager.gameObject.SetActive(true);
-
-        // TODO:セーブからロードする方式に直す
-        _respawnPosition = _player.transform.position;
     }
 
     /// <summary>
@@ -92,8 +93,16 @@ public class WorldManager : MonoBehaviour
             _currentSavePoint.ChangeState(SavePoint.State.Accessed);
         }
         _currentSavePoint = newSavePoint;
-
         _respawnPosition = newSavePoint.transform.position;
+        // アクセスされるセーブポイントがあるエリアは必ず現在のエリアになる
+        _lastRespawnAreaId = CurrentAreaManager.AreaId;
+
+        // 初回はプレイヤーをスポーンさせる
+        if (!_isInitializeSpawn)
+        {
+            _isInitializeSpawn = true;
+            RespawnPlayer();
+        }
     }
 
     private void SaveWorldStateData()
@@ -101,6 +110,7 @@ public class WorldManager : MonoBehaviour
 #if UNITY_EDITOR
         if (_isDebug) return;
 #endif
+        _worldStateData.SetLastRespawnAreaId(_lastRespawnAreaId);
         JsonHandler.WriteJsonFile(WORLD_STATE_DATA_PATH, _worldStateData);
     }
 
