@@ -14,7 +14,7 @@ public class WorldManager : MonoBehaviour
     private string _lastRespawnAreaId;
 
     // 現在アクティブになっているエリア
-    public AreaManager CurrentAreaManager;
+    private AreaManager _currentAreaManager;
 
     [SerializeField] private Player _player;
     // リスポーン地点は全てセーブポイントでない可能性があるため別で保持しておく
@@ -51,8 +51,8 @@ public class WorldManager : MonoBehaviour
     private void Start()
     {
         _lastRespawnAreaId = _worldStateData.LastRespawnAreaId;
-        CurrentAreaManager = AreaManager.AreaManagerList[_lastRespawnAreaId];
-        CurrentAreaManager.gameObject.SetActive(true);
+        _currentAreaManager = AreaManager.AreaManagerList[_lastRespawnAreaId];
+        _currentAreaManager.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -63,11 +63,11 @@ public class WorldManager : MonoBehaviour
     public void ChangeArea(string areaId, Vector3 spawnPosition)
     {
         // 移動前エリアをInactive
-        CurrentAreaManager.gameObject.SetActive(false);
+        _currentAreaManager.gameObject.SetActive(false);
 
-        CurrentAreaManager = AreaManager.AreaManagerList[areaId];
+        _currentAreaManager = AreaManager.AreaManagerList[areaId];
         // 移動後のエリアをActive
-        CurrentAreaManager.gameObject.SetActive(true);
+        _currentAreaManager.gameObject.SetActive(true);
         // 移動先にスポーンさせる
         _player.transform.position = spawnPosition;
     }
@@ -95,7 +95,7 @@ public class WorldManager : MonoBehaviour
         _currentSavePoint = newSavePoint;
         _respawnPosition = newSavePoint.transform.position;
         // アクセスされるセーブポイントがあるエリアは必ず現在のエリアになる
-        _lastRespawnAreaId = CurrentAreaManager.AreaId;
+        _lastRespawnAreaId = _currentAreaManager.AreaId;
 
         // 初回はプレイヤーをスポーンさせる
         if (!_isInitializeSpawn)
