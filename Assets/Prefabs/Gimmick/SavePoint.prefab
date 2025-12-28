@@ -134,6 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: Save_001
+  _interactedSoundName: SE_Save
 --- !u!61 &1451323917499283683
 BoxCollider2D:
   m_ObjectHideFlags: 0

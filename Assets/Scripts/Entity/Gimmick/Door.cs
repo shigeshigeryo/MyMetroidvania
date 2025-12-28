@@ -12,13 +12,6 @@ public class Door : GimmickBase, IInteractable
 
     [SerializeField, Tooltip("見た目")] private SpriteRenderer _visual;
     [SerializeField, Tooltip("コライダー")] private Collider2D _collider;
-    [SerializeField, Tooltip("ドアを開く音源ファイル名")] private string _openSoundName = "SE_DoorOpen";
-    SoundData _openSoundData;
-
-    private void Start()
-    {
-        _openSoundData = AudioManager.Instance.GetSe(_openSoundName.GetHashCode());
-    }
 
     /// <summary>
     /// ドアの状態を初期化
@@ -44,7 +37,7 @@ public class Door : GimmickBase, IInteractable
 
     public void Interact(Player _)
     {
-        AudioManager.Instance.PlayOneShotSe(_openSoundData);
+        PlayOneShotInteractedSe();
         Open();
     }
 
