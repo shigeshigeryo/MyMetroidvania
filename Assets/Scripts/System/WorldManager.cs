@@ -77,7 +77,16 @@ public class WorldManager : MonoBehaviour
     /// </summary>
     public void RespawnPlayer()
     {
-        _player.transform.position = _respawnPosition;
+        // 現在いるエリアとセーブポイントのエリアが異なる場合は、
+        // エリアを切り替えてからスポーンさせる必要がある
+        if(_currentAreaManager.AreaId != _lastRespawnAreaId)
+        {
+            ChangeArea(_lastRespawnAreaId, _respawnPosition);
+        }
+        else
+        {
+            _player.transform.position = _respawnPosition;
+        }
     }
 
     /// <summary>
