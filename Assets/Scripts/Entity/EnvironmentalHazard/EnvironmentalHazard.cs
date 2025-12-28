@@ -6,7 +6,7 @@ public class EnvironmentalHazard : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if(collision.gameObject.TryGetComponent<IDamageable>(out var damageable))
+        if(collision.gameObject.TryGetComponent<StatusManager>(out var damageable))
         {
             damageable.TakeDamage(_attackPower);
         }
