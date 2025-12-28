@@ -523,7 +523,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _targetLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 128
   useOverlapBox: 1
   _offsetOverlap: {x: 0, y: 0.75}
   _sizeOverlap: {x: 2, y: 2}
