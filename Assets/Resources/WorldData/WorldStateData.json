@@ -3,7 +3,7 @@
   "AllAreaTargetStateDataList": {
     "Ability": {
       "TargetId": "Ability",
-      "State": 1
+      "State": 0
     },
     "GlobalSwitch_001": {
       "TargetId": "GlobalSwitch_001",
