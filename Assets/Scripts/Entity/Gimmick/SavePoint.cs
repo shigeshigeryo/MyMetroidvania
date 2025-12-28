@@ -10,6 +10,15 @@ public class SavePoint : GimmickBase, IInteractable
     }
     private State _currentState = State.None;
 
+    [SerializeField, Tooltip("セーブポイントにアクセスする音源ファイル名")]
+    private string _interactSoundName = "SE_Save";
+    private SoundData _interactSound;
+
+    private void Start()
+    {
+        _interactSound = AudioManager.Instance.GetSe(_interactSoundName.GetHashCode());
+    }
+
     public override void InitializeState()
     {
         switch ((State)_stateData.State)
@@ -33,7 +42,7 @@ public class SavePoint : GimmickBase, IInteractable
     public void Interact(Player player)
     {
         Debug.Log($"インタラクト:{_id}");
-
+        AudioManager.Instance.PlayOneShotSe(_interactSound);
         player.Heal();
         //最近アクセスしたセーブポイントがこのセーブポイントでない場合に更新
         if (_currentState != State.AccessedNow)
