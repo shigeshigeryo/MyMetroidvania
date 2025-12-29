@@ -11,6 +11,6 @@ public class TestEnemy : EnemyBase
     protected override void Damaged()
     {
         base.Damaged();
-        Debug.Log($"Life:{_statusManager.CurrentStatus.Life}");
+        Debug.Log($"Life:{_statusManager.CurrentStatus.Life}", _statusManager);
     }
 }
