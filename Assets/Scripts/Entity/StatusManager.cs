@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class StatusManager : MonoBehaviour
+public class StatusManager : MonoBehaviour, IDamageDealer
 {
     [SerializeField, Tooltip("ステータスの初期値")]
     private Status _defaultStatus = null;
@@ -57,5 +57,10 @@ public class StatusManager : MonoBehaviour
     public void InitializeStatus()
     {
         _currentStatus = _defaultStatus.CreateCurrentStatus();
+    }
+
+    public int GetAttackPower()
+    {
+        return _currentStatus.AttackPower;
     }
 }
