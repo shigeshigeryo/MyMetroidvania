@@ -1,14 +1,11 @@
 using UnityEngine;
 
-public class EnvironmentalHazard : MonoBehaviour
+public class EnvironmentalHazard : MonoBehaviour, IDamageDealer
 {
     [SerializeField, Tooltip("É_ÉÅÅ[ÉWó ")] private int _attackPower;
 
-    private void OnCollisionStay2D(Collision2D collision)
+    public int GetAttackPower()
     {
-        if(collision.gameObject.TryGetComponent<StatusManager>(out var damageable))
-        {
-            damageable.TakeDamage(_attackPower);
-        }
+        return _attackPower;
     }
 }
