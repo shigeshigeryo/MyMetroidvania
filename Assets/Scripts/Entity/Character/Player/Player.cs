@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,6 +19,12 @@ public class Player : MonoBehaviour
     [SerializeField, Tooltip("地面の接地判定")] private BoxCaster _groundChecker;
     [SerializeField, Tooltip("アビリティの取得状況を管理")]
     private AbilityManager _abilityManager;
+
+    [Header("攻撃")]
+    [SerializeField, Tooltip("攻撃判定の原点")] private Transform _hitBoxOriginTransform = null;
+    [SerializeField, Tooltip("攻撃判定")] private HitBox _hitBox;
+    [SerializeField, Tooltip("攻撃CT（秒）")] private float _coolSec = 0.25f;
+    private bool _isAttacking = false;
 
     [Header("フック")]
     [SerializeField, Tooltip("フックの原点")] private Transform _hookOriginTransform = null;
@@ -77,12 +84,14 @@ public class Player : MonoBehaviour
     {
         _inputDirection = _inputActions.Player.Move.ReadValue<Vector2>();
 
-        // 移動入力の方向にフック原点を回転させる。
+        // 移動入力の方向に攻撃判定、フック原点を回転させる。
         if (_inputDirection != Vector2.zero)
         {
             var degDir = Mathf.Atan2(_inputDirection.y, _inputDirection.x) * Mathf.Rad2Deg;
             Vector3 newRotate = new Vector3(0, 0, degDir);
-            _hookOriginTransform.transform.rotation = Quaternion.Euler(newRotate);
+            var angle = Quaternion.Euler(newRotate);
+            _hitBoxOriginTransform.rotation = angle;
+            _hookOriginTransform.rotation = angle;
         }
 
         switch (_currentState)
@@ -167,6 +176,7 @@ public class Player : MonoBehaviour
         _inputActions.Player.Jump.canceled += OnJump;
         _inputActions.Player.Hook.performed += OnHook;
         _inputActions.Player.Hook.canceled += OnHook;
+        _inputActions.Player.Attack.started += OnAttack;
         _inputActions.Player.Interact.started += OnInteract;
 
         // ステータス周り
@@ -181,6 +191,7 @@ public class Player : MonoBehaviour
         _inputActions.Player.Jump.canceled -= OnJump;
         _inputActions.Player.Hook.performed -= OnHook;
         _inputActions.Player.Hook.canceled -= OnHook;
+        _inputActions.Player.Attack.started -= OnAttack;
         _inputActions.Player.Interact.started -= OnInteract;
 
         // ステータス周り
@@ -225,6 +236,32 @@ public class Player : MonoBehaviour
         _statusManager.InitializeStatus();
         AudioManager.Instance.PlayOneShotSe(_deadSound);
         WorldManager.Instance.RespawnPlayer();
+    }
+
+
+    /*
+     * ------------------------------------------------------------------
+     * 攻撃挙動を制御
+     * ------------------------------------------------------------------
+     */
+
+    private void OnAttack(InputAction.CallbackContext _)
+    {
+        // 後々アニメーションで制御することになりそう
+        if (_isAttacking) return;
+        Debug.Log("攻撃！");
+        StartCoroutine(Attack());
+    }
+
+    private IEnumerator Attack()
+    {
+        _isAttacking = true;
+        _hitBox.SetEnableCollider();
+
+        yield return new WaitForSeconds(_coolSec);
+
+        _hitBox.SetDisableCollider();
+        _isAttacking = false;
     }
 
 
