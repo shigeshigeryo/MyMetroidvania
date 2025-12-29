@@ -14,11 +14,11 @@ TagManager:
   - Ground
   - Interactable
   - Player
-  - PlayerArrack
-  - PlayerHitBox
+  - PlayerArrackHitBox
+  - PlayerHurtBox
   - Enemy
-  - EnemyAttack
-  - EnemyHitBox
+  - EnemyAttackHitBox
+  - EnemyHurtBox
   - Attack
   - 
   - 
