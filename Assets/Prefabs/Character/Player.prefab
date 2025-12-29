@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3910211139842317561}
   - component: {fileID: 1375662090908667574}
   - component: {fileID: 4174282207552990810}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -63,14 +63,16 @@ MonoBehaviour:
   _jumpSpeed: 8
   _jumpAccel: 10
   _groundChecker: {fileID: 7427499878688929372}
-  _jumpSoundName: SE_PlayerJump
   _abilityManager: {fileID: 5809375478146826560}
   _hookOriginTransform: {fileID: 6973764488693215733}
   _hookCheckerBox: {fileID: 3426274402833423214}
   _hookSpeed: 15
   _hookCancelRange: 0.25
-  _hookSoundName: SE_PlayerHook
   _interactChecker: {fileID: 323699590221333887}
+  _jumpSoundName: SE_PlayerJump
+  _hookSoundName: SE_PlayerHook
+  _takeDamageSoundName: SE_PlayerTakeDamage
+  _deadSoundName: SE_PlayerDead
 --- !u!114 &5697400064710948249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,7 +431,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8506724971402704079}
   - component: {fileID: 3426274402833423214}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: HookChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -485,7 +487,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7517443358725526563}
   - component: {fileID: 323699590221333887}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: InteractChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -521,7 +523,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _targetLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 128
   useOverlapBox: 1
   _offsetOverlap: {x: 0, y: 0.75}
   _sizeOverlap: {x: 2, y: 2}
@@ -540,7 +542,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6973764488693215733}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: HookOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -573,7 +575,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6559117908098786999}
   - component: {fileID: 7427499878688929372}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: GroundChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -629,7 +631,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8798324937417993377}
   - component: {fileID: 8989043578910406599}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}

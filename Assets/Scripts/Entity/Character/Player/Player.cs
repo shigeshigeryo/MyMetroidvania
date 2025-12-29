@@ -59,13 +59,13 @@ public class Player : MonoBehaviour
     void Start()
     {
         Initialize();
+        InitializeEvents();
     }
 
     private void Initialize()
     {
         _currentState = ActionState.Walk;
         _isPushedJumpButton = false;
-        InitializeEvents();
 
         _jumpSound = AudioManager.Instance.GetSe(_jumpSoundName.GetHashCode());
         _hookSound = AudioManager.Instance.GetSe(_hookSoundName.GetHashCode());

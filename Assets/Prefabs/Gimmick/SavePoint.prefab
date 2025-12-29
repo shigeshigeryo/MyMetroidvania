@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6224129898798321762}
   - component: {fileID: 4081466715953610458}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 5681510373439565811}
   - component: {fileID: 3894332335283413249}
   - component: {fileID: 1451323917499283683}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: SavePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
