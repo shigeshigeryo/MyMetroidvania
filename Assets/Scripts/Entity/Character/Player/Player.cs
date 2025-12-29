@@ -165,7 +165,6 @@ public class Player : MonoBehaviour
             default:
                 break;
         }
-        Debug.Log(_currentState);
     }
 
     private void InitializeEvents()
