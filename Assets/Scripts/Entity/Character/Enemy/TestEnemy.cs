@@ -38,4 +38,12 @@ public class TestEnemy : EnemyBase
         base.Damaged();
         Debug.Log($"Life:{_statusManager.CurrentStatus.Life}", _statusManager);
     }
+
+    protected override void Dead()
+    {
+        base.Dead();
+        StopAllCoroutines();
+
+        gameObject.SetActive(false);
+    }
 }
