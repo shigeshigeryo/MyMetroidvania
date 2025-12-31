@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public abstract class EnemyBase : MonoBehaviour
 {
@@ -16,6 +15,9 @@ public abstract class EnemyBase : MonoBehaviour
     [SerializeField, Tooltip("死亡時音源ファイル名")] protected string _deadSoundName;
     protected SoundData _deadSound = null;
 
+    // 初期位置
+    private Vector3 _initialPosition;
+
     protected enum ActionState
     {
         Walk,
@@ -25,17 +27,29 @@ public abstract class EnemyBase : MonoBehaviour
     }
     protected ActionState _currentState = ActionState.Walk;
 
-    protected virtual void Initialize()
+    /// <summary>
+    /// 初期化処理（初回のみ発火）
+    /// </summary>
+    public virtual void InitializeOnce()
     {
         _takeDamageSound = AudioManager.Instance.GetSe(_takeDamageSoundName.GetHashCode());
         _deadSound = AudioManager.Instance.GetSe(_deadSoundName.GetHashCode());
-    }
+        _initialPosition = transform.position;
 
-    protected void InitializeEvents()
-    {
+        //-イベント-------------------
         // ステータス周り
         _statusManager.OnDamaged += Damaged;
         _statusManager.OnDead += Dead;
+    }
+
+    /// <summary>
+    /// 初期化処理（初回、セーブ時、死亡時に発火）
+    /// </summary>
+    public virtual void Initialize()
+    {
+        if (!gameObject.activeSelf) gameObject.SetActive(true);
+        transform.position = _initialPosition;
+        _statusManager.InitializeStatus();
     }
 
     /*
@@ -57,5 +71,8 @@ public abstract class EnemyBase : MonoBehaviour
     protected virtual void Dead()
     {
         AudioManager.Instance.PlayOneShotSe(_deadSound);
+        StopAllCoroutines();
+
+        gameObject.SetActive(false);
     }
 }

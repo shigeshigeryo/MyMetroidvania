@@ -9,12 +9,10 @@ public class TestEnemy : EnemyBase
     [SerializeField, Tooltip("çUåÇCTÅiïbÅj")] private float _coolSec = 1f;
     private bool _isAttacking = false;
 
-    protected void Start()
+    public override void Initialize()
     {
-        Initialize();
-        InitializeEvents();
-
-        StartCoroutine(Attack());
+        base.Initialize();
+        if (gameObject.activeInHierarchy) StartCoroutine(Attack());
     }
 
     private IEnumerator Attack()
@@ -24,7 +22,7 @@ public class TestEnemy : EnemyBase
         {
             _isAttacking = true;
             _hitBox.SetEnableCollider();
-        
+
             yield return new WaitForSeconds(1f);
 
             _hitBox.SetDisableCollider();

@@ -87,6 +87,11 @@ public class WorldManager : MonoBehaviour
         {
             _player.transform.position = _respawnPosition;
         }
+
+        foreach (var am in AreaManager.AreaManagerList.Values)
+        {
+            am.InitializeAreaState();
+        }
     }
 
     /// <summary>
