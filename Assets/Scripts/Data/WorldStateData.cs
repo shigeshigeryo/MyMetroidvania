@@ -9,6 +9,10 @@ public class WorldStateData
     // key：対象のID
     private Dictionary<string, TargetStateData> _allAreaTargetStateDataList = new();
     public Dictionary<string, TargetStateData> AllAreaTargetStateDataList => _allAreaTargetStateDataList;
+    
+    // 到達したことがあるエリアのID
+    private List<string> _visitedAreaIdList = new();
+    public List<string> VisitedAreaIdList => _visitedAreaIdList;
 
     // エリアの状態の管理
     // key：対象エリアのID 
@@ -18,10 +22,12 @@ public class WorldStateData
     public WorldStateData(
         string lastRespawnAreaId,
         Dictionary<string, TargetStateData> allAreaTargetStateDataList,
+        List<string> visitedAreaIdList,
         Dictionary<string, string> areaStateDataPathList)
     {
         _lastRespawnAreaId = lastRespawnAreaId;
         _allAreaTargetStateDataList = allAreaTargetStateDataList ?? new();
+        _visitedAreaIdList = visitedAreaIdList ?? new();
         _areaStateDataPathList = areaStateDataPathList ?? new();
     }
 
