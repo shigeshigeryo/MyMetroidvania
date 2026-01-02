@@ -10,7 +10,9 @@
       "State": 2
     }
   },
-
+  "VisitedAreaIdList": [
+    "Area_001"
+  ],
   "AreaStateDataPathList": {
     "Area_001": "WorldData/Area_001",
     "Area_002": "WorldData/Area_002"
