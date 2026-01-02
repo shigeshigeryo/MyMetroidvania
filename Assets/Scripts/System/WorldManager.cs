@@ -31,7 +31,6 @@ public class WorldManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -50,6 +49,8 @@ public class WorldManager : MonoBehaviour
 
     private void Start()
     {
+        MapManager.Instance.Initialize(_worldStateData.VisitedAreaIdList);
+
         _lastRespawnAreaId = _worldStateData.LastRespawnAreaId;
         _currentAreaManager = AreaManager.AreaManagerList[_lastRespawnAreaId];
         _currentAreaManager.gameObject.SetActive(true);
@@ -66,6 +67,14 @@ public class WorldManager : MonoBehaviour
         _currentAreaManager.gameObject.SetActive(false);
 
         _currentAreaManager = AreaManager.AreaManagerList[areaId];
+
+        // 訪れたことがないエリアだった場合に追加し、エリアマップを表示する
+        if (!_worldStateData.VisitedAreaIdList.Contains(areaId))
+        {
+            _worldStateData.VisitedAreaIdList.Add(areaId);
+            MapManager.Instance.SetVisitedArea(areaId);
+        }
+        
         // 移動後のエリアをActive
         _currentAreaManager.gameObject.SetActive(true);
         // 移動先にスポーンさせる
