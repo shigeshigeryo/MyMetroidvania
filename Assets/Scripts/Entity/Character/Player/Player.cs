@@ -31,7 +31,10 @@ public class Player : MonoBehaviour
     [SerializeField, Tooltip("フックの箱判定")] private BoxCaster _hookCheckerBox = null;
     [SerializeField, Tooltip("フックが引き寄せる時の早さ")] private float _hookSpeed = 15f;
     [SerializeField, Tooltip("フックが切れる長さ")] private float _hookCancelRange = 0.5f;
+    [SerializeField, Tooltip("フックのクールタイム（秒）")] private float _hookCTSeconds = 0.5f;
     private Vector2 _hookPosition;
+    private bool _canHook = true;
+    private Coroutine _hookCoolDownRoutine = null;
 
     [Header("インタラクト")]
     [SerializeField, Tooltip("インタラクト検知範囲")] private BoxCaster _interactChecker;
@@ -330,7 +333,7 @@ public class Player : MonoBehaviour
     /// <param name="context"></param>
     private void OnHook(InputAction.CallbackContext context)
     {
-        if (!_abilityManager.HasAbility(AbilityType.Hook)) return;
+        if (!_abilityManager.HasAbility(AbilityType.Hook) || !_canHook) return;
 
         if (context.performed)
         {
@@ -352,7 +355,23 @@ public class Player : MonoBehaviour
         else if (context.canceled)
         {
             _currentState = ActionState.Walk;
+            if(_hookCoolDownRoutine == null)
+            {
+                _hookCoolDownRoutine = StartCoroutine(WaitHookCooldown());
+            }
         }
+    }
+
+    /// <summary>
+    /// フックのクールダウン
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator WaitHookCooldown()
+    {
+        _canHook = false;
+        yield return new WaitForSeconds(_hookCTSeconds);
+        _canHook = true;
+        _hookCoolDownRoutine = null;
     }
 
     /*
