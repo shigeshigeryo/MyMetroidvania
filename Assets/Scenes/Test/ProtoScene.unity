@@ -1562,6 +1562,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 732086714}
+  - component: {fileID: 732086715}
   m_Layer: 5
   m_Name: LifeUI
   m_TagString: Untagged
@@ -1593,6 +1594,27 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 800, y: 192}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &732086715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 732086713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9946976465d30c24fb9d3e2be6802d9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _statusManager: {fileID: 6200967431743478423}
+  _lifeSprite: {fileID: -5343243385429368126, guid: d6e52865b52ced842b7651b310993d85, type: 3}
+  _deficitLifeSprite: {fileID: 3184002201865105124, guid: 4b99efd3903585b43957361d6ecbbe74, type: 3}
+  _lifeImageList:
+  - {fileID: 2082443715}
+  - {fileID: 1239246804}
+  - {fileID: 962314135}
+  - {fileID: 1967408592}
+  - {fileID: 95815714}
 --- !u!1 &744359143
 GameObject:
   m_ObjectHideFlags: 0
@@ -5221,6 +5243,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4763088312607136753, guid: 6ee4bda9166c747468795b3b6a52a4e2, type: 3}
   m_PrefabInstance: {fileID: 6200967431743478421}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6200967431743478423 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5697400064710948249, guid: 6ee4bda9166c747468795b3b6a52a4e2, type: 3}
+  m_PrefabInstance: {fileID: 6200967431743478421}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b24cfea9e01ae5749b75829f18ef80ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6200967431743478429 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8848839338403636000, guid: 6ee4bda9166c747468795b3b6a52a4e2, type: 3}

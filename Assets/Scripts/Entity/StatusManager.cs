@@ -13,6 +13,8 @@ public class StatusManager : MonoBehaviour, IDamageDealer
 
     public event Action OnDamaged;
     public event Action OnDead;
+    public event Action<int> OnLifeCountChanged; // ライフ数のUIを更新
+    public event Action<int> OnLifeChanged; // ライフのUIを更新
 
     void Start()
     {
@@ -23,7 +25,7 @@ public class StatusManager : MonoBehaviour, IDamageDealer
     {
         int healValue = _defaultStatus.Life - _currentStatus.Life;
         _currentStatus.UpdateLife(healValue);
-        Debug.Log($"回復:{healValue}");
+        OnLifeChanged?.Invoke(_currentStatus.Life);
     }
 
     public void TakeDamage(int damage)
@@ -37,6 +39,7 @@ public class StatusManager : MonoBehaviour, IDamageDealer
         else
         {
             OnDamaged?.Invoke();
+            OnLifeChanged?.Invoke(_currentStatus.Life);
             StartCoroutine(OnTakeDamage());
         }
     }
@@ -57,6 +60,10 @@ public class StatusManager : MonoBehaviour, IDamageDealer
     public void InitializeStatus()
     {
         _currentStatus = _defaultStatus.CreateCurrentStatus();
+
+        // ステータスのUIの更新
+        OnLifeCountChanged?.Invoke(_defaultStatus.Life);
+        OnLifeChanged?.Invoke(_currentStatus.Life);
     }
 
     public int GetAttackPower()
