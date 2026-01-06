@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -35,6 +36,7 @@ public class Player : MonoBehaviour
     private Vector2 _hookPosition;
     private bool _canHook = true;
     private Coroutine _hookCoolDownRoutine = null;
+    public event Action<float> OnCoolHook = null; // フックUIで購読
 
     [Header("インタラクト")]
     [SerializeField, Tooltip("インタラクト検知範囲")] private BoxCaster _interactChecker;
@@ -369,8 +371,17 @@ public class Player : MonoBehaviour
     private IEnumerator WaitHookCooldown()
     {
         _canHook = false;
-        yield return new WaitForSeconds(_hookCTSeconds);
+
+        float timer =  0f;
+        while (timer < _hookCTSeconds)
+        {
+            yield return null;
+            timer += Time.deltaTime;
+            OnCoolHook?.Invoke(timer / _hookCTSeconds); // クールタイムの進捗
+        }
+
         _canHook = true;
+        OnCoolHook?.Invoke(0); // 非表示
         _hookCoolDownRoutine = null;
     }
 
