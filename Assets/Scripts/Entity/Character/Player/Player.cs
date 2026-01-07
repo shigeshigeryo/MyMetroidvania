@@ -305,7 +305,7 @@ public class Player : MonoBehaviour
 
         var newVelocity = _rb.linearVelocity;
         newVelocity.y = _jumpSpeed;
-        _rb.linearVelocity = newVelocity; ;
+        _rb.linearVelocity = newVelocity;
     }
 
     /// <summary>
