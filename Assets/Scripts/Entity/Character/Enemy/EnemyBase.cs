@@ -18,15 +18,6 @@ public abstract class EnemyBase : MonoBehaviour
     // 初期位置
     private Vector3 _initialPosition;
 
-    protected enum ActionState
-    {
-        Walk,
-        JumpAnticipation,
-        Jump,
-        Hook,
-    }
-    protected ActionState _currentState = ActionState.Walk;
-
     /// <summary>
     /// 初期化処理（初回のみ発火）
     /// </summary>
@@ -38,8 +29,8 @@ public abstract class EnemyBase : MonoBehaviour
 
         //-イベント-------------------
         // ステータス周り
-        _statusManager.OnDamaged += Damaged;
-        _statusManager.OnDead += Dead;
+        _statusManager.OnDamageTaken += OnDamageTaken;
+        _statusManager.OnDead += OnDead;
     }
 
     /// <summary>
@@ -60,7 +51,7 @@ public abstract class EnemyBase : MonoBehaviour
     /// <summary>
     /// 被弾時のリアクション
     /// </summary>
-    protected virtual void Damaged()
+    protected virtual void OnDamageTaken()
     {
         AudioManager.Instance.PlayOneShotSe(_takeDamageSound);
     }
@@ -68,7 +59,7 @@ public abstract class EnemyBase : MonoBehaviour
     /// <summary>
     /// 死亡時のリアクション
     /// </summary>
-    protected virtual void Dead()
+    protected virtual void OnDead()
     {
         AudioManager.Instance.PlayOneShotSe(_deadSound);
         StopAllCoroutines();

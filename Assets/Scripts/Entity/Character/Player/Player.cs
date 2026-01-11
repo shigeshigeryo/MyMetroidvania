@@ -184,8 +184,8 @@ public class Player : MonoBehaviour
         _inputActions.Player.Interact.started += OnInteract;
 
         // ステータス周り
-        _statusManager.OnDamaged += Damaged;
-        _statusManager.OnDead += Dead;
+        _statusManager.OnDamageTaken += OnDamageTaken;
+        _statusManager.OnDead += OnDead;
     }
 
     private void DisposeEvents()
@@ -199,8 +199,8 @@ public class Player : MonoBehaviour
         _inputActions.Player.Interact.started -= OnInteract;
 
         // ステータス周り
-        _statusManager.OnDamaged -= Damaged;
-        _statusManager.OnDead -= Dead;
+        _statusManager.OnDamageTaken -= OnDamageTaken;
+        _statusManager.OnDead -= OnDead;
     }
 
     /*
@@ -227,7 +227,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 被弾時のリアクション
     /// </summary>
-    private void Damaged()
+    private void OnDamageTaken()
     {
         AudioManager.Instance.PlayOneShotSe(_takeDamageSound);
     }
@@ -235,7 +235,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 死亡時のリアクション
     /// </summary>
-    private void Dead()
+    private void OnDead()
     {
         _statusManager.InitializeStatus();
         AudioManager.Instance.PlayOneShotSe(_deadSound);

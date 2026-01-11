@@ -11,7 +11,7 @@ public class StatusManager : MonoBehaviour, IDamageDealer
     public Status CurrentStatus => _currentStatus;
     private bool _isInvincible = false;
 
-    public event Action OnDamaged;
+    public event Action OnDamageTaken;
     public event Action OnDead;
     public event Action<int> OnLifeCountChanged; // ライフ数のUIを更新
     public event Action<int> OnLifeChanged; // ライフのUIを更新
@@ -38,7 +38,7 @@ public class StatusManager : MonoBehaviour, IDamageDealer
         }
         else
         {
-            OnDamaged?.Invoke();
+            OnDamageTaken?.Invoke();
             OnLifeChanged?.Invoke(_currentStatus.Life);
             StartCoroutine(OnTakeDamage());
         }

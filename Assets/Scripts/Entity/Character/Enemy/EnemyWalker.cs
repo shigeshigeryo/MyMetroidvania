@@ -1,13 +1,21 @@
 using System.Collections;
 using UnityEngine;
 
-public class TestEnemy : EnemyBase
+public class EnemyWalker : EnemyBase
 {
     [Header("UŒ‚iTestEnemyj")]
     [SerializeField, Tooltip("UŒ‚”»’è‚ÌŒ´“_")] private Transform _hitBoxOriginTransform = null;
     [SerializeField, Tooltip("UŒ‚”»’è")] private HitBox _hitBox;
     [SerializeField, Tooltip("UŒ‚CTi•bj")] private float _coolSec = 1f;
     private bool _isAttacking = false;
+
+    private enum State
+    {
+        Idle, // ‘Ò‹@
+        Battle, // í“¬ó‘Ô
+        Death // €–S
+    }
+    private State _currentState = State.Idle;
 
     public override void Initialize()
     {
@@ -31,9 +39,9 @@ public class TestEnemy : EnemyBase
         }
     }
 
-    protected override void Damaged()
+    protected override void OnDamageTaken()
     {
-        base.Damaged();
+        base.OnDamageTaken();
         Debug.Log($"Life:{_statusManager.CurrentStatus.Life}", _statusManager);
     }
 }
