@@ -1852,6 +1852,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 357574193}
     m_Modifications:
+    - target: {fileID: 2162841495759676624, guid: a4e4c5cf2654e464ba9af65a65dbd604, type: 3}
+      propertyPath: _id
+      value: Door_002
+      objectReference: {fileID: 0}
     - target: {fileID: 4783861984555771985, guid: a4e4c5cf2654e464ba9af65a65dbd604, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.5
@@ -4852,7 +4856,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce6bd04d38570a4a8d55740907510e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyList: []
   _areaId: Area_002
   _isDebug: 0
 --- !u!1001 &1716618104538186500
@@ -4865,7 +4868,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2914564111790269047, guid: 9b3108f62cb57a34d96547044e297ddb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.5
+      value: 3.33
       objectReference: {fileID: 0}
     - target: {fileID: 2914564111790269047, guid: 9b3108f62cb57a34d96547044e297ddb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5178,7 +5181,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce6bd04d38570a4a8d55740907510e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyList: []
   _areaId: Area_001
   _isDebug: 0
 --- !u!1001 &6200967431743478421

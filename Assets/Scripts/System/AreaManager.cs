@@ -7,7 +7,7 @@ using UnityEngine;
 public class AreaManager : MonoBehaviour
 {
     public static Dictionary<string, AreaManager> AreaManagerList = new Dictionary<string, AreaManager>();
-    public EnemyBase[] EnemyList;
+    private EnemyBase[] EnemyList = null;
 
     [SerializeField, Tooltip("ƒGƒŠƒAID")] private string _areaId;
     public string AreaId => _areaId;
@@ -46,7 +46,6 @@ public class AreaManager : MonoBehaviour
         }
 
         InitializeAllGimmicks();
-        InitializeAllEnemies();
     }
 
     public void InitializeAreaState()
@@ -62,7 +61,7 @@ public class AreaManager : MonoBehaviour
         GimmickBase[] gimmicks = GetComponentsInChildren<GimmickBase>();
         foreach (var gimmick in gimmicks)
         {
-            if (AreaStateData.TryGetTargetState(gimmick.Id, out var stateData))
+            if (_areaStateData.TryGetTargetState(gimmick.Id, out var stateData))
             {
                 gimmick.SetGimmickStateData(stateData);
             }
@@ -80,15 +79,16 @@ public class AreaManager : MonoBehaviour
     /// </summary>
     private void InitializeAllEnemies()
     {
-        bool isFirst = (EnemyList.Length == 0);
-        if(isFirst)
+        bool isFirst = (EnemyList == null);
+        if (isFirst)
         {
+            // lazyLoad
             EnemyList = GetComponentsInChildren<EnemyBase>();
         }
 
         foreach (var enemy in EnemyList)
         {
-            if(isFirst) enemy.InitializeOnce();
+            if(isFirst) enemy.InitializeOnce(); // ‰‰ñ‚Ì‚İÀs‚·‚é‰Šú‰»
             enemy.Initialize();
         }
     }
