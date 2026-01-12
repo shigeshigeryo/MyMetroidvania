@@ -15,8 +15,8 @@ public abstract class EnemyBase : MonoBehaviour
     [SerializeField, Tooltip("死亡時音源ファイル名")] protected string _deadSoundName;
     protected SoundData _deadSound = null;
 
-    // 初期位置
-    private Vector3 _initialPosition;
+    private Vector3 _initialPosition; // 初期位置
+    private EnemyState _currentState = null; // 現在のステート
 
     /// <summary>
     /// 初期化処理（初回のみ発火）
@@ -42,6 +42,39 @@ public abstract class EnemyBase : MonoBehaviour
         transform.position = _initialPosition;
         _statusManager.InitializeStatus();
     }
+
+    /// <summary>
+    /// 現在のステートのアクションを発火
+    /// </summary>
+    private void Update()
+    {
+        _currentState.Tick();
+    }
+
+    /*
+     * ------------------------------------------------------------------
+     * ステート遷移周りで用いるメソッド
+     * ------------------------------------------------------------------
+     */
+    /// <summary>
+    /// ステートの遷移
+    /// 初期化時または各Stateクラスの処理内で呼び出す。
+    /// </summary>
+    /// <param name="newState">遷移後のState</param>
+    public void ChangeState(EnemyState newState)
+    {
+        _currentState?.Exit(); // ステートを抜け出す処理
+        _currentState = newState;
+        newState.Enter(); // ステートに入る処理
+    }
+    /// <summary>
+    /// 検知範囲内にプレイヤーが存在するか返す
+    /// </summary>
+    public abstract bool IsPlayerDetected();
+    /// <summary>
+    /// 攻撃射程にプレイヤーが存在するか返す
+    /// </summary>
+    public abstract bool IsPlayerInRange();
 
     /*
      * ------------------------------------------------------------------

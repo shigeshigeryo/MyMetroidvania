@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -6,16 +5,19 @@ using UnityEngine;
 /// </summary>
 public class WalkerIdleState : EnemyState
 {
-    [SerializeField, Tooltip("アイドル状態を持続する時間（秒）")] private float _durationSec = 0.5f;
-    private int _playerLayer;
-    public WalkerIdleState(EnemyBase enemy) : base(enemy) 
-    {
-        _playerLayer = LayerMask.GetMask("Player");
-    }
+    // 遷移先候補のステート
+    public WalkerIdleState(EnemyBase enemy) : base(enemy) { }
 
-    public override IEnumerator Execute()
+    /// <summary>
+    /// ステートの状態遷移を監視
+    /// </summary>
+    protected override void OnTick()
     {
         Debug.Log("ウォーカーの待機ステート行動中");
-        yield return new WaitForSeconds(_durationSec);
+        if (_owner.IsPlayerDetected())
+        {
+            // プレイヤーを検知した
+            _owner.ChangeState(new WalkerChaseState(_owner));
+        }
     }
 }

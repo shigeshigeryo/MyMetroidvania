@@ -1,15 +1,30 @@
-using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// ウォーカーの追跡ステートを管理
+/// </summary>
 public class WalkerChaseState : EnemyState
 {
-    [SerializeField, Tooltip("アイドル状態を持続する時間（秒）")] private float _durationSec = 0.5f;
+    public WalkerChaseState(EnemyBase enemy) : base(enemy){ }
 
-    public WalkerChaseState(EnemyBase enemy) : base(enemy) { }
-
-    public override IEnumerator Execute()
+    /// <summary>
+    /// ステートの状態遷移を監視
+    /// </summary>
+    protected override void OnTick()
     {
         Debug.Log("ウォーカーの追跡ステート行動中");
-        yield return new WaitForSeconds(_durationSec);
+        if (!_owner.IsPlayerDetected())
+        {
+            // プレイヤーが検知外に出た
+            _owner.ChangeState(new WalkerIdleState(_owner));
+            return;
+        }
+
+        if (_owner.IsPlayerInRange())
+        {
+            // プレイヤーが攻撃射程内にいる
+            _owner.ChangeState(new WalkerBattleState(_owner));
+            return;
+        }
     }
 }
