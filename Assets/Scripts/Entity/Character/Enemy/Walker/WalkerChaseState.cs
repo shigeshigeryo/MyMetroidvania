@@ -3,9 +3,9 @@ using UnityEngine;
 /// <summary>
 /// ウォーカーの追跡ステートを管理
 /// </summary>
-public class WalkerChaseState : EnemyState
+public class WalkerChaseState : EnemyState<EnemyWalker>
 {
-    public WalkerChaseState(EnemyBase enemy) : base(enemy){ }
+    public WalkerChaseState(EnemyWalker enemy) : base(enemy){ }
 
     /// <summary>
     /// ステートの状態遷移を監視

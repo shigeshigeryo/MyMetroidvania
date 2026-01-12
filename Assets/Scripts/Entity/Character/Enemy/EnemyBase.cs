@@ -76,6 +76,16 @@ public abstract class EnemyBase : MonoBehaviour
     /// </summary>
     public abstract bool IsPlayerInRange();
 
+
+    /*
+     * ------------------------------------------------------------------
+     * アクションを制御
+     * ------------------------------------------------------------------
+     */
+    public abstract void Move();
+    public abstract void StopMove();
+
+
     /*
      * ------------------------------------------------------------------
      * リアクションを制御

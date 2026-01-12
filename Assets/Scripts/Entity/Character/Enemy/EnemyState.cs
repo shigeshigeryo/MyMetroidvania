@@ -5,15 +5,10 @@ using UnityEngine;
 /// </summary>
 public abstract class EnemyState
 {
-    protected EnemyBase _owner;
     protected Coroutine routine;
     protected float _timer = 0;
     protected float _tickIntervalSec = 0.25f; // Tickインターバル秒
 
-    public EnemyState(EnemyBase enemy)
-    {
-        _owner = enemy;
-    }
     /// <summary>
     /// ステートに遷移時に発火
     /// </summary>
@@ -39,4 +34,17 @@ public abstract class EnemyState
     /// 次のステートに遷移する前に発火
     /// </summary>
     public virtual void Exit() { }
+}
+
+/// <summary>
+/// _ownerの型情報を具体化するために実装
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public abstract class EnemyState<T> : EnemyState where T : EnemyBase
+{
+    protected T _owner;
+    public EnemyState(T enemy)
+    {
+        _owner = enemy;
+    }
 }

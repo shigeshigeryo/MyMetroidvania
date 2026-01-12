@@ -13,6 +13,9 @@ public class EnemyWalker : EnemyBase
 
     [SerializeField, Tooltip("プレイヤーチェッカー")] private CircleCaster _playerChecker = null;
 
+    [Header("待機")]
+    [Tooltip("1ループでの徘徊時間")] public float IdleDurationSec = 1f;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -60,7 +63,30 @@ public class EnemyWalker : EnemyBase
             // 攻撃射程外
             return false;
         }
-    } 
+    }
+
+
+    /*
+     * ------------------------------------------------------------------
+     * アクションを制御
+     * ------------------------------------------------------------------
+     */
+    /// <summary>
+    /// 通常移動を制御
+    /// </summary>
+    public override void Move()
+    {
+        // 移動方向を決定
+        float flg = Random.Range(0, 2) == 0 ? -1 : 1;
+        _rb.linearVelocityX = flg * _moveSpeedX;
+    }
+    /// <summary>
+    /// 移動を停止
+    /// </summary>
+    public override void StopMove()
+    {
+        _rb.linearVelocity = Vector3.zero;
+    }
 
     private IEnumerator Attack()
     {
@@ -78,6 +104,12 @@ public class EnemyWalker : EnemyBase
         }
     }
 
+
+    /*
+     * ------------------------------------------------------------------
+     * リアクションを制御
+     * ------------------------------------------------------------------
+     */
     protected override void OnDamageTaken()
     {
         base.OnDamageTaken();
