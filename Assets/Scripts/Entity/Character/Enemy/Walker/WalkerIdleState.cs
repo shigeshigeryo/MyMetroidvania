@@ -6,12 +6,17 @@ using UnityEngine;
 /// </summary>
 public class WalkerIdleState : EnemyState<EnemyWalker>
 {
-    private float _idleDurationSec = 1f;
+    private float _idleDurationSec = 1f; // 徘徊時間
+    private float _intervalSec = 0.5f; // 1ループのインターバル秒
+    private const float OFFSET_SEC = 0.5f; // 時間にランダム性を持たせる最大オフセット値
 
     // 遷移先候補のステート
     public WalkerIdleState(EnemyWalker enemy) : base(enemy) 
     {
         _idleDurationSec = enemy.IdleDurationSec;
+        _intervalSec = enemy.IntervalSec;
+
+        Debug.Log(_idleDurationSec);
     }
 
     public override void Enter()
@@ -34,6 +39,7 @@ public class WalkerIdleState : EnemyState<EnemyWalker>
 
     public override void Exit()
     {
+        _owner.StopMove();
         _owner.StopCoroutine(routine);
     }
 
@@ -46,10 +52,15 @@ public class WalkerIdleState : EnemyState<EnemyWalker>
     {
         while (true)
         {
+            Debug.Log("loop");
+            
             _owner.Move();
-            yield return new WaitForSeconds(_idleDurationSec);
+            float offset = Random.Range(-OFFSET_SEC, OFFSET_SEC);
+            yield return new WaitForSeconds(_idleDurationSec + offset);
+            
             _owner.StopMove();
-            yield return new WaitForSeconds(_idleDurationSec);
+            offset = Random.Range(-OFFSET_SEC, OFFSET_SEC);
+            yield return new WaitForSeconds(_intervalSec + offset);
         }
     }
 }

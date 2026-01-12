@@ -373,7 +373,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: {x: 0, y: 0.25, z: 0}
-  _radius: 5
+  _radius: 2
   _targetLayers:
     serializedVersion: 2
     m_Bits: 256
@@ -466,7 +466,7 @@ MonoBehaviour:
   _audioSource: {fileID: 3540492228128941750}
   _rb: {fileID: 6707840728052785788}
   _statusManager: {fileID: 1243930244234204274}
-  _moveSpeedX: 5
+  _moveSpeedX: 1
   _groundChecker: {fileID: 4866534370304046471}
   _takeDamageSoundName: SE_PlayerTakeDamage
   _deadSoundName: SE_PlayerDead
@@ -475,7 +475,8 @@ MonoBehaviour:
   _attackRange: 1
   _coolSec: 1
   _playerChecker: {fileID: 1585226471552130171}
-  IdleDurationSec: 1
+  IdleDurationSec: 2
+  IntervalSec: 1
 --- !u!114 &1243930244234204274
 MonoBehaviour:
   m_ObjectHideFlags: 0

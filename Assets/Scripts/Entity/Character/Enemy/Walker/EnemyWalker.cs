@@ -14,7 +14,9 @@ public class EnemyWalker : EnemyBase
     [SerializeField, Tooltip("プレイヤーチェッカー")] private CircleCaster _playerChecker = null;
 
     [Header("待機")]
-    [Tooltip("1ループでの徘徊時間")] public float IdleDurationSec = 1f;
+    [Tooltip("1ループでの徘徊時間")] public float IdleDurationSec = 2f;
+    [Tooltip("ループで発生するインターバル秒")] public float IntervalSec = 1f;
+    private Coroutine _currentRoutine = null; // 現在のコルーチン
 
     public override void Initialize()
     {
@@ -76,16 +78,28 @@ public class EnemyWalker : EnemyBase
     /// </summary>
     public override void Move()
     {
-        // 移動方向を決定
-        float flg = Random.Range(0, 2) == 0 ? -1 : 1;
-        _rb.linearVelocityX = flg * _moveSpeedX;
+        _currentRoutine = StartCoroutine(OnMove());
     }
     /// <summary>
     /// 移動を停止
     /// </summary>
     public override void StopMove()
     {
-        _rb.linearVelocity = Vector3.zero;
+        StopCoroutine(_currentRoutine);
+        _rb.linearVelocityX = 0;
+    }
+
+    private IEnumerator OnMove()
+    {
+        // 移動方向を決定
+        float flg = Random.Range(0, 2) == 0 ? -1 : 1;
+        float val = flg * _moveSpeedX;
+
+        while (true)
+        {
+            _rb.linearVelocityX = val;
+            yield return new WaitForFixedUpdate();
+        }
     }
 
     private IEnumerator Attack()
