@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour
@@ -82,8 +83,14 @@ public abstract class EnemyBase : MonoBehaviour
      * アクションを制御
      * ------------------------------------------------------------------
      */
-    public abstract void Move();
+
+    // 待機
+    public abstract IEnumerator OnMove();
     public abstract void StopMove();
+    
+    // 追跡
+    public abstract IEnumerator OnChase();
+    public abstract void StopChase();
 
 
     /*

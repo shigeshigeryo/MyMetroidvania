@@ -14,9 +14,19 @@ public class EnemyWalker : EnemyBase
     [SerializeField, Tooltip("プレイヤーチェッカー")] private CircleCaster _playerChecker = null;
 
     [Header("待機")]
-    [Tooltip("1ループでの徘徊時間")] public float IdleDurationSec = 2f;
-    [Tooltip("ループで発生するインターバル秒")] public float IntervalSec = 1f;
+    [SerializeField, Tooltip("1ループでの徘徊時間")]
+    private float _idleDurationSec = 2f;
+    [SerializeField, Tooltip("ループで発生するインターバル秒")]
+    private float _intervalSec = 1f;
+    [SerializeField, Tooltip("時間にランダム性を持たせる最大オフセット値")]
+    private const float _offsetSec = 0.5f;
+
+    [Header("追跡")]
+    [Tooltip("追跡する際の速さ")] private float _chaseSpeedX = 2.0f;
+
     private Coroutine _currentRoutine = null; // 現在のコルーチン
+
+    private Transform _target;
 
     public override void Initialize()
     {
@@ -34,10 +44,12 @@ public class EnemyWalker : EnemyBase
         var hit = _playerChecker.GetHitCollider();
         if (hit)
         {
+            _target = hit.transform;
             return true;
         }
         else
         {
+            _target = null;
             return false;
         }
     }
@@ -70,26 +82,30 @@ public class EnemyWalker : EnemyBase
 
     /*
      * ------------------------------------------------------------------
-     * アクションを制御
+     * 待機ステートのアクションを制御
      * ------------------------------------------------------------------
      */
     /// <summary>
-    /// 通常移動を制御
+    /// 徘徊する
     /// </summary>
-    public override void Move()
+    public override IEnumerator OnMove()
     {
-        _currentRoutine = StartCoroutine(OnMove());
-    }
-    /// <summary>
-    /// 移動を停止
-    /// </summary>
-    public override void StopMove()
-    {
-        StopCoroutine(_currentRoutine);
-        _rb.linearVelocityX = 0;
+        // 一定時間徘徊する
+        Coroutine walkRoutine = StartCoroutine(WalkRoutine());
+        float offset = Random.Range(-_offsetSec, _offsetSec);
+        yield return new WaitForSeconds(_idleDurationSec + offset);
+
+        // 一定時間のインターバル
+        StopCoroutine(walkRoutine);
+        offset = Random.Range(-_offsetSec, _offsetSec);
+        yield return new WaitForSeconds(_intervalSec + offset);        
     }
 
-    private IEnumerator OnMove()
+    /// <summary>
+    /// 移動を開始
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator WalkRoutine()
     {
         // 移動方向を決定
         float flg = Random.Range(0, 2) == 0 ? -1 : 1;
@@ -100,6 +116,40 @@ public class EnemyWalker : EnemyBase
             _rb.linearVelocityX = val;
             yield return new WaitForFixedUpdate();
         }
+    }
+
+    /// <summary>
+    /// 徘徊を停止
+    /// </summary>
+    public override void StopMove()
+    {
+        _rb.linearVelocityX = 0;
+    }
+
+
+    /*
+     * ------------------------------------------------------------------
+     * 追跡ステートのアクションを制御
+     * ------------------------------------------------------------------
+     */
+    /// <summary>
+    /// 追跡する
+    /// </summary>
+    public override IEnumerator OnChase()
+    {
+        var dir = _target.position - transform.position;
+        float flg = dir.x < 0 ? -1 : 1;
+        _rb.linearVelocityX = flg * _chaseSpeedX;
+
+        yield return new WaitForFixedUpdate();
+    }
+
+    /// <summary>
+    /// 追跡を停止
+    /// </summary>
+    public override void StopChase()
+    {
+        _rb.linearVelocityX = 0;
     }
 
     private IEnumerator Attack()

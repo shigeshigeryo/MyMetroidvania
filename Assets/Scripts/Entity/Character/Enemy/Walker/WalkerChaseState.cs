@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -5,7 +6,15 @@ using UnityEngine;
 /// </summary>
 public class WalkerChaseState : EnemyState<EnemyWalker>
 {
-    public WalkerChaseState(EnemyWalker enemy) : base(enemy){ }
+    public WalkerChaseState(EnemyWalker enemy) : base(enemy) { }
+
+    /// <summary>
+    /// ステートに遷移時に発火
+    /// </summary>
+    public override void Enter()
+    {
+        routine = _owner.StartCoroutine(ChaseRoutine());
+    }
 
     /// <summary>
     /// ステートの状態遷移を監視
@@ -25,6 +34,23 @@ public class WalkerChaseState : EnemyState<EnemyWalker>
             // プレイヤーが攻撃射程内にいる
             _owner.ChangeState(new WalkerBattleState(_owner));
             return;
+        }
+    }
+
+    /// <summary>
+    /// 次のステートに遷移する前に発火
+    /// </summary>
+    public override void Exit()
+    {
+        _owner.StopCoroutine(routine);
+        _owner.StopChase();
+    }
+
+    private IEnumerator ChaseRoutine()
+    {
+        while (true)
+        {
+            yield return _owner.OnChase();
         }
     }
 }
