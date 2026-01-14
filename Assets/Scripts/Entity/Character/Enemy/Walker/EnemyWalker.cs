@@ -140,7 +140,6 @@ public class EnemyWalker : EnemyBase
         float flg = dir.x < 0 ? -1 : 1;
         _rb.linearVelocityX = flg * _chaseSpeedX;
         yield return new WaitForFixedUpdate();
-        Debug.Log($"OnChase:{_rb.linearVelocityX}");
     }
 
     /// <summary>
@@ -148,9 +147,7 @@ public class EnemyWalker : EnemyBase
     /// </summary>
     public override void StopChase()
     {
-        _rb.linearVelocityX = 0;
-        // TODO:‘¬“x0‚É‚µ‚Ä‚àˆÚ“®‚µ‚Ä‚µ‚Ü‚¤•s‹ï‡‚Ì‰ğÁ
-        Debug.Log($"StopChase:{_rb.linearVelocityX}");
+        _rb.linearVelocity = Vector3.zero;
     }
 
     public override IEnumerator OnAttack()
