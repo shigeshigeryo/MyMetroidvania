@@ -92,6 +92,9 @@ public abstract class EnemyBase : MonoBehaviour
     public abstract IEnumerator OnChase();
     public abstract void StopChase();
 
+    // UŒ‚
+    public abstract IEnumerator OnAttack();
+
 
     /*
      * ------------------------------------------------------------------

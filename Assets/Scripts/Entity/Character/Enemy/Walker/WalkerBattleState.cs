@@ -43,7 +43,12 @@ public class WalkerBattleState : EnemyState<EnemyWalker>
     {
         while (true)
         {
-            yield return null;
+            _isAttacking = true;
+            yield return _owner.OnAttack();
+            _isAttacking = false;
+
+            // Tickによるステート遷移条件の監視を保証する
+            yield return new WaitForSeconds(_tickIntervalSec);
         }
     }
 }

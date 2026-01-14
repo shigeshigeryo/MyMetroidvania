@@ -9,7 +9,6 @@ public class EnemyWalker : EnemyBase
     [SerializeField, Tooltip("攻撃の射程")] private float _attackRange = 1f;
     private float SqrAttackRange => _attackRange * _attackRange; // 攻撃の射程の2乗
     [SerializeField, Tooltip("攻撃CT（秒）")] private float _coolSec = 1f;
-    private bool _isAttacking = false;
 
     [SerializeField, Tooltip("プレイヤーチェッカー")] private CircleCaster _playerChecker = null;
 
@@ -140,8 +139,8 @@ public class EnemyWalker : EnemyBase
         var dir = _target.position - transform.position;
         float flg = dir.x < 0 ? -1 : 1;
         _rb.linearVelocityX = flg * _chaseSpeedX;
-
         yield return new WaitForFixedUpdate();
+        Debug.Log($"OnChase:{_rb.linearVelocityX}");
     }
 
     /// <summary>
@@ -150,22 +149,19 @@ public class EnemyWalker : EnemyBase
     public override void StopChase()
     {
         _rb.linearVelocityX = 0;
+        // TODO:速度0にしても移動してしまう不具合の解消
+        Debug.Log($"StopChase:{_rb.linearVelocityX}");
     }
 
-    private IEnumerator Attack()
+    public override IEnumerator OnAttack()
     {
+        // 攻撃開始
+        _hitBox.SetEnableCollider();
         yield return new WaitForSeconds(1f);
-        while (true)
-        {
-            _isAttacking = true;
-            _hitBox.SetEnableCollider();
 
-            yield return new WaitForSeconds(1f);
-
-            _hitBox.SetDisableCollider();
-            _isAttacking = false;
-            yield return new WaitForSeconds(_coolSec);
-        }
+        // 攻撃終了後の隙
+        _hitBox.SetDisableCollider();
+        yield return new WaitForSeconds(_coolSec);
     }
 
 
