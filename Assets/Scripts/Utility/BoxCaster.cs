@@ -14,7 +14,7 @@ public class BoxCaster : MonoBehaviour
     [Header("Overlap")]
     [SerializeField]
     [Tooltip("OverlapBoxを使用するか")]
-    private bool useOverlapBox = true;
+    private bool _useOverlapBox = true;
     [SerializeField]
     [Tooltip("ボックスの中心座標のオフセットを指定")]
     private Vector2 _offsetOverlap = new(0, 0);
@@ -28,7 +28,7 @@ public class BoxCaster : MonoBehaviour
     [Header("BoxCast")]
     [SerializeField]
     [Tooltip("BoxCastを使用するか")]
-    private bool useBoxCast = true;
+    private bool _useBoxCast = true;
     [SerializeField]
     [Tooltip("ボックスの中心座標のオフセットを指定")]
     private Vector2 _offsetCast = new(0, 0);
@@ -49,7 +49,7 @@ public class BoxCaster : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (useOverlapBox)
+        if (_useOverlapBox)
         {
             // 交差判定用のポイントを指定
             var point = transform.TransformPoint(_offsetOverlap);
@@ -102,7 +102,7 @@ public class BoxCaster : MonoBehaviour
     {
         var angle = transform.eulerAngles.z;
         // OverlapBoxのギズモ
-        if (useOverlapBox)
+        if (_useOverlapBox)
         {
             var sizeOverlap = _sizeOverlap * transform.lossyScale;
             DrawBox((Vector2)transform.TransformPoint(_offsetOverlap), sizeOverlap, angle, _gizmoColorOverlap);
@@ -110,7 +110,7 @@ public class BoxCaster : MonoBehaviour
 
         // BoxCastのギズモ
         // BoxCastは中心点までを参照するので、外側半分に当たり判定がないことに注意
-        if (useBoxCast)
+        if (_useBoxCast)
         {
             var dir = transform.right;
             var size = _sizeCast * transform.lossyScale;

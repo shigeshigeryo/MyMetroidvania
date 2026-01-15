@@ -41,6 +41,15 @@ public class HitBox : MonoBehaviour
         _collider.enabled = false;
     }
 
+    /// <summary>
+    /// 親オブジェクトを考慮したPositionにセット
+    /// </summary>
+    /// <param name="newVec"></param>
+    public void SetPosition(Vector3 newVec)
+    {
+        transform.localPosition = newVec;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.TryGetComponent<HurtBox>(out var hurtBox))

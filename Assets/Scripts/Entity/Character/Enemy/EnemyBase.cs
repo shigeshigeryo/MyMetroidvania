@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour
@@ -15,17 +16,8 @@ public abstract class EnemyBase : MonoBehaviour
     [SerializeField, Tooltip("死亡時音源ファイル名")] protected string _deadSoundName;
     protected SoundData _deadSound = null;
 
-    // 初期位置
-    private Vector3 _initialPosition;
-
-    protected enum ActionState
-    {
-        Walk,
-        JumpAnticipation,
-        Jump,
-        Hook,
-    }
-    protected ActionState _currentState = ActionState.Walk;
+    private Vector3 _initialPosition; // 初期位置
+    private EnemyState _currentState = null; // 現在のステート
 
     /// <summary>
     /// 初期化処理（初回のみ発火）
@@ -38,8 +30,8 @@ public abstract class EnemyBase : MonoBehaviour
 
         //-イベント-------------------
         // ステータス周り
-        _statusManager.OnDamaged += Damaged;
-        _statusManager.OnDead += Dead;
+        _statusManager.OnDamageTaken += OnDamageTaken;
+        _statusManager.OnDead += OnDead;
     }
 
     /// <summary>
@@ -52,6 +44,58 @@ public abstract class EnemyBase : MonoBehaviour
         _statusManager.InitializeStatus();
     }
 
+    /// <summary>
+    /// 現在のステートのアクションを発火
+    /// </summary>
+    private void Update()
+    {
+        _currentState.Tick();
+    }
+
+    /*
+     * ------------------------------------------------------------------
+     * ステート遷移周りで用いるメソッド
+     * ------------------------------------------------------------------
+     */
+    /// <summary>
+    /// ステートの遷移
+    /// 初期化時または各Stateクラスの処理内で呼び出す。
+    /// </summary>
+    /// <param name="newState">遷移後のState</param>
+    public void ChangeState(EnemyState newState)
+    {
+        _currentState?.Exit(); // ステートを抜け出す処理
+        _currentState = newState;
+        newState.Enter(); // ステートに入る処理
+    }
+    /// <summary>
+    /// 検知範囲内にプレイヤーが存在するか返す
+    /// </summary>
+    public abstract bool IsPlayerDetected();
+    /// <summary>
+    /// 攻撃射程にプレイヤーが存在するか返す
+    /// </summary>
+    public abstract bool IsPlayerInRange();
+
+
+    /*
+     * ------------------------------------------------------------------
+     * アクションを制御
+     * ------------------------------------------------------------------
+     */
+
+    // 待機
+    public abstract IEnumerator OnMove();
+    public abstract void StopMove();
+    
+    // 追跡
+    public abstract IEnumerator OnChase();
+    public abstract void StopChase();
+
+    // 攻撃
+    public abstract IEnumerator OnAttack();
+
+
     /*
      * ------------------------------------------------------------------
      * リアクションを制御
@@ -60,7 +104,7 @@ public abstract class EnemyBase : MonoBehaviour
     /// <summary>
     /// 被弾時のリアクション
     /// </summary>
-    protected virtual void Damaged()
+    protected virtual void OnDamageTaken()
     {
         AudioManager.Instance.PlayOneShotSe(_takeDamageSound);
     }
@@ -68,11 +112,29 @@ public abstract class EnemyBase : MonoBehaviour
     /// <summary>
     /// 死亡時のリアクション
     /// </summary>
-    protected virtual void Dead()
+    protected virtual void OnDead()
     {
         AudioManager.Instance.PlayOneShotSe(_deadSound);
         StopAllCoroutines();
 
         gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// メインカメラの画角内に存在するかをカメラとエネミーのポジションで計算し
+    /// カメラ内に存在するかどうかを返す
+    /// ※ メインカメラはプレイヤーに追従している
+    /// </summary>
+    /// <return>カメラに映っていたら true</return>
+    public bool IsVisible()
+    {
+        Vector3 pos = transform.position;
+        Vector3 camPos = Camera.main.transform.position;
+        float halfH = Camera.main.orthographicSize; // カメラの縦のサイズの半分
+        float halfW = halfH * Camera.main.aspect; // カメラの横のサイズの半分
+
+        // カメラの範囲内かどうか 2fはバッファ
+        return (pos.x > camPos.x - halfW - 2f && pos.x < camPos.x + halfW + 2f
+            && pos.y > camPos.y - halfH - 2f && pos.y < camPos.y + halfH + 2f);
     }
 }

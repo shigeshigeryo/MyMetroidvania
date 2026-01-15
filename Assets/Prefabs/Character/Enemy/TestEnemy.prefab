@@ -261,12 +261,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 701480072267075017}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 817845905525582861}
+  m_Father: {fileID: 2914564111790269047}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8249786393369527631
 MonoBehaviour:
@@ -289,7 +289,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 701480072267075017}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -316,7 +316,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.5, y: 0}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -328,7 +328,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 0.5}
   m_EdgeRadius: 0
---- !u!1 &3703205760032248717
+--- !u!1 &1301524945300181890
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -336,30 +336,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 817845905525582861}
-  m_Layer: 12
-  m_Name: HitBoxOrigin
+  - component: {fileID: 4399804566950193274}
+  - component: {fileID: 1585226471552130171}
+  m_Layer: 11
+  m_Name: PlayerChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &817845905525582861
+--- !u!4 &4399804566950193274
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3703205760032248717}
+  m_GameObject: {fileID: 1301524945300181890}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1089748052155564825}
+  m_Children: []
   m_Father: {fileID: 2914564111790269047}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1585226471552130171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1301524945300181890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35bc673c33fcfbd469e715e41e865cef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _offset: {x: 0, y: 0.25, z: 0}
+  _radius: 2
+  _targetLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  _gizmoColor: {r: 0.94716984, g: 0.15547878, b: 0.85480577, a: 1}
 --- !u!1 &8581492097899189496
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,8 +414,9 @@ Transform:
   m_Children:
   - {fileID: 1309379988468056908}
   - {fileID: 4345494921942476275}
-  - {fileID: 817845905525582861}
+  - {fileID: 1089748052155564825}
   - {fileID: 713586032924703105}
+  - {fileID: 4399804566950193274}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6173466905474084008
@@ -415,13 +434,17 @@ MonoBehaviour:
   _audioSource: {fileID: 3540492228128941750}
   _rb: {fileID: 6707840728052785788}
   _statusManager: {fileID: 1243930244234204274}
-  _moveSpeedX: 5
+  _moveSpeedX: 1
   _groundChecker: {fileID: 4866534370304046471}
   _takeDamageSoundName: SE_PlayerTakeDamage
   _deadSoundName: SE_PlayerDead
-  _hitBoxOriginTransform: {fileID: 817845905525582861}
+  _hitBoxOriginTransform: {fileID: 0}
   _hitBox: {fileID: 8249786393369527631}
+  _attackRange: 1
   _coolSec: 1
+  _playerChecker: {fileID: 1585226471552130171}
+  _idleDurationSec: 2
+  _intervalSec: 1
 --- !u!114 &1243930244234204274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -461,7 +484,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &3903726764943004220
 BoxCollider2D:
   m_ObjectHideFlags: 0

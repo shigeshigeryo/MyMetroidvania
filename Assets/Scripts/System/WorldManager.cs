@@ -103,6 +103,7 @@ public class WorldManager : MonoBehaviour
         }
     }
 
+    // TODO:初回起動時に呼び出されない不具合あり。　事前にアクセス済みセーブポイントを設けるか、別手段を検討
     /// <summary>
     /// 最近でアクセスしたセーブポイントの更新
     /// </summary>
