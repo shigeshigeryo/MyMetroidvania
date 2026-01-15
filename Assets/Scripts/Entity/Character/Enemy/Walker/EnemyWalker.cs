@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class EnemyWalker : EnemyBase
 {
+    private float _lastMoveDirection;// 最後に動いた方向 +x方向 = 1, -x方向 = -1
+
     [Header("攻撃（TestEnemy）")]
-    [SerializeField, Tooltip("攻撃判定の原点")] private Transform _hitBoxOriginTransform = null;
     [SerializeField, Tooltip("攻撃判定")] private HitBox _hitBox;
     [SerializeField, Tooltip("攻撃の射程")] private float _attackRange = 1f;
     private float SqrAttackRange => _attackRange * _attackRange; // 攻撃の射程の2乗
@@ -78,6 +79,16 @@ public class EnemyWalker : EnemyBase
         }
     }
 
+    /// <summary>
+    /// 最後に移動した方向を参照して攻撃判定のポジションをセットする
+    /// X軸のみを移動
+    /// </summary>
+    /// <param name="dir">X軸速度</param>
+    private void SetAttackColliderByLastMoveDirection()
+    {
+        // 引数は攻撃の射程と向いている向きを考慮したもの
+        _hitBox.SetPosition(Vector3.right * _lastMoveDirection * _attackRange / 2);
+    }
 
     /*
      * ------------------------------------------------------------------
@@ -107,8 +118,8 @@ public class EnemyWalker : EnemyBase
     private IEnumerator WalkRoutine()
     {
         // 移動方向を決定
-        float flg = Random.Range(0, 2) == 0 ? -1 : 1;
-        float val = flg * _moveSpeedX;
+        _lastMoveDirection = Random.Range(0, 2) == 0 ? -1 : 1;
+        float val = _lastMoveDirection * _moveSpeedX;
 
         while (true)
         {
@@ -137,8 +148,8 @@ public class EnemyWalker : EnemyBase
     public override IEnumerator OnChase()
     {
         var dir = _target.position - transform.position;
-        float flg = dir.x < 0 ? -1 : 1;
-        _rb.linearVelocityX = flg * _chaseSpeedX;
+        _lastMoveDirection = dir.x < 0 ? -1 : 1;
+        _rb.linearVelocityX = _lastMoveDirection * _chaseSpeedX;
         yield return new WaitForFixedUpdate();
     }
 
@@ -150,8 +161,16 @@ public class EnemyWalker : EnemyBase
         _rb.linearVelocity = Vector3.zero;
     }
 
+    /*
+     * ------------------------------------------------------------------
+     * バトルステートのアクションを制御
+     * ------------------------------------------------------------------
+     */
     public override IEnumerator OnAttack()
     {
+        // 攻撃方向をセット
+        SetAttackColliderByLastMoveDirection();
+
         // 攻撃開始
         _hitBox.SetEnableCollider();
         yield return new WaitForSeconds(1f);

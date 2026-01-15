@@ -261,12 +261,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 701480072267075017}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 817845905525582861}
+  m_Father: {fileID: 2914564111790269047}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8249786393369527631
 MonoBehaviour:
@@ -316,7 +316,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.5, y: 0}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -378,38 +378,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   _gizmoColor: {r: 0.94716984, g: 0.15547878, b: 0.85480577, a: 1}
---- !u!1 &3703205760032248717
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 817845905525582861}
-  m_Layer: 12
-  m_Name: HitBoxOrigin
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &817845905525582861
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3703205760032248717}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1089748052155564825}
-  m_Father: {fileID: 2914564111790269047}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8581492097899189496
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,7 +414,7 @@ Transform:
   m_Children:
   - {fileID: 1309379988468056908}
   - {fileID: 4345494921942476275}
-  - {fileID: 817845905525582861}
+  - {fileID: 1089748052155564825}
   - {fileID: 713586032924703105}
   - {fileID: 4399804566950193274}
   m_Father: {fileID: 0}
@@ -470,13 +438,13 @@ MonoBehaviour:
   _groundChecker: {fileID: 4866534370304046471}
   _takeDamageSoundName: SE_PlayerTakeDamage
   _deadSoundName: SE_PlayerDead
-  _hitBoxOriginTransform: {fileID: 817845905525582861}
+  _hitBoxOriginTransform: {fileID: 0}
   _hitBox: {fileID: 8249786393369527631}
   _attackRange: 1
   _coolSec: 1
   _playerChecker: {fileID: 1585226471552130171}
-  IdleDurationSec: 2
-  IntervalSec: 1
+  _idleDurationSec: 2
+  _intervalSec: 1
 --- !u!114 &1243930244234204274
 MonoBehaviour:
   m_ObjectHideFlags: 0
