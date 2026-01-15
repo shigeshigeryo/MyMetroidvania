@@ -119,4 +119,22 @@ public abstract class EnemyBase : MonoBehaviour
 
         gameObject.SetActive(false);
     }
+
+    /// <summary>
+    /// メインカメラの画角内に存在するかをカメラとエネミーのポジションで計算し
+    /// カメラ内に存在するかどうかを返す
+    /// ※ メインカメラはプレイヤーに追従している
+    /// </summary>
+    /// <return>カメラに映っていたら true</return>
+    public bool IsVisible()
+    {
+        Vector3 pos = transform.position;
+        Vector3 camPos = Camera.main.transform.position;
+        float halfH = Camera.main.orthographicSize; // カメラの縦のサイズの半分
+        float halfW = halfH * Camera.main.aspect; // カメラの横のサイズの半分
+
+        // カメラの範囲内かどうか 2fはバッファ
+        return (pos.x > camPos.x - halfW - 2f && pos.x < camPos.x + halfW + 2f
+            && pos.y > camPos.y - halfH - 2f && pos.y < camPos.y + halfH + 2f);
+    }
 }

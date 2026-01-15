@@ -23,6 +23,14 @@ public class WalkerIdleState : EnemyState<EnemyWalker>
         {
             // プレイヤーを検知した
             _owner.ChangeState(new WalkerChaseState(_owner));
+            return;
+        }
+
+        if (!_owner.IsVisible())
+        {
+            // 画面外に出た
+            _owner.ChangeState(new SleepState(_owner, this));
+            return;
         }
     }
 

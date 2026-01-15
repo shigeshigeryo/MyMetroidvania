@@ -31,7 +31,7 @@ public class EnemyWalker : EnemyBase
     public override void Initialize()
     {
         base.Initialize();
-        if (gameObject.activeInHierarchy) ChangeState(new WalkerIdleState(this));
+        ChangeState(new SleepState(this, new WalkerIdleState(this)));
     }
 
 

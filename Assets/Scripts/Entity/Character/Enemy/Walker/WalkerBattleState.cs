@@ -26,6 +26,7 @@ public class WalkerBattleState : EnemyState<EnemyWalker>
         Debug.Log("ウォーカーのバトルステート行動中");
         if (!_isAttacking && !_owner.IsPlayerInRange())
         {
+            // 攻撃中にステートの変更を行わない
             // プレイヤーが攻撃射程内にいない
             _owner.ChangeState(new WalkerChaseState(_owner));
         }
