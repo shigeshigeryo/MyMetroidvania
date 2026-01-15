@@ -1,19 +1,23 @@
+using MyMetroidVania.Entity.Character.Player;
 using UnityEngine;
 
-public class UnlockAbilityItem : ItemBase
+namespace MyMetroidVania.Entity.Item
 {
-    [SerializeField, Tooltip("アンロックするアビリティ")] private AbilityType _unlockAbilityType;
-
-    /// <summary>
-    /// ItemBaseのOnTriggerEnter2D時に発火
-    /// アビリティをアンロックする
-    /// </summary>
-    /// <param name="collision"></param>
-    protected override void Apply(Collider2D collision)
+    public class UnlockAbilityItem : ItemBase
     {
-        if (collision.TryGetComponent<Player>(out var player))
+        [SerializeField, Tooltip("アンロックするアビリティ")] private AbilityType _unlockAbilityType;
+
+        /// <summary>
+        /// ItemBaseのOnTriggerEnter2D時に発火
+        /// アビリティをアンロックする
+        /// </summary>
+        /// <param name="collision"></param>
+        protected override void Apply(Collider2D collision)
         {
-            player.UnlockAbility(_unlockAbilityType);
+            if (collision.TryGetComponent<Player>(out var player))
+            {
+                player.UnlockAbility(_unlockAbilityType);
+            }
         }
     }
 }

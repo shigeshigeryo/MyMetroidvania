@@ -47,9 +47,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bgmSource: {fileID: 7229324169964740951}
-  _bgmDatabase: {fileID: 11400000, guid: aaa4c65e70ec5da498fc4cb867bf8e0a, type: 2}
+  _bgmDatabase: {fileID: 11400000, guid: b04a48f7c5601944980c8e0598d16e52, type: 2}
   _seSource: {fileID: 1316233871527679890}
-  _seDatabase: {fileID: 11400000, guid: 059be56f0e114a14fbe73821596ad483, type: 2}
+  _seDatabase: {fileID: 11400000, guid: a3e967742ef0dae41b1e4343c4c0d210, type: 2}
 --- !u!82 &7229324169964740951
 AudioSource:
   m_ObjectHideFlags: 0

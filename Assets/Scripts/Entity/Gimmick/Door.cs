@@ -1,53 +1,58 @@
 using UnityEngine;
+using System;
+using MyMetroidVania.Entity.Character.Player;
 
-public class Door : GimmickBase, IInteractable
+namespace MyMetroidVania.Entity.Gimmick
 {
-    [System.Serializable]
-    public enum State
+    public class Door : GimmickBase, IInteractable
     {
-        Close, // 閉鎖
-        Open, // 開放
-        Lock // 施錠
-    }
-
-    [SerializeField, Tooltip("見た目")] private SpriteRenderer _visual;
-    [SerializeField, Tooltip("コライダー")] private Collider2D _collider;
-
-    /// <summary>
-    /// ドアの状態を初期化
-    /// </summary>
-    public override void InitializeState()
-    {
-        switch ((State)_stateData.State)
+        [Serializable]
+        public enum State
         {
-            case State.Open:
-                Open();
-                break;
-
-            case State.Lock:
-                // 鍵付き特有の状態
-                break;
-            
-            // 初期状態のため処理は不要
-            case State.Close:
-            default:
-                break;
+            Close, // 閉鎖
+            Open, // 開放
+            Lock // 施錠
         }
-    }
 
-    public void Interact(Player _)
-    {
-        PlayOneShotInteractedSe();
-        Open();
-    }
+        [SerializeField, Tooltip("見た目")] private SpriteRenderer _visual;
+        [SerializeField, Tooltip("コライダー")] private Collider2D _collider;
 
-    /// <summary>
-    /// 開放状態
-    /// </summary>
-    private void Open()
-    {
-        _visual.enabled = false;
-        _collider.enabled = false;
-        _stateData.SetState((int)State.Open);
+        /// <summary>
+        /// ドアの状態を初期化
+        /// </summary>
+        public override void InitializeState()
+        {
+            switch ((State)_stateData.State)
+            {
+                case State.Open:
+                    Open();
+                    break;
+
+                case State.Lock:
+                    // 鍵付き特有の状態
+                    break;
+
+                // 初期状態のため処理は不要
+                case State.Close:
+                default:
+                    break;
+            }
+        }
+
+        public void Interact(Player _)
+        {
+            PlayOneShotInteractedSe();
+            Open();
+        }
+
+        /// <summary>
+        /// 開放状態
+        /// </summary>
+        private void Open()
+        {
+            _visual.enabled = false;
+            _collider.enabled = false;
+            _stateData.SetState((int)State.Open);
+        }
     }
 }
