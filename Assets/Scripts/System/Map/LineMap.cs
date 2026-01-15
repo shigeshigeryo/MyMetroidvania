@@ -1,14 +1,17 @@
 using UnityEngine;
 
-public class LineMap : MonoBehaviour
+namespace MyMetroidVania.System.Map
 {
-    private void Awake()
+    public class LineMap : MonoBehaviour
     {
-        gameObject.SetActive(false);
-    }
+        private void Awake()
+        {
+            gameObject.SetActive(false);
+        }
 
-    public void SetActive()
-    {
-        if(!gameObject.activeSelf) gameObject.SetActive(true);
+        public void SetActive()
+        {
+            if (!gameObject.activeSelf) gameObject.SetActive(true);
+        }
     }
 }

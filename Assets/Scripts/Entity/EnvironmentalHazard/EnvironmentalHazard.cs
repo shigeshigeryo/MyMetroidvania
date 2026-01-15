@@ -1,11 +1,14 @@
 using UnityEngine;
 
-public class EnvironmentalHazard : MonoBehaviour, IDamageDealer
+namespace MyMetroidVania.Entity.EnvironmentalHazard
 {
-    [SerializeField, Tooltip("ダメージ量")] private int _attackPower;
-
-    public int GetAttackPower()
+    public class EnvironmentalHazard : MonoBehaviour, IDamageDealer
     {
-        return _attackPower;
+        [SerializeField, Tooltip("ダメージ量")] private int _attackPower;
+
+        public int GetAttackPower()
+        {
+            return _attackPower;
+        }
     }
 }

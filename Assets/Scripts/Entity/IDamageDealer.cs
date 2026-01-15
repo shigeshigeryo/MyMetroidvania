@@ -1,4 +1,7 @@
-public interface IDamageDealer
+namespace MyMetroidVania.Entity
 {
-    public int GetAttackPower();
+    public interface IDamageDealer
+    {
+        public int GetAttackPower();
+    }
 }

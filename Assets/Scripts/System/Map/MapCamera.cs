@@ -1,12 +1,15 @@
 using UnityEngine;
 
-public class MapCamera : MonoBehaviour
+namespace MyMetroidVania.System.Map
 {
-    [SerializeField] private Transform _playerMarker;
-
-    private void LateUpdate()
+    public class MapCamera : MonoBehaviour
     {
-        transform.position
-            = new Vector3(_playerMarker.position.x, _playerMarker.position.y, transform.position.z);
+        [SerializeField] private Transform _playerMarker;
+
+        private void LateUpdate()
+        {
+            transform.position
+                = new Vector3(_playerMarker.position.x, _playerMarker.position.y, transform.position.z);
+        }
     }
 }

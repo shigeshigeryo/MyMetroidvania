@@ -1,26 +1,31 @@
+using MyMetroidVania.System;
 using UnityEngine;
+using MyMetroidVania.Data.ScriptableObjects;
 
-public abstract class ItemBase : MonoBehaviour
+namespace MyMetroidVania.Entity.Item
 {
-    [SerializeField, Tooltip("アイテム取得音源ファイル名")] private string _getSoundName;
-    private SoundData _getSoundData;
-    private bool isTrigger = false;
-
-    protected virtual void Start()
+    public abstract class ItemBase : MonoBehaviour
     {
-        _getSoundData = AudioManager.Instance.GetSe(_getSoundName.GetHashCode());
-    }
+        [SerializeField, Tooltip("アイテム取得音源ファイル名")] private string _getSoundName;
+        private SoundData _getSoundData;
+        private bool isTrigger = false;
 
-    // 取得したときの処理内容
-    protected abstract void Apply(Collider2D collision);
+        protected virtual void Start()
+        {
+            _getSoundData = AudioManager.Instance.GetSe(_getSoundName.GetHashCode());
+        }
 
-    protected void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (isTrigger) return;
+        // 取得したときの処理内容
+        protected abstract void Apply(Collider2D collision);
 
-        isTrigger = true;
-        Apply(collision);
-        AudioManager.Instance.PlayOneShotSe(_getSoundData);
-        Destroy(gameObject);
+        protected void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (isTrigger) return;
+
+            isTrigger = true;
+            Apply(collision);
+            AudioManager.Instance.PlayOneShotSe(_getSoundData);
+            Destroy(gameObject);
+        }
     }
 }

@@ -1,11 +1,14 @@
 using UnityEngine;
 
-public class HurtBox : MonoBehaviour
+namespace MyMetroidVania.Entity
 {
-    [SerializeField] private StatusManager _statusManager = null;
-
-    public void TakeDamage(int damage)
+    public class HurtBox : MonoBehaviour
     {
-        _statusManager.TakeDamage(damage);
+        [SerializeField] private StatusManager _statusManager = null;
+
+        public void TakeDamage(int damage)
+        {
+            _statusManager.TakeDamage(damage);
+        }
     }
 }

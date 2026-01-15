@@ -1,33 +1,39 @@
+using MyMetroidVania.System;
 using UnityEngine;
+using MyMetroidVania.Data.ScriptableObjects;
+using MyMetroidVania.Data;
 
-public abstract class GimmickBase : MonoBehaviour
+namespace MyMetroidVania.Entity.Gimmick
 {
-    [SerializeField, Tooltip("ID")] protected string _id;
-    public string Id => _id;
-    [SerializeField, Tooltip("インタラクトされて流れる音源のファイル名")]
-    private string _interactedSoundName;
-    private SoundData _interactedSound;
-    // クラスなので参照型
-    protected TargetStateData _stateData;
-
-    protected virtual void Start()
+    public abstract class GimmickBase : MonoBehaviour
     {
-        _interactedSound = AudioManager.Instance.GetSe(_interactedSoundName.GetHashCode());
-    }
+        [SerializeField, Tooltip("ID")] protected string _id;
+        public string Id => _id;
+        [SerializeField, Tooltip("インタラクトされて流れる音源のファイル名")]
+        private string _interactedSoundName;
+        private SoundData _interactedSound;
+        // クラスなので参照型
+        protected TargetStateData _stateData;
 
-    protected void PlayOneShotInteractedSe()
-    {
-        AudioManager.Instance.PlayOneShotSe(_interactedSound);
-    }
+        protected virtual void Start()
+        {
+            _interactedSound = AudioManager.Instance.GetSe(_interactedSoundName.GetHashCode());
+        }
 
-    /// <summary>
-    /// 主に保存データをロードして状態の初期化を行う
-    /// Managerでエリアの情報を取得してから初期化を行う必要があるため、Startで呼び出す。
-    /// </summary>
-    public abstract void InitializeState();
+        protected void PlayOneShotInteractedSe()
+        {
+            AudioManager.Instance.PlayOneShotSe(_interactedSound);
+        }
 
-    public void SetGimmickStateData(TargetStateData stateData)
-    {
-        _stateData = stateData;
+        /// <summary>
+        /// 主に保存データをロードして状態の初期化を行う
+        /// Managerでエリアの情報を取得してから初期化を行う必要があるため、Startで呼び出す。
+        /// </summary>
+        public abstract void InitializeState();
+
+        public void SetGimmickStateData(TargetStateData stateData)
+        {
+            _stateData = stateData;
+        }
     }
 }

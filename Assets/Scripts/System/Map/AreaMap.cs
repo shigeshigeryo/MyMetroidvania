@@ -1,31 +1,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AreaMap : MonoBehaviour
+namespace MyMetroidVania.System.Map
 {
-    public static Dictionary<string, AreaMap> AreaMapList = new();
-
-    [SerializeField, Tooltip("エリアID")] private string _areaId;
-    [SerializeField, Tooltip("エリア間のつながりを表現する線の配列")] private LineMap[] _lineMaps = null;
-    void Start()
+    public class AreaMap : MonoBehaviour
     {
-        AreaMapList.Add(_areaId, this);
-        gameObject.SetActive(false);
-    }
+        public static Dictionary<string, AreaMap> AreaMapList = new();
 
-    // 到達済み状態にする（踏破状態も作る?）
-    public void SetVisitedState()
-    {
-        gameObject.SetActive(true);
-        // エリアとつながる線を表示状態にする
-        foreach (var lineMap in _lineMaps)
+        [SerializeField, Tooltip("エリアID")] private string _areaId;
+        [SerializeField, Tooltip("エリア間のつながりを表現する線の配列")] private LineMap[] _lineMaps = null;
+        void Start()
         {
-            lineMap.SetActive();
+            AreaMapList.Add(_areaId, this);
+            gameObject.SetActive(false);
         }
-    }
 
-    private void OnDestroy()
-    {
-        AreaMapList.Remove(_areaId);
+        // 到達済み状態にする（踏破状態も作る?）
+        public void SetVisitedState()
+        {
+            gameObject.SetActive(true);
+            // エリアとつながる線を表示状態にする
+            foreach (var lineMap in _lineMaps)
+            {
+                lineMap.SetActive();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            AreaMapList.Remove(_areaId);
+        }
     }
 }
