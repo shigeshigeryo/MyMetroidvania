@@ -60,14 +60,25 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField, Tooltip("死亡時音源ファイル名")] private string _deadSoundName = "SE_PlayerDead";
         private SoundData _deadSound = null;
 
+        [Header("アニメーション")]
+        [SerializeField] private PlayerAnimation _playerAnimation;
+
+        // イベント
+        public event Action OnIdle;
+        public event Action OnRun;
+        public event Action OnJumped;
+        public event Action OnFallen;
+        
         private enum ActionState
         {
-            Walk,
-            JumpAnticipation,
-            Jump,
-            Hook,
+            Idle,             // 待機
+            Run,             // 移動
+            JumpAnticipation, // ジャンプ準備
+            Jump,             // ジャンプ
+            Fall,             // 落下
+            Hook,             // フック
         }
-        private ActionState _currentState = ActionState.Walk;
+        private ActionState _currentState = ActionState.Idle;
 
         private void Awake()
         {
@@ -82,7 +93,7 @@ namespace MyMetroidVania.Entity.Character.Player
 
         private void Initialize()
         {
-            _currentState = ActionState.Walk;
+            _currentState = ActionState.Run;
             _isPushedJumpButton = false;
 
             _jumpSound = AudioManager.Instance.GetSe(_jumpSoundName.GetHashCode());
@@ -107,24 +118,31 @@ namespace MyMetroidVania.Entity.Character.Player
 
             switch (_currentState)
             {
-                case ActionState.Walk:
+                case ActionState.Idle:
+                case ActionState.Run:
                 case ActionState.JumpAnticipation:
                     if (!_groundChecker.IsCasted)
                     {
-                        _currentState = ActionState.Jump;
+                        _currentState = ActionState.Fall;
+                        OnFallen?.Invoke();
                         break;
                     }
                     break;
 
                 case ActionState.Jump:
+                case ActionState.Fall:
                     if (_groundChecker.IsCasted)
                     {
-                        _currentState = ActionState.Walk;
+                        _currentState = ActionState.Idle;
+                        OnIdle?.Invoke();
                         break;
                     }
                     break;
-
+                
                 case ActionState.Hook:
+                    break;
+
+                default:
                     break;
             }
         }
@@ -145,7 +163,35 @@ namespace MyMetroidVania.Entity.Character.Player
 
             switch (_currentState)
             {
-                case ActionState.Walk:
+                case ActionState.Idle:
+                    if (Mathf.Abs(_rb.linearVelocityX) > 0.01f)
+                    {
+                        // 移動している場合Walkステート
+                        _currentState = ActionState.Run;
+                        OnRun?.Invoke();
+                        break;
+                    }
+                    break;
+
+                case ActionState.Run:
+                    if (Mathf.Abs(_rb.linearVelocityX) < 0.01f)
+                    {
+                        // 移動している場合Walkステート
+                        _currentState = ActionState.Idle;
+                        OnIdle?.Invoke();
+                        break;
+                    }
+
+                    // 現在の速さが規定の移動速を超えていた場合に徐々に速さを減らす
+                    // TODO:同じ処理をまとめる
+                    if (Mathf.Abs(_rb.linearVelocityX) > _moveSpeedX)
+                    {
+                        float flg = _rb.linearVelocityX >= 0 ? -1 : 1;
+                        _rb.linearVelocityX += flg * _deceleration * Time.fixedDeltaTime;
+                    }
+                    break;
+
+                case ActionState.Fall:
                     // 現在の速さが規定の移動速を超えていた場合に徐々に速さを減らす
                     if (Mathf.Abs(_rb.linearVelocityX) > _moveSpeedX)
                     {
@@ -153,8 +199,15 @@ namespace MyMetroidVania.Entity.Character.Player
                         _rb.linearVelocityX += flg * _deceleration * Time.fixedDeltaTime;
                     }
                     break;
+
                 case ActionState.JumpAnticipation:
                 case ActionState.Jump:
+                    if (_rb.linearVelocityY < 0)
+                    {
+                        _currentState = ActionState.Fall;
+                        OnFallen?.Invoke();
+                        break;
+                    }
                     // ジャンプボタンを押している間は上向きの微量な加速をさせ、落下を遅らせる
                     if (_isPushedJumpButton)
                     {
@@ -167,7 +220,8 @@ namespace MyMetroidVania.Entity.Character.Player
                     var dir = _hookPosition - (Vector2)transform.position;
                     if (dir.magnitude < _hookCancelRange)
                     {
-                        _currentState = ActionState.Walk;
+                        _currentState = ActionState.Fall;
+                        OnFallen?.Invoke();
                         break;
                     }
                     _rb.linearVelocity = dir.normalized * _hookSpeed;
@@ -312,6 +366,8 @@ namespace MyMetroidVania.Entity.Character.Player
             var newVelocity = _rb.linearVelocity;
             newVelocity.y = _jumpSpeed;
             _rb.linearVelocity = newVelocity;
+
+            OnJumped?.Invoke();
         }
 
         /// <summary>
@@ -362,7 +418,7 @@ namespace MyMetroidVania.Entity.Character.Player
             }
             else if (context.canceled)
             {
-                _currentState = ActionState.Walk;
+                _currentState = ActionState.Run;
                 if (_hookCoolDownRoutine == null)
                 {
                     _hookCoolDownRoutine = StartCoroutine(WaitHookCooldown());
