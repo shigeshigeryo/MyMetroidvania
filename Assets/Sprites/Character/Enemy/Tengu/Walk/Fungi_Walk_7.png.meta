@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 120fbce4d8f11c346add38bc19c86c86
+guid: ea8e8012abcc6a74c9004b21946153cc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1182099567093634374
-    second: Fungi_Walk_5_0
+      213: -7423673937316666860
+    second: Fungi_Walk_7_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Fungi_Walk_5_0
+      name: Fungi_Walk_7_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 19
-        width: 98
-        height: 85
+        x: 0
+        y: 0
+        width: 104
+        height: 69
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 64552c11b49a76010800000000000000
-      internalID: 1182099567093634374
+      spriteID: 4122ae5e2efc9f890800000000000000
+      internalID: -7423673937316666860
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Fungi_Walk_5_0: 1182099567093634374
+      Fungi_Walk_7_0: -7423673937316666860
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
