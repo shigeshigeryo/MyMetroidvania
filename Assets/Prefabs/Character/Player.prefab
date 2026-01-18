@@ -113,6 +113,7 @@ MonoBehaviour:
   _hookSoundName: SE_PlayerHook
   _takeDamageSoundName: SE_PlayerTakeDamage
   _deadSoundName: SE_PlayerDead
+  _playerAnimation: {fileID: 0}
 --- !u!114 &5697400064710948249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,7 +201,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.75}
+  m_Offset: {x: 0, y: 0.67}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -210,7 +211,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.4, y: 1.5}
+  m_Size: {x: 0.45, y: 1.34}
   m_EdgeRadius: 0
 --- !u!61 &3910211139842317561
 BoxCollider2D:
@@ -541,7 +542,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.75}
+  m_Offset: {x: 0, y: 0.67}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -551,7 +552,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5, y: 1.5}
+  m_Size: {x: 0.5, y: 1.34}
   m_EdgeRadius: 0
 --- !u!1 &2444710448338996650
 GameObject:
@@ -600,11 +601,11 @@ MonoBehaviour:
   _targetLayers:
     serializedVersion: 2
     m_Bits: 64
-  useOverlapBox: 1
+  _useOverlapBox: 1
   _offsetOverlap: {x: 2.5, y: 0}
   _sizeOverlap: {x: 5, y: 0.5}
   _gizmoColorOverlap: {r: 1, g: 1, b: 1, a: 1}
-  useBoxCast: 1
+  _useBoxCast: 1
   _offsetCast: {x: 0, y: 0}
   _sizeCast: {x: 0.5, y: 0.5}
   _distanceCast: 5
@@ -656,11 +657,11 @@ MonoBehaviour:
   _targetLayers:
     serializedVersion: 2
     m_Bits: 128
-  useOverlapBox: 1
+  _useOverlapBox: 1
   _offsetOverlap: {x: 0, y: 0.75}
   _sizeOverlap: {x: 2, y: 2}
   _gizmoColorOverlap: {r: 0, g: 1, b: 0.6920314, a: 1}
-  useBoxCast: 0
+  _useBoxCast: 1
   _offsetCast: {x: 0, y: 0}
   _sizeCast: {x: 1, y: 1}
   _distanceCast: 5
@@ -1023,11 +1024,11 @@ MonoBehaviour:
   _targetLayers:
     serializedVersion: 2
     m_Bits: 64
-  useOverlapBox: 1
-  _offsetOverlap: {x: 0, y: -0.25}
-  _sizeOverlap: {x: 0.5, y: 0.5}
+  _useOverlapBox: 1
+  _offsetOverlap: {x: 0, y: -0.125}
+  _sizeOverlap: {x: 0.3, y: 0.25}
   _gizmoColorOverlap: {r: 1, g: 0.83209616, b: 0, a: 1}
-  useBoxCast: 0
+  _useBoxCast: 1
   _offsetCast: {x: 0, y: 0}
   _sizeCast: {x: 1, y: 1}
   _distanceCast: 5
@@ -1135,6 +1136,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8798324937417993377}
   - component: {fileID: 8989043578910406599}
+  - component: {fileID: 7609312847458624480}
+  - component: {fileID: 6755718135541078020}
   m_Layer: 8
   m_Name: Visual
   m_TagString: Untagged
@@ -1201,14 +1204,51 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7401197274246684975, guid: fc85d2952eff23e419ecd4e3f8e20812, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e2d7593773a2caf4a96362e3183fba12, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.8, y: 2.59}
+  m_Size: {x: 1.52, y: 1.52}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &7609312847458624480
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8725894772445421228}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 799e23bc915f01044a74e962255d3545, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6755718135541078020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8725894772445421228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24009e85e423d0e4686c57759d836f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 7609312847458624480}
+  _player: {fileID: 8848839338403636000}
+  _statusManager: {fileID: 5697400064710948249}
