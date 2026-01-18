@@ -65,6 +65,14 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
             _animator.SetTrigger(_deadId);
         }
 
+        /// <summary>
+        /// Deadアニメーションの最後で発火
+        /// </summary>
+        public void Dead()
+        {
+            _enemyWalker.gameObject.SetActive(false);
+        }
+
         private void OnDestroy()
         {
             _enemyWalker.OnWalked -= StartMove;

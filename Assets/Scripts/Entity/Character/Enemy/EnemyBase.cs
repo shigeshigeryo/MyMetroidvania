@@ -116,13 +116,13 @@ namespace MyMetroidVania.Entity.Character.Enemy
 
         /// <summary>
         /// 死亡時のリアクション
+        /// アニメーション側でGameObjectをfalseに変更する
         /// </summary>
         protected virtual void OnDead()
         {
             AudioManager.Instance.PlayOneShotSe(_deadSound);
             StopAllCoroutines();
-
-            gameObject.SetActive(false);
+            _currentState?.Exit();
         }
 
         /// <summary>
