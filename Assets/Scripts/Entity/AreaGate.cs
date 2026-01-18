@@ -12,7 +12,10 @@ namespace MyMetroidVania.Entity
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            WorldManager.Instance.ChangeArea(_nextAreaId, SpawnPoint.position);
+            if (collision.CompareTag("Player"))
+            {
+                WorldManager.Instance.ChangeArea(_nextAreaId, SpawnPoint.position);
+            }
         }
     }
 }
