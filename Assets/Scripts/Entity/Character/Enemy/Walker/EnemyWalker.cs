@@ -1,12 +1,14 @@
+using MyMetroidVania.Utility;
 using System.Collections;
 using UnityEngine;
-using MyMetroidVania.Utility;
+using Action = System.Action;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Walker
 {
     public class EnemyWalker : EnemyBase
     {
         private float _lastMoveDirection;// 最後に動いた方向 +x方向 = 1, -x方向 = -1
+        public float CurrentSpeed => Mathf.Abs(_rb.linearVelocityX);
 
         [Header("攻撃（TestEnemy）")]
         [SerializeField, Tooltip("攻撃判定")] private HitBox _hitBox;
@@ -27,9 +29,11 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         [Header("追跡")]
         [Tooltip("追跡する際の速さ")] private float _chaseSpeedX = 2.0f;
 
-        private Coroutine _currentRoutine = null; // 現在のコルーチン
-
         private Transform _target;
+
+        public event Action OnWalked;
+        public event Action OnChased;
+        public event Action OnStopped;
 
         public override void Initialize()
         {
@@ -106,10 +110,12 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
             // 一定時間徘徊する
             Coroutine walkRoutine = StartCoroutine(WalkRoutine());
             float offset = Random.Range(-_offsetSec, _offsetSec);
+            OnWalked?.Invoke();
             yield return new WaitForSeconds(_idleDurationSec + offset);
 
             // 一定時間のインターバル
             StopCoroutine(walkRoutine);
+            OnStopped?.Invoke();
             offset = Random.Range(-_offsetSec, _offsetSec);
             yield return new WaitForSeconds(_intervalSec + offset);
         }
@@ -146,6 +152,14 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
          * ------------------------------------------------------------------
          */
         /// <summary>
+        /// 追跡開始
+        /// </summary>
+        public void StartChase()
+        {
+            OnChased?.Invoke();
+        }
+
+        /// <summary>
         /// 追跡する
         /// </summary>
         public override IEnumerator OnChase()
@@ -162,6 +176,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         public override void StopChase()
         {
             _rb.linearVelocity = Vector3.zero;
+            OnStopped?.Invoke();
         }
 
         /*

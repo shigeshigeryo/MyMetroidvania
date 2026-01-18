@@ -15,6 +15,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         /// </summary>
         public override void Enter()
         {
+            _owner.StartChase();
             routine = _owner.StartCoroutine(ChaseRoutine());
         }
 
