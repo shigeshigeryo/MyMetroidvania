@@ -19,6 +19,7 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField] private Rigidbody2D _rb = null;
         [SerializeField] private StatusManager _statusManager = null;
         [SerializeField, Tooltip("x軸の移動の速さ")] private float _moveSpeedX = 5f;
+        private bool IsMove => Mathf.Abs(_rb.linearVelocityX) > 0.01f;
         [SerializeField, Tooltip("Walk中に移動速度を超えたときに抵抗としてかかる毎秒の速度")]
         private float _deceleration = 10f;
         [SerializeField, Tooltip("ジャンプの初速")] private float _jumpSpeed = 8f;
@@ -149,6 +150,7 @@ namespace MyMetroidVania.Entity.Character.Player
 
         private void FixedUpdate()
         {
+            // 移動処理
             if (_currentState != ActionState.Hook)
             {
                 // フック後で速度が出ている場合はそのままの速度を保たせる
@@ -164,7 +166,7 @@ namespace MyMetroidVania.Entity.Character.Player
             switch (_currentState)
             {
                 case ActionState.Idle:
-                    if (Mathf.Abs(_rb.linearVelocityX) > 0.01f)
+                    if (IsMove)
                     {
                         // 移動している場合Walkステート
                         _currentState = ActionState.Run;
@@ -174,7 +176,7 @@ namespace MyMetroidVania.Entity.Character.Player
                     break;
 
                 case ActionState.Run:
-                    if (Mathf.Abs(_rb.linearVelocityX) < 0.01f)
+                    if (!IsMove)
                     {
                         // 移動している場合Walkステート
                         _currentState = ActionState.Idle;
@@ -183,21 +185,12 @@ namespace MyMetroidVania.Entity.Character.Player
                     }
 
                     // 現在の速さが規定の移動速を超えていた場合に徐々に速さを減らす
-                    // TODO:同じ処理をまとめる
-                    if (Mathf.Abs(_rb.linearVelocityX) > _moveSpeedX)
-                    {
-                        float flg = _rb.linearVelocityX >= 0 ? -1 : 1;
-                        _rb.linearVelocityX += flg * _deceleration * Time.fixedDeltaTime;
-                    }
+                    ReduceExcessSpeed();
                     break;
 
                 case ActionState.Fall:
                     // 現在の速さが規定の移動速を超えていた場合に徐々に速さを減らす
-                    if (Mathf.Abs(_rb.linearVelocityX) > _moveSpeedX)
-                    {
-                        float flg = _rb.linearVelocityX >= 0 ? -1 : 1;
-                        _rb.linearVelocityX += flg * _deceleration * Time.fixedDeltaTime;
-                    }
+                    ReduceExcessSpeed();
                     break;
 
                 case ActionState.JumpAnticipation:
@@ -300,6 +293,24 @@ namespace MyMetroidVania.Entity.Character.Player
             _statusManager.InitializeStatus();
             AudioManager.Instance.PlayOneShotSe(_deadSound);
             WorldManager.Instance.RespawnPlayer();
+        }
+
+
+        /*
+         * ------------------------------------------------------------------
+         * 移動を制御
+         * ------------------------------------------------------------------
+         */
+        /// <summary>
+        /// 現在の速さが規定の移動速を超えていた場合に徐々に速さを減らす
+        /// </summary>
+        private void ReduceExcessSpeed()
+        {
+            if (Mathf.Abs(_rb.linearVelocityX) > _moveSpeedX)
+            {
+                float flg = _rb.linearVelocityX >= 0 ? -1 : 1;
+                _rb.linearVelocityX += flg * _deceleration * Time.fixedDeltaTime;
+            }
         }
 
 
