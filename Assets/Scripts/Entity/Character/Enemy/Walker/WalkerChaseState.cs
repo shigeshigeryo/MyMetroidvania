@@ -49,7 +49,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         public override void Enter()
         {
             _owner.StartChase();
-            routine = _owner.StartCoroutine(ChaseRoutine());
+            _owner.StartCoroutine(ChaseRoutine());
         }
 
         /// <summary>
@@ -78,7 +78,8 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         /// </summary>
         public override void Exit()
         {
-            _owner.StopCoroutine(routine);
+            // コルーチンは全てStateクラスから発火される想定なので、全てのコルーチンを止めてよい。
+            _owner.StopAllCoroutines();
             _owner.StopChase();
         }
 
