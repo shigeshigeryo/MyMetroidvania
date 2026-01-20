@@ -130,11 +130,18 @@ namespace MyMetroidVania.Entity.Character.Player
             {
                 case ActionState.Idle:
                 case ActionState.Run:
-                case ActionState.JumpAnticipation:
                     if (!_groundChecker.IsCasted)
                     {
                         _currentState = ActionState.Fall;
                         OnFallen?.Invoke();
+                        break;
+                    }
+                    break;
+
+                case ActionState.JumpAnticipation:
+                    if (!_groundChecker.IsCasted)
+                    {
+                        _currentState = ActionState.Jump;
                         break;
                     }
                     break;
