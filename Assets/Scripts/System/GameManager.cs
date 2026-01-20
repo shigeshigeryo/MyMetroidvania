@@ -9,8 +9,8 @@ namespace MyMetroidVania.System
     {
         public static GameManager Instance { get; private set; } = null;
 
-        private PlayerInputActions _actions;
-        public PlayerInputActions Actions => _actions;
+        private PlayerInputActions _playerInputActions;
+        public PlayerInputActions PlayerInputActions => _playerInputActions;
         
         public event Action OnToggledMiniMap;
 
@@ -27,15 +27,15 @@ namespace MyMetroidVania.System
                 return;
             }
 
-            _actions = new PlayerInputActions();
+            _playerInputActions = new PlayerInputActions();
         }
 
         private void Start()
         {
             // UIÇÃëÄçÏÇìoò^
-            _actions.UI.Enable();
-            _actions.UI.ToggleMiniMap.started += OnToggleMiniMap;
-            _actions.UI.ToggleMiniMap.canceled += OnToggleMiniMap;
+            _playerInputActions.UI.Enable();
+            _playerInputActions.UI.ToggleMiniMap.started += OnToggleMiniMap;
+            _playerInputActions.UI.ToggleMiniMap.canceled += OnToggleMiniMap;
         }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace MyMetroidVania.System
         private void OnDestroy()
         {
             // çwì«âèú
-            _actions.UI.ToggleMiniMap.started -= OnToggleMiniMap;
-            _actions.UI.ToggleMiniMap.canceled -= OnToggleMiniMap;
+            _playerInputActions.UI.ToggleMiniMap.started -= OnToggleMiniMap;
+            _playerInputActions.UI.ToggleMiniMap.canceled -= OnToggleMiniMap;
         }
     }
 }
