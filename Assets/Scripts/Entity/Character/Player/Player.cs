@@ -14,7 +14,21 @@ namespace MyMetroidVania.Entity.Character.Player
     /// </summary>
     public class Player : MonoBehaviour
     {
-        private PlayerInputActions _inputActions = null; // PlayerInputのイベント
+        private PlayerInputActions _actions = null;
+        private PlayerInputActions Actions
+        {
+            get
+            {
+                if (_actions == null)
+                {
+                    return _actions = GameManager.Instance.PlayerInputActions;
+                }
+                else
+                {
+                    return _actions;
+                }
+            }
+        }
         [SerializeField] private AudioSource _audioSource = null;
         [SerializeField] private Rigidbody2D _rb = null;
         [SerializeField] private StatusManager _statusManager = null;
@@ -81,11 +95,6 @@ namespace MyMetroidVania.Entity.Character.Player
         }
         private ActionState _currentState = ActionState.Idle;
 
-        private void Awake()
-        {
-            _inputActions = new PlayerInputActions();
-        }
-
         void Start()
         {
             Initialize();
@@ -105,7 +114,7 @@ namespace MyMetroidVania.Entity.Character.Player
 
         private void Update()
         {
-            _inputDirection = _inputActions.Player.Move.ReadValue<Vector2>();
+            _inputDirection = Actions.Player.Move.ReadValue<Vector2>();
 
             // 移動入力の方向に攻撃判定、フック原点を回転させる。
             if (_inputDirection != Vector2.zero)
@@ -228,13 +237,13 @@ namespace MyMetroidVania.Entity.Character.Player
         private void InitializeEvents()
         {
             // プレイヤーの操作
-            _inputActions.Enable();
-            _inputActions.Player.Jump.started += OnJump;
-            _inputActions.Player.Jump.canceled += OnJump;
-            _inputActions.Player.Hook.performed += OnHook;
-            _inputActions.Player.Hook.canceled += OnHook;
-            _inputActions.Player.Attack.started += OnAttack;
-            _inputActions.Player.Interact.started += OnInteract;
+            Actions.Player.Enable();
+            Actions.Player.Jump.started += OnJump;
+            Actions.Player.Jump.canceled += OnJump;
+            Actions.Player.Hook.performed += OnHook;
+            Actions.Player.Hook.canceled += OnHook;
+            Actions.Player.Attack.started += OnAttack;
+            Actions.Player.Interact.started += OnInteract;
 
             // ステータス周り
             _statusManager.OnDamageTaken += OnDamageTaken;
@@ -244,12 +253,13 @@ namespace MyMetroidVania.Entity.Character.Player
         private void DisposeEvents()
         {
             // プレイヤーの操作
-            _inputActions.Player.Jump.started -= OnJump;
-            _inputActions.Player.Jump.canceled -= OnJump;
-            _inputActions.Player.Hook.performed -= OnHook;
-            _inputActions.Player.Hook.canceled -= OnHook;
-            _inputActions.Player.Attack.started -= OnAttack;
-            _inputActions.Player.Interact.started -= OnInteract;
+            Actions.Player.Disable();
+            Actions.Player.Jump.started -= OnJump;
+            Actions.Player.Jump.canceled -= OnJump;
+            Actions.Player.Hook.performed -= OnHook;
+            Actions.Player.Hook.canceled -= OnHook;
+            Actions.Player.Attack.started -= OnAttack;
+            Actions.Player.Interact.started -= OnInteract;
 
             // ステータス周り
             _statusManager.OnDamageTaken -= OnDamageTaken;
