@@ -7,7 +7,6 @@ namespace MyMetroidVania.Entity.Character.Enemy
     /// </summary>
     public abstract class EnemyState
     {
-        protected Coroutine routine;
         protected float _timer = 0;
         protected float _tickIntervalSec = 0.25f; // Tickインターバル秒
 

@@ -34,7 +34,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         public override void Enter()
         {
             _isAttacking = false;
-            routine = _owner.StartCoroutine(BattleRoutine());
+            _owner.StartCoroutine(BattleRoutine());
         }
 
         /// <summary>
@@ -56,7 +56,8 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         /// </summary>
         public override void Exit()
         {
-            _owner.StopCoroutine(routine);
+            // コルーチンは全てStateクラスから発火される想定なので、全てのコルーチンを止めてよい。
+            _owner.StopAllCoroutines();
         }
 
         private IEnumerator BattleRoutine()
