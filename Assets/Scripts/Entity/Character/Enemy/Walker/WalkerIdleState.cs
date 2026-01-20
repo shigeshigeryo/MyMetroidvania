@@ -10,6 +10,39 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
     {
         public WalkerIdleState(EnemyWalker enemy) : base(enemy) { }
 
+        private WalkerChaseState _chaseState = null;
+        private WalkerChaseState ChaseState
+        {
+            get
+            {
+                if (_chaseState == null)
+                {
+                    // 存在しなかった場合は生成して返す
+                    return _chaseState = new WalkerChaseState(_owner);
+                }
+                else
+                {
+                    return _chaseState;
+                }
+            }
+        }
+        private SleepState _sleepState = null;
+        private SleepState SleepState
+        {
+            get
+            {
+                if (_sleepState == null)
+                {
+                    // 存在しなかった場合は生成して返す
+                    return _sleepState = new SleepState(_owner, this);
+                }
+                else
+                {
+                    return _sleepState;
+                }
+            }
+        }
+
         public override void Enter()
         {
             routine = _owner.StartCoroutine(IdleRoutine());
@@ -24,14 +57,14 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
             if (_owner.IsPlayerDetected())
             {
                 // プレイヤーを検知した
-                _owner.ChangeState(new WalkerChaseState(_owner));
+                _owner.ChangeState(ChaseState);
                 return;
             }
 
             if (!_owner.IsVisible())
             {
                 // 画面外に出た
-                _owner.ChangeState(new SleepState(_owner, this));
+                _owner.ChangeState(SleepState);
                 return;
             }
         }

@@ -11,6 +11,23 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         private bool _isAttacking = false;
         public WalkerBattleState(EnemyWalker enemy) : base(enemy) { }
 
+        private WalkerChaseState _chaseState = null;
+        private WalkerChaseState ChaseState
+        {
+            get
+            {
+                if (_chaseState == null)
+                {
+                    // 存在しなかった場合は生成して返す
+                    return _chaseState = new WalkerChaseState(_owner);
+                }
+                else
+                {
+                    return _chaseState;
+                }
+            }
+        }
+
         /// <summary>
         /// ステートに遷移時に発火
         /// </summary>
@@ -30,7 +47,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
             {
                 // 攻撃中にステートの変更を行わない
                 // プレイヤーが攻撃射程内にいない
-                _owner.ChangeState(new WalkerChaseState(_owner));
+                _owner.ChangeState(ChaseState);
             }
         }
 
