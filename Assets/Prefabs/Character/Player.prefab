@@ -100,6 +100,7 @@ MonoBehaviour:
   _jumpAccel: 10
   _groundChecker: {fileID: 7427499878688929372}
   jumpEffectPrefab: {fileID: 2237098855559916237, guid: 7bdee7d108c713542aeb468896a460b8, type: 3}
+  _landEffectPrefab: {fileID: 2237098855559916237, guid: cd30dca75e678bc47a43577cd548e0bb, type: 3}
   _hitBoxOriginTransform: {fileID: 3604531770454019126}
   _hitBox: {fileID: 1374017822495714362}
   _coolSec: 0.25

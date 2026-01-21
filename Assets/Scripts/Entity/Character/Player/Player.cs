@@ -45,7 +45,9 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField, Tooltip("ジャンプボタン押下時にかかる+yの加速度")] private float _jumpAccel = 10f;
         [SerializeField, Tooltip("地面の接地判定")] private BoxCaster _groundChecker;
         [SerializeField, Tooltip("ジャンプエフェクト")] private Effect jumpEffectPrefab;
+        [SerializeField, Tooltip("着地エフェクト")] private Effect _landEffectPrefab;
         private IObjectPool<Effect> _jumpEffectPool;
+        private IObjectPool<Effect> _landEffectPool;
 
         [Header("攻撃")]
         [SerializeField, Tooltip("攻撃判定の原点")] private Transform _hitBoxOriginTransform = null;
@@ -143,6 +145,30 @@ namespace MyMetroidVania.Entity.Character.Player
                 defaultCapacity: 5, // 準備数（仮）
                 maxSize: 10 // 最大数（仮）
             );
+
+            // 着地エフェクトプール
+            _landEffectPool = new ObjectPool<Effect>(
+                createFunc: () =>
+                {
+                    Effect effect = Instantiate(_landEffectPrefab);
+                    effect.SetPool(_landEffectPool);
+                    return effect;
+                },
+                actionOnGet: (effect) =>
+                {
+                    effect.gameObject.SetActive(true);
+                },
+                actionOnRelease: (effect) =>
+                {
+                    effect.gameObject.SetActive(false);
+                },
+                actionOnDestroy: (effect) =>
+                {
+                    Destroy(effect.gameObject);
+                },
+                defaultCapacity: 3, // 準備数（仮）
+                maxSize: 5 // 最大数（仮）
+            );
         }
 
 
@@ -217,6 +243,11 @@ namespace MyMetroidVania.Entity.Character.Player
                     if (_groundChecker.IsCasted)
                     {
                         _currentState = ActionState.Idle;
+                        
+                        // 着地エフェクトの生成
+                        var landEffect = _landEffectPool.Get();
+                        landEffect.transform.position = transform.position; // 足元に着地エフェクト生成
+
                         OnIdle?.Invoke();
                         break;
                     }
