@@ -1,40 +1,34 @@
 fileFormatVersion: 2
-guid: 667c7ed76d5954c4eb9733cdb54e41c0
+guid: f1b5c13097112ae44ab8aea4a0e5eea6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1416995248833788092
-    second: VFX_Jump_04_0
+      213: -5375629309429353884
+    second: VFX_Jump_03_0
   - first:
-      213: -3068997740852105548
-    second: VFX_Jump_04_1
+      213: 965446107046004849
+    second: VFX_Jump_03_1
   - first:
-      213: -8070304227153639698
-    second: VFX_Jump_04_2
+      213: -6150713540047770406
+    second: VFX_Jump_03_2
   - first:
-      213: -8123897645135016391
-    second: VFX_Jump_04_3
+      213: -5628443875046873009
+    second: VFX_Jump_03_3
   - first:
-      213: -6060666215706783046
-    second: VFX_Jump_04_4
+      213: -1405583002572060821
+    second: VFX_Jump_03_4
   - first:
-      213: -2905538659608822090
-    second: VFX_Jump_04_5
+      213: -3586269262054368087
+    second: VFX_Jump_03_5
   - first:
-      213: -3286572984915808149
-    second: VFX_Jump_04_6
+      213: -2395271909866288107
+    second: VFX_Jump_03_6
   - first:
-      213: -7699671100928127059
-    second: VFX_Jump_04_7
+      213: -7364246521083671439
+    second: VFX_Jump_03_7
   - first:
-      213: 5694783674005627077
-    second: VFX_Jump_04_8
-  - first:
-      213: 6610868012021645597
-    second: VFX_Jump_04_9
-  - first:
-      213: -4471059855497079199
-    second: VFX_Jump_04_10
+      213: 6288638629557707929
+    second: VFX_Jump_03_8
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -76,7 +70,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -156,10 +150,54 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: VFX_Jump_04_0
+      name: VFX_Jump_03_0
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 19
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 462f847df9de565b0800000000000000
+      internalID: -5375629309429353884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX_Jump_03_1
       rect:
         serializedVersion: 2
         x: 71
+        y: 15
+        width: 6
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 178c2448e14f56d00800000000000000
+      internalID: 965446107046004849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX_Jump_03_2
+      rect:
+        serializedVersion: 2
+        x: 83
         y: 31
         width: 6
         height: 14
@@ -171,42 +209,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 44788d82452d55ce0800000000000000
-      internalID: -1416995248833788092
+      spriteID: adc644a8f9644aaa0800000000000000
+      internalID: -6150713540047770406
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: VFX_Jump_04_1
-      rect:
-        serializedVersion: 2
-        x: 83
-        y: 43
-        width: 6
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4bea800a0dab865d0800000000000000
-      internalID: -3068997740852105548
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: VFX_Jump_04_2
+      name: VFX_Jump_03_3
       rect:
         serializedVersion: 2
         x: 95
-        y: 35
+        y: 19
         width: 6
-        height: 14
+        height: 26
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -215,129 +231,63 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ee68c2f4015800090800000000000000
-      internalID: -8070304227153639698
+      spriteID: f48ab9dcd10c3e1b0800000000000000
+      internalID: -5628443875046873009
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: VFX_Jump_04_3
-      rect:
-        serializedVersion: 2
-        x: 47
-        y: 27
-        width: 14
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 93e481e422e124f80800000000000000
-      internalID: -8123897645135016391
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: VFX_Jump_04_4
-      rect:
-        serializedVersion: 2
-        x: 111
-        y: 27
-        width: 14
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ab21696003034eba0800000000000000
-      internalID: -6060666215706783046
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: VFX_Jump_04_5
-      rect:
-        serializedVersion: 2
-        x: 7
-        y: 3
-        width: 14
-        height: 14
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6bef9d8bbf37da7d0800000000000000
-      internalID: -2905538659608822090
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: VFX_Jump_04_6
-      rect:
-        serializedVersion: 2
-        x: 23
-        y: 3
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b60b2b1884fb362d0800000000000000
-      internalID: -3286572984915808149
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: VFX_Jump_04_7
-      rect:
-        serializedVersion: 2
-        x: 39
-        y: 0
-        width: 10
-        height: 13
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: daf86d5ade5452590800000000000000
-      internalID: -7699671100928127059
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: VFX_Jump_04_8
+      name: VFX_Jump_03_4
       rect:
         serializedVersion: 2
         x: 123
+        y: 19
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b678d5dc4bd5e7ce0800000000000000
+      internalID: -1405583002572060821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX_Jump_03_5
+      rect:
+        serializedVersion: 2
+        x: 11
         y: 0
-        width: 10
+        width: 22
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9acd8566b130b3ec0800000000000000
+      internalID: -3586269262054368087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX_Jump_03_6
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 0
+        width: 14
         height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -347,42 +297,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5c0acc9449fe70f40800000000000000
-      internalID: 5694783674005627077
+      spriteID: 51cc2ff73e842ced0800000000000000
+      internalID: -2395271909866288107
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: VFX_Jump_04_9
+      name: VFX_Jump_03_7
       rect:
         serializedVersion: 2
-        x: 143
-        y: 3
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d110b895e658ebb50800000000000000
-      internalID: 6610868012021645597
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: VFX_Jump_04_10
-      rect:
-        serializedVersion: 2
-        x: 151
-        y: 3
+        x: 115
+        y: 0
         width: 14
-        height: 14
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -391,8 +319,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 166569700ca93f1c0800000000000000
-      internalID: -4471059855497079199
+      spriteID: 17cc6687ec0fcc990800000000000000
+      internalID: -7364246521083671439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX_Jump_03_8
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 0
+        width: 22
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9942693d38bb54750800000000000000
+      internalID: 6288638629557707929
       vertices: []
       indices: 
       edges: []
@@ -401,7 +351,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -411,17 +361,15 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      VFX_Jump_04_0: -1416995248833788092
-      VFX_Jump_04_1: -3068997740852105548
-      VFX_Jump_04_10: -4471059855497079199
-      VFX_Jump_04_2: -8070304227153639698
-      VFX_Jump_04_3: -8123897645135016391
-      VFX_Jump_04_4: -6060666215706783046
-      VFX_Jump_04_5: -2905538659608822090
-      VFX_Jump_04_6: -3286572984915808149
-      VFX_Jump_04_7: -7699671100928127059
-      VFX_Jump_04_8: 5694783674005627077
-      VFX_Jump_04_9: 6610868012021645597
+      VFX_Jump_03_0: -5375629309429353884
+      VFX_Jump_03_1: 965446107046004849
+      VFX_Jump_03_2: -6150713540047770406
+      VFX_Jump_03_3: -5628443875046873009
+      VFX_Jump_03_4: -1405583002572060821
+      VFX_Jump_03_5: -3586269262054368087
+      VFX_Jump_03_6: -2395271909866288107
+      VFX_Jump_03_7: -7364246521083671439
+      VFX_Jump_03_8: 6288638629557707929
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

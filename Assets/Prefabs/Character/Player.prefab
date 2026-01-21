@@ -95,10 +95,11 @@ MonoBehaviour:
   _statusManager: {fileID: 5697400064710948249}
   _moveSpeedX: 5
   _deceleration: 10
+  _abilityManager: {fileID: 5809375478146826560}
   _jumpSpeed: 8
   _jumpAccel: 10
   _groundChecker: {fileID: 7427499878688929372}
-  _abilityManager: {fileID: 5809375478146826560}
+  jumpEffectPrefab: {fileID: 2237098855559916237, guid: 7bdee7d108c713542aeb468896a460b8, type: 3}
   _hitBoxOriginTransform: {fileID: 3604531770454019126}
   _hitBox: {fileID: 1374017822495714362}
   _coolSec: 0.25
@@ -112,7 +113,6 @@ MonoBehaviour:
   _hookSoundName: SE_PlayerHook
   _takeDamageSoundName: SE_PlayerTakeDamage
   _deadSoundName: SE_PlayerDead
-  _playerAnimation: {fileID: 0}
 --- !u!114 &5697400064710948249
 MonoBehaviour:
   m_ObjectHideFlags: 0

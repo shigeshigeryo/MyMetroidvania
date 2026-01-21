@@ -1,11 +1,12 @@
 using MyMetroidVania.Data.ScriptableObjects;
 using MyMetroidVania.Entity.Gimmick;
 using MyMetroidVania.System;
+using MyMetroidVania.Utility;
 using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using MyMetroidVania.Utility;
+using UnityEngine.Pool;
 
 namespace MyMetroidVania.Entity.Character.Player
 {
@@ -36,11 +37,15 @@ namespace MyMetroidVania.Entity.Character.Player
         private bool IsMove => Mathf.Abs(_rb.linearVelocityX) > 0.01f;
         [SerializeField, Tooltip("Walk中に移動速度を超えたときに抵抗としてかかる毎秒の速度")]
         private float _deceleration = 10f;
+        [SerializeField, Tooltip("アビリティの取得状況を管理")]
+        private AbilityManager _abilityManager;
+
+        [Header("ジャンプ")]
         [SerializeField, Tooltip("ジャンプの初速")] private float _jumpSpeed = 8f;
         [SerializeField, Tooltip("ジャンプボタン押下時にかかる+yの加速度")] private float _jumpAccel = 10f;
         [SerializeField, Tooltip("地面の接地判定")] private BoxCaster _groundChecker;
-        [SerializeField, Tooltip("アビリティの取得状況を管理")]
-        private AbilityManager _abilityManager;
+        [SerializeField, Tooltip("ジャンプエフェクト")] private Effect jumpEffectPrefab;
+        private IObjectPool<Effect> _jumpEffectPool;
 
         [Header("攻撃")]
         [SerializeField, Tooltip("攻撃判定の原点")] private Transform _hitBoxOriginTransform = null;
@@ -75,15 +80,12 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField, Tooltip("死亡時音源ファイル名")] private string _deadSoundName = "SE_PlayerDead";
         private SoundData _deadSound = null;
 
-        [Header("アニメーション")]
-        [SerializeField] private PlayerAnimation _playerAnimation;
-
         // イベント
         public event Action OnIdle;
         public event Action OnRun;
         public event Action OnJumped;
         public event Action OnFallen;
-        
+
         private enum ActionState
         {
             Idle,             // 待機
@@ -98,6 +100,7 @@ namespace MyMetroidVania.Entity.Character.Player
         void Start()
         {
             Initialize();
+            InitializeEffects();
             InitializeEvents();
         }
 
@@ -110,6 +113,69 @@ namespace MyMetroidVania.Entity.Character.Player
             _hookSound = AudioManager.Instance.GetSe(_hookSoundName.GetHashCode());
             _takeDamageSound = AudioManager.Instance.GetSe(_takeDamageSoundName.GetHashCode());
             _deadSound = AudioManager.Instance.GetSe(_deadSoundName.GetHashCode());
+        }
+
+        /// <summary>
+        /// エフェクト（プール）の初期化
+        /// </summary>
+        private void InitializeEffects()
+        {
+            // ジャンプエフェクトプール
+            _jumpEffectPool = new ObjectPool<Effect>(
+                createFunc: () =>
+                {
+                    Effect effect = Instantiate(jumpEffectPrefab);
+                    effect.SetPool(_jumpEffectPool);
+                    return effect;
+                },
+                actionOnGet: (effect) =>
+                {
+                    effect.gameObject.SetActive(true);
+                },
+                actionOnRelease: (effect) =>
+                {
+                    effect.gameObject.SetActive(false);
+                },
+                actionOnDestroy: (effect) =>
+                {
+                    Destroy(effect.gameObject);
+                },
+                defaultCapacity: 5, // 準備数（仮）
+                maxSize: 10 // 最大数（仮）
+            );
+        }
+
+
+        private void InitializeEvents()
+        {
+            // プレイヤーの操作
+            Actions.Player.Enable();
+            Actions.Player.Jump.started += OnJump;
+            Actions.Player.Jump.canceled += OnJump;
+            Actions.Player.Hook.performed += OnHook;
+            Actions.Player.Hook.canceled += OnHook;
+            Actions.Player.Attack.started += OnAttack;
+            Actions.Player.Interact.started += OnInteract;
+
+            // ステータス周り
+            _statusManager.OnDamageTaken += OnDamageTaken;
+            _statusManager.OnDead += OnDead;
+        }
+
+        private void DisposeEvents()
+        {
+            // プレイヤーの操作
+            Actions.Player.Disable();
+            Actions.Player.Jump.started -= OnJump;
+            Actions.Player.Jump.canceled -= OnJump;
+            Actions.Player.Hook.performed -= OnHook;
+            Actions.Player.Hook.canceled -= OnHook;
+            Actions.Player.Attack.started -= OnAttack;
+            Actions.Player.Interact.started -= OnInteract;
+
+            // ステータス周り
+            _statusManager.OnDamageTaken -= OnDamageTaken;
+            _statusManager.OnDead -= OnDead;
         }
 
         private void Update()
@@ -155,7 +221,7 @@ namespace MyMetroidVania.Entity.Character.Player
                         break;
                     }
                     break;
-                
+
                 case ActionState.Hook:
                     break;
 
@@ -241,37 +307,6 @@ namespace MyMetroidVania.Entity.Character.Player
             }
         }
 
-        private void InitializeEvents()
-        {
-            // プレイヤーの操作
-            Actions.Player.Enable();
-            Actions.Player.Jump.started += OnJump;
-            Actions.Player.Jump.canceled += OnJump;
-            Actions.Player.Hook.performed += OnHook;
-            Actions.Player.Hook.canceled += OnHook;
-            Actions.Player.Attack.started += OnAttack;
-            Actions.Player.Interact.started += OnInteract;
-
-            // ステータス周り
-            _statusManager.OnDamageTaken += OnDamageTaken;
-            _statusManager.OnDead += OnDead;
-        }
-
-        private void DisposeEvents()
-        {
-            // プレイヤーの操作
-            Actions.Player.Disable();
-            Actions.Player.Jump.started -= OnJump;
-            Actions.Player.Jump.canceled -= OnJump;
-            Actions.Player.Hook.performed -= OnHook;
-            Actions.Player.Hook.canceled -= OnHook;
-            Actions.Player.Attack.started -= OnAttack;
-            Actions.Player.Interact.started -= OnInteract;
-
-            // ステータス周り
-            _statusManager.OnDamageTaken -= OnDamageTaken;
-            _statusManager.OnDead -= OnDead;
-        }
 
         /*
          * ------------------------------------------------------------------
@@ -391,9 +426,14 @@ namespace MyMetroidVania.Entity.Character.Player
         {
             _audioSource.PlayOneShot(_jumpSound.Clip, _jumpSound.Volume);
 
+            // ジャンプ速度設定
             var newVelocity = _rb.linearVelocity;
             newVelocity.y = _jumpSpeed;
             _rb.linearVelocity = newVelocity;
+
+            // ジャンプエフェクトの生成
+            var effect = _jumpEffectPool.Get();
+            effect.transform.position = transform.position; // 足元に生成
 
             OnJumped?.Invoke();
         }
