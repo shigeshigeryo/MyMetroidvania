@@ -44,7 +44,7 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField, Tooltip("ジャンプの初速")] private float _jumpSpeed = 8f;
         [SerializeField, Tooltip("ジャンプボタン押下時にかかる+yの加速度")] private float _jumpAccel = 10f;
         [SerializeField, Tooltip("地面の接地判定")] private BoxCaster _groundChecker;
-        [SerializeField, Tooltip("ジャンプエフェクト")] private Effect jumpEffectPrefab;
+        [SerializeField, Tooltip("ジャンプエフェクト")] private Effect _jumpEffectPrefab;
         [SerializeField, Tooltip("着地エフェクト")] private Effect _landEffectPrefab;
         private IObjectPool<Effect> _jumpEffectPool;
         private IObjectPool<Effect> _landEffectPool;
@@ -126,7 +126,7 @@ namespace MyMetroidVania.Entity.Character.Player
             _jumpEffectPool = new ObjectPool<Effect>(
                 createFunc: () =>
                 {
-                    Effect effect = Instantiate(jumpEffectPrefab);
+                    Effect effect = Instantiate(_jumpEffectPrefab);
                     effect.SetPool(_jumpEffectPool);
                     return effect;
                 },
@@ -142,8 +142,8 @@ namespace MyMetroidVania.Entity.Character.Player
                 {
                     Destroy(effect.gameObject);
                 },
-                defaultCapacity: 5, // 準備数（仮）
-                maxSize: 10 // 最大数（仮）
+                defaultCapacity: 3, // 準備数（仮）
+                maxSize: 5 // 最大数（仮）
             );
 
             // 着地エフェクトプール
