@@ -164,7 +164,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &5282021193531062381
 BoxCollider2D:
@@ -918,7 +918,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _useOverlapBox: 1
-  _offsetOverlap: {x: 0, y: -0.125}
+  _offsetOverlap: {x: 0, y: -0.1}
   _sizeOverlap: {x: 0.3, y: 0.25}
   _gizmoColorOverlap: {r: 1, g: 0.83209616, b: 0, a: 1}
   _useBoxCast: 0
