@@ -33,12 +33,17 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField] private AudioSource _audioSource = null;
         [SerializeField] private Rigidbody2D _rb = null;
         [SerializeField] private StatusManager _statusManager = null;
+        [SerializeField, Tooltip("アビリティの取得状況を管理")]
+        private AbilityManager _abilityManager;
+
+        [Header("移動")]
         [SerializeField, Tooltip("x軸の移動の速さ")] private float _moveSpeedX = 5f;
         private bool IsMove => Mathf.Abs(_rb.linearVelocityX) > 0.01f;
         [SerializeField, Tooltip("Walk中に移動速度を超えたときに抵抗としてかかる毎秒の速度")]
         private float _deceleration = 10f;
-        [SerializeField, Tooltip("アビリティの取得状況を管理")]
-        private AbilityManager _abilityManager;
+        [SerializeField, Tooltip("走るエフェクト")] private RunEffect _runEffectPrefab;
+        private RunEffect _runEffect = null;
+        private Coroutine _runEffectRoutine = null;
 
         [Header("ジャンプ")]
         [SerializeField, Tooltip("ジャンプの初速")] private float _jumpSpeed = 8f;
@@ -243,7 +248,7 @@ namespace MyMetroidVania.Entity.Character.Player
                     if (_groundChecker.IsCasted)
                     {
                         _currentState = ActionState.Idle;
-                        
+
                         // 着地エフェクトの生成
                         var landEffect = _landEffectPool.Get();
                         landEffect.transform.position = transform.position; // 足元に着地エフェクト生成
@@ -283,6 +288,13 @@ namespace MyMetroidVania.Entity.Character.Player
                     {
                         // 移動している場合Walkステート
                         _currentState = ActionState.Run;
+
+                        // ランエフェクト
+                        if (_runEffectRoutine == null)
+                        {
+                            _runEffectRoutine = StartCoroutine(PlayRunEffect());
+                        }
+
                         OnRun?.Invoke();
                         break;
                     }
@@ -396,6 +408,33 @@ namespace MyMetroidVania.Entity.Character.Player
             }
         }
 
+        /// <summary>
+        /// 走るエフェクトの再生ルーチン
+        /// ステートを見て自分で処理を終了する
+        /// </summary>
+        private IEnumerator PlayRunEffect()
+        {
+            while (true)
+            {
+                // ステートがRunでない場合、ルーチンを抜ける
+                if (_currentState != ActionState.Run)
+                {
+                    _runEffectRoutine = null;
+                    yield break;
+                }
+
+                if (_runEffect == null)
+                {
+                    // ランエフェクトがない場合は生成
+                    _runEffect = Instantiate(_runEffectPrefab);
+                }
+                _runEffect.transform.position = transform.position; // 足元にエフェクトを生成
+                _runEffect.PlayAnimation(_inputDirection.x > 0); // 入力方向を引数で渡す
+
+                // エフェクトのインターバル 0.5s
+                yield return new WaitForSeconds(0.5f);
+            }
+        }
 
         /*
          * ------------------------------------------------------------------

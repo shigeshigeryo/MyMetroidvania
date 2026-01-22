@@ -93,9 +93,10 @@ MonoBehaviour:
   _audioSource: {fileID: 4174282207552990810}
   _rb: {fileID: 5586000654341092205}
   _statusManager: {fileID: 5697400064710948249}
+  _abilityManager: {fileID: 5809375478146826560}
   _moveSpeedX: 5
   _deceleration: 10
-  _abilityManager: {fileID: 5809375478146826560}
+  _runEffectPrefab: {fileID: 7540366499406907110, guid: eaddd7c7ccf12f9498eda20e3218e3c3, type: 3}
   _jumpSpeed: 8
   _jumpAccel: 10
   _groundChecker: {fileID: 7427499878688929372}
