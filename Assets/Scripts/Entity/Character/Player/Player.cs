@@ -211,7 +211,18 @@ namespace MyMetroidVania.Entity.Character.Player
 
         private void Update()
         {
+            // 現在の入力情報を保持
             _inputDirection = Actions.Player.Move.ReadValue<Vector2>();
+
+            // X軸の入力がある かつ 前フレームと入力方向が違う場合 プレイヤーの向きを変更する
+            if (_inputDirection.x > 0.01f)
+            {
+                transform.localScale = Vector3.one;
+            }
+            else if (_inputDirection.x < -0.01f)
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
 
             // 移動入力の方向に攻撃判定、フック原点を回転させる。
             if (_inputDirection != Vector2.zero)
