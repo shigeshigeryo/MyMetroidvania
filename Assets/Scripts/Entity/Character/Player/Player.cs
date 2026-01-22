@@ -35,7 +35,7 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField] private StatusManager _statusManager = null;
         [SerializeField, Tooltip("アビリティの取得状況を管理")]
         private AbilityManager _abilityManager;
-        [SerializeField, Tooltip("プレイヤーのビジュアル")]private SpriteRenderer _renderer;
+        [SerializeField, Tooltip("プレイヤーのビジュアル")] private SpriteRenderer _renderer;
 
         [Header("移動")]
         [SerializeField, Tooltip("x軸の移動の速さ")] private float _moveSpeedX = 5f;
@@ -92,6 +92,7 @@ namespace MyMetroidVania.Entity.Character.Player
         public event Action OnIdle;
         public event Action OnRun;
         public event Action OnJumped;
+        public event Action OnLanded;
         public event Action OnFallen;
 
         private enum ActionState
@@ -259,12 +260,12 @@ namespace MyMetroidVania.Entity.Character.Player
                 case ActionState.Fall:
                     if (_groundChecker.IsCasted)
                     {
-                        _currentState = ActionState.Idle;
-
                         // 着地エフェクトの生成
                         var landEffect = _landEffectPool.Get();
+                        if (_currentState == ActionState.Jump) OnLanded?.Invoke();
                         landEffect.transform.position = transform.position; // 足元に着地エフェクト生成
 
+                        _currentState = ActionState.Idle;
                         OnIdle?.Invoke();
                         break;
                     }
