@@ -11,6 +11,7 @@ namespace MyMetroidVania.Entity.Character.Player
         private static readonly int _runId = Animator.StringToHash("IsRun");
         private static readonly int _jumpId = Animator.StringToHash("Jump");
         private static readonly int _fallId = Animator.StringToHash("IsFall");
+        private static readonly int _landId = Animator.StringToHash("Land");
         private static readonly int _takenDamageId = Animator.StringToHash("TakenDamage");
 
 
@@ -25,6 +26,7 @@ namespace MyMetroidVania.Entity.Character.Player
             _player.OnRun += StopFall;
             _player.OnJumped += TriggerJump;
             _player.OnJumped += StopRun;
+            _player.OnLanded += TriggerLand;
             _player.OnFallen += StartFall;
             _player.OnFallen += StopRun;
 
@@ -72,6 +74,14 @@ namespace MyMetroidVania.Entity.Character.Player
         }
 
         /// <summary>
+        /// 着地モーション（待機）をスタート
+        /// </summary>
+        private void TriggerLand()
+        {
+            _animator.SetTrigger(_landId);
+        }
+
+        /// <summary>
         /// 被弾モーションをスタート
         /// </summary>
         private void TriggerTakenDamage()
@@ -87,6 +97,7 @@ namespace MyMetroidVania.Entity.Character.Player
             _player.OnRun -= StopFall;
             _player.OnJumped -= TriggerJump;
             _player.OnJumped -= StopRun;
+            _player.OnLanded += TriggerLand;
             _player.OnFallen -= StartFall;
             _player.OnFallen -= StopRun;
 
