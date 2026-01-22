@@ -1,11 +1,12 @@
 using MyMetroidVania.Data.ScriptableObjects;
 using MyMetroidVania.Entity.Gimmick;
 using MyMetroidVania.System;
+using MyMetroidVania.Utility;
 using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using MyMetroidVania.Utility;
+using UnityEngine.Pool;
 
 namespace MyMetroidVania.Entity.Character.Player
 {
@@ -32,15 +33,26 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField] private AudioSource _audioSource = null;
         [SerializeField] private Rigidbody2D _rb = null;
         [SerializeField] private StatusManager _statusManager = null;
+        [SerializeField, Tooltip("アビリティの取得状況を管理")]
+        private AbilityManager _abilityManager;
+
+        [Header("移動")]
         [SerializeField, Tooltip("x軸の移動の速さ")] private float _moveSpeedX = 5f;
         private bool IsMove => Mathf.Abs(_rb.linearVelocityX) > 0.01f;
         [SerializeField, Tooltip("Walk中に移動速度を超えたときに抵抗としてかかる毎秒の速度")]
         private float _deceleration = 10f;
+        [SerializeField, Tooltip("走るエフェクト")] private RunEffect _runEffectPrefab;
+        private RunEffect _runEffect = null;
+        private Coroutine _runEffectRoutine = null;
+
+        [Header("ジャンプ")]
         [SerializeField, Tooltip("ジャンプの初速")] private float _jumpSpeed = 8f;
         [SerializeField, Tooltip("ジャンプボタン押下時にかかる+yの加速度")] private float _jumpAccel = 10f;
         [SerializeField, Tooltip("地面の接地判定")] private BoxCaster _groundChecker;
-        [SerializeField, Tooltip("アビリティの取得状況を管理")]
-        private AbilityManager _abilityManager;
+        [SerializeField, Tooltip("ジャンプエフェクト")] private Effect _jumpEffectPrefab;
+        [SerializeField, Tooltip("着地エフェクト")] private Effect _landEffectPrefab;
+        private IObjectPool<Effect> _jumpEffectPool;
+        private IObjectPool<Effect> _landEffectPool;
 
         [Header("攻撃")]
         [SerializeField, Tooltip("攻撃判定の原点")] private Transform _hitBoxOriginTransform = null;
@@ -75,15 +87,12 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField, Tooltip("死亡時音源ファイル名")] private string _deadSoundName = "SE_PlayerDead";
         private SoundData _deadSound = null;
 
-        [Header("アニメーション")]
-        [SerializeField] private PlayerAnimation _playerAnimation;
-
         // イベント
         public event Action OnIdle;
         public event Action OnRun;
         public event Action OnJumped;
         public event Action OnFallen;
-        
+
         private enum ActionState
         {
             Idle,             // 待機
@@ -98,6 +107,7 @@ namespace MyMetroidVania.Entity.Character.Player
         void Start()
         {
             Initialize();
+            InitializeEffects();
             InitializeEvents();
         }
 
@@ -112,9 +122,107 @@ namespace MyMetroidVania.Entity.Character.Player
             _deadSound = AudioManager.Instance.GetSe(_deadSoundName.GetHashCode());
         }
 
+        /// <summary>
+        /// エフェクト（プール）の初期化
+        /// </summary>
+        private void InitializeEffects()
+        {
+            // ジャンプエフェクトプール
+            _jumpEffectPool = new ObjectPool<Effect>(
+                createFunc: () =>
+                {
+                    Effect effect = Instantiate(_jumpEffectPrefab);
+                    effect.SetPool(_jumpEffectPool);
+                    return effect;
+                },
+                actionOnGet: (effect) =>
+                {
+                    effect.gameObject.SetActive(true);
+                },
+                actionOnRelease: (effect) =>
+                {
+                    effect.gameObject.SetActive(false);
+                },
+                actionOnDestroy: (effect) =>
+                {
+                    Destroy(effect.gameObject);
+                },
+                defaultCapacity: 3, // 準備数（仮）
+                maxSize: 5 // 最大数（仮）
+            );
+
+            // 着地エフェクトプール
+            _landEffectPool = new ObjectPool<Effect>(
+                createFunc: () =>
+                {
+                    Effect effect = Instantiate(_landEffectPrefab);
+                    effect.SetPool(_landEffectPool);
+                    return effect;
+                },
+                actionOnGet: (effect) =>
+                {
+                    effect.gameObject.SetActive(true);
+                },
+                actionOnRelease: (effect) =>
+                {
+                    effect.gameObject.SetActive(false);
+                },
+                actionOnDestroy: (effect) =>
+                {
+                    Destroy(effect.gameObject);
+                },
+                defaultCapacity: 3, // 準備数（仮）
+                maxSize: 5 // 最大数（仮）
+            );
+        }
+
+
+        private void InitializeEvents()
+        {
+            // プレイヤーの操作
+            Actions.Player.Enable();
+            Actions.Player.Jump.started += OnJump;
+            Actions.Player.Jump.canceled += OnJump;
+            Actions.Player.Hook.performed += OnHook;
+            Actions.Player.Hook.canceled += OnHook;
+            Actions.Player.Attack.started += OnAttack;
+            Actions.Player.Interact.started += OnInteract;
+
+            // ステータス周り
+            _statusManager.OnDamageTaken += OnDamageTaken;
+            _statusManager.OnDead += OnDead;
+        }
+
+        private void DisposeEvents()
+        {
+            // プレイヤーの操作
+            Actions.Player.Disable();
+            Actions.Player.Jump.started -= OnJump;
+            Actions.Player.Jump.canceled -= OnJump;
+            Actions.Player.Hook.performed -= OnHook;
+            Actions.Player.Hook.canceled -= OnHook;
+            Actions.Player.Attack.started -= OnAttack;
+            Actions.Player.Interact.started -= OnInteract;
+
+            // ステータス周り
+            _statusManager.OnDamageTaken -= OnDamageTaken;
+            _statusManager.OnDead -= OnDead;
+        }
+
         private void Update()
         {
+            // 現在の入力情報を保持
             _inputDirection = Actions.Player.Move.ReadValue<Vector2>();
+
+            // X軸の入力がある かつ 前フレームと入力方向が違う場合 プレイヤーの向きを変更する
+            if (_inputDirection.x > 0.01f)
+            {
+                transform.localScale = Vector3.one;
+            }
+            else if (_inputDirection.x < -0.01f)
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
 
             // 移動入力の方向に攻撃判定、フック原点を回転させる。
             if (_inputDirection != Vector2.zero)
@@ -151,11 +259,16 @@ namespace MyMetroidVania.Entity.Character.Player
                     if (_groundChecker.IsCasted)
                     {
                         _currentState = ActionState.Idle;
+
+                        // 着地エフェクトの生成
+                        var landEffect = _landEffectPool.Get();
+                        landEffect.transform.position = transform.position; // 足元に着地エフェクト生成
+
                         OnIdle?.Invoke();
                         break;
                     }
                     break;
-                
+
                 case ActionState.Hook:
                     break;
 
@@ -186,6 +299,13 @@ namespace MyMetroidVania.Entity.Character.Player
                     {
                         // 移動している場合Walkステート
                         _currentState = ActionState.Run;
+
+                        // ランエフェクト
+                        if (_runEffectRoutine == null)
+                        {
+                            _runEffectRoutine = StartCoroutine(PlayRunEffect());
+                        }
+
                         OnRun?.Invoke();
                         break;
                     }
@@ -241,37 +361,6 @@ namespace MyMetroidVania.Entity.Character.Player
             }
         }
 
-        private void InitializeEvents()
-        {
-            // プレイヤーの操作
-            Actions.Player.Enable();
-            Actions.Player.Jump.started += OnJump;
-            Actions.Player.Jump.canceled += OnJump;
-            Actions.Player.Hook.performed += OnHook;
-            Actions.Player.Hook.canceled += OnHook;
-            Actions.Player.Attack.started += OnAttack;
-            Actions.Player.Interact.started += OnInteract;
-
-            // ステータス周り
-            _statusManager.OnDamageTaken += OnDamageTaken;
-            _statusManager.OnDead += OnDead;
-        }
-
-        private void DisposeEvents()
-        {
-            // プレイヤーの操作
-            Actions.Player.Disable();
-            Actions.Player.Jump.started -= OnJump;
-            Actions.Player.Jump.canceled -= OnJump;
-            Actions.Player.Hook.performed -= OnHook;
-            Actions.Player.Hook.canceled -= OnHook;
-            Actions.Player.Attack.started -= OnAttack;
-            Actions.Player.Interact.started -= OnInteract;
-
-            // ステータス周り
-            _statusManager.OnDamageTaken -= OnDamageTaken;
-            _statusManager.OnDead -= OnDead;
-        }
 
         /*
          * ------------------------------------------------------------------
@@ -330,6 +419,33 @@ namespace MyMetroidVania.Entity.Character.Player
             }
         }
 
+        /// <summary>
+        /// 走るエフェクトの再生ルーチン
+        /// ステートを見て自分で処理を終了する
+        /// </summary>
+        private IEnumerator PlayRunEffect()
+        {
+            while (true)
+            {
+                // ステートがRunでない場合、ルーチンを抜ける
+                if (_currentState != ActionState.Run)
+                {
+                    _runEffectRoutine = null;
+                    yield break;
+                }
+
+                if (_runEffect == null)
+                {
+                    // ランエフェクトがない場合は生成
+                    _runEffect = Instantiate(_runEffectPrefab);
+                }
+                _runEffect.transform.position = transform.position; // 足元にエフェクトを生成
+                _runEffect.PlayAnimation(_inputDirection.x > 0); // 入力方向を引数で渡す
+
+                // エフェクトのインターバル 0.5s
+                yield return new WaitForSeconds(0.5f);
+            }
+        }
 
         /*
          * ------------------------------------------------------------------
@@ -391,9 +507,14 @@ namespace MyMetroidVania.Entity.Character.Player
         {
             _audioSource.PlayOneShot(_jumpSound.Clip, _jumpSound.Volume);
 
+            // ジャンプ速度設定
             var newVelocity = _rb.linearVelocity;
             newVelocity.y = _jumpSpeed;
             _rb.linearVelocity = newVelocity;
+
+            // ジャンプエフェクトの生成
+            var effect = _jumpEffectPool.Get();
+            effect.transform.position = transform.position; // 足元に生成
 
             OnJumped?.Invoke();
         }
