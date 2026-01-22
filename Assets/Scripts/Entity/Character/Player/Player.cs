@@ -35,6 +35,7 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField] private StatusManager _statusManager = null;
         [SerializeField, Tooltip("アビリティの取得状況を管理")]
         private AbilityManager _abilityManager;
+        [SerializeField, Tooltip("プレイヤーのビジュアル")]private SpriteRenderer _renderer;
 
         [Header("移動")]
         [SerializeField, Tooltip("x軸の移動の速さ")] private float _moveSpeedX = 5f;
@@ -217,11 +218,11 @@ namespace MyMetroidVania.Entity.Character.Player
             // X軸の入力がある かつ 前フレームと入力方向が違う場合 プレイヤーの向きを変更する
             if (_inputDirection.x > 0.01f)
             {
-                transform.localScale = Vector3.one;
+                _renderer.flipX = false;
             }
             else if (_inputDirection.x < -0.01f)
             {
-                transform.localScale = new Vector3(-1, 1, 1);
+                _renderer.flipX = true;
             }
 
             // 移動入力の方向に攻撃判定、フック原点を回転させる。
