@@ -42,6 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4763088312607136753}
   - component: {fileID: 8848839338403636000}
+  - component: {fileID: 2774972889317257999}
   - component: {fileID: 5697400064710948249}
   - component: {fileID: 5809375478146826560}
   - component: {fileID: 5586000654341092205}
@@ -93,6 +94,7 @@ MonoBehaviour:
   _audioSource: {fileID: 4174282207552990810}
   _rb: {fileID: 5586000654341092205}
   _statusManager: {fileID: 5697400064710948249}
+  _input: {fileID: 2774972889317257999}
   _abilityManager: {fileID: 5809375478146826560}
   _renderer: {fileID: 8989043578910406599}
   _moveSpeedX: 5
@@ -116,6 +118,18 @@ MonoBehaviour:
   _hookSoundName: SE_PlayerHook
   _takeDamageSoundName: SE_PlayerTakeDamage
   _deadSoundName: SE_PlayerDead
+--- !u!114 &2774972889317257999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422691174592518709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25363f771d90e8f4d9c90511b4a2976c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5697400064710948249
 MonoBehaviour:
   m_ObjectHideFlags: 0

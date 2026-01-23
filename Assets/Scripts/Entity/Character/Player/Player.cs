@@ -5,7 +5,6 @@ using MyMetroidVania.Utility;
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Pool;
 
 namespace MyMetroidVania.Entity.Character.Player
@@ -15,24 +14,10 @@ namespace MyMetroidVania.Entity.Character.Player
     /// </summary>
     public class Player : MonoBehaviour
     {
-        private PlayerInputActions _actions = null;
-        private PlayerInputActions Actions
-        {
-            get
-            {
-                if (_actions == null)
-                {
-                    return _actions = GameManager.Instance.PlayerInputActions;
-                }
-                else
-                {
-                    return _actions;
-                }
-            }
-        }
         [SerializeField] private AudioSource _audioSource = null;
         [SerializeField] private Rigidbody2D _rb = null;
         [SerializeField] private StatusManager _statusManager = null;
+        [SerializeField] private PlayerInputHandler _input = null;
         [SerializeField, Tooltip("アビリティの取得状況を管理")]
         private AbilityManager _abilityManager;
         [SerializeField, Tooltip("プレイヤーのビジュアル")] private SpriteRenderer _renderer;
@@ -75,9 +60,6 @@ namespace MyMetroidVania.Entity.Character.Player
         [Header("インタラクト")]
         [SerializeField, Tooltip("インタラクト検知範囲")] private BoxCaster _interactChecker;
 
-        private Vector2 _inputDirection = Vector2.zero;
-        private bool _isPushedJumpButton = false;
-
         [Header("サウンド")]
         [SerializeField, Tooltip("ジャンプ音源ファイル名")] private string _jumpSoundName = "SE_PlayerJump";
         private SoundData _jumpSound = null;
@@ -116,7 +98,6 @@ namespace MyMetroidVania.Entity.Character.Player
         private void Initialize()
         {
             _currentState = ActionState.Run;
-            _isPushedJumpButton = false;
 
             _jumpSound = AudioManager.Instance.GetSe(_jumpSoundName.GetHashCode());
             _hookSound = AudioManager.Instance.GetSe(_hookSoundName.GetHashCode());
@@ -182,13 +163,11 @@ namespace MyMetroidVania.Entity.Character.Player
         private void InitializeEvents()
         {
             // プレイヤーの操作
-            Actions.Player.Enable();
-            Actions.Player.Jump.started += OnJump;
-            Actions.Player.Jump.canceled += OnJump;
-            Actions.Player.Hook.performed += OnHook;
-            Actions.Player.Hook.canceled += OnHook;
-            Actions.Player.Attack.started += OnAttack;
-            Actions.Player.Interact.started += OnInteract;
+            _input.OnJumpStarted += OnJump;
+            _input.OnHookStarted += OnHookStarted;
+            _input.OnHookCanceled += OnHookCanceled;
+            _input.OnAttackStarted += OnAttack;
+            _input.OnInteractStarted += OnInteract;
 
             // ステータス周り
             _statusManager.OnDamageTaken += OnDamageTaken;
@@ -197,15 +176,6 @@ namespace MyMetroidVania.Entity.Character.Player
 
         private void DisposeEvents()
         {
-            // プレイヤーの操作
-            Actions.Player.Disable();
-            Actions.Player.Jump.started -= OnJump;
-            Actions.Player.Jump.canceled -= OnJump;
-            Actions.Player.Hook.performed -= OnHook;
-            Actions.Player.Hook.canceled -= OnHook;
-            Actions.Player.Attack.started -= OnAttack;
-            Actions.Player.Interact.started -= OnInteract;
-
             // ステータス周り
             _statusManager.OnDamageTaken -= OnDamageTaken;
             _statusManager.OnDead -= OnDead;
@@ -214,22 +184,22 @@ namespace MyMetroidVania.Entity.Character.Player
         private void Update()
         {
             // 現在の入力情報を保持
-            _inputDirection = Actions.Player.Move.ReadValue<Vector2>();
+            var dir = _input.InputDirection;
 
             // X軸の入力がある かつ 前フレームと入力方向が違う場合 プレイヤーの向きを変更する
-            if (_inputDirection.x > 0.01f)
+            if (dir.x > 0.01f)
             {
                 _renderer.flipX = false;
             }
-            else if (_inputDirection.x < -0.01f)
+            else if (dir.x < -0.01f)
             {
                 _renderer.flipX = true;
             }
 
             // 移動入力の方向に攻撃判定、フック原点を回転させる。
-            if (_inputDirection != Vector2.zero)
+            if (dir != Vector2.zero)
             {
-                var degDir = Mathf.Atan2(_inputDirection.y, _inputDirection.x) * Mathf.Rad2Deg;
+                var degDir = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
                 Vector3 newRotate = new Vector3(0, 0, degDir);
                 var angle = Quaternion.Euler(newRotate);
                 _hitBoxOriginTransform.rotation = angle;
@@ -284,13 +254,14 @@ namespace MyMetroidVania.Entity.Character.Player
             // 移動処理
             if (_currentState != ActionState.Hook)
             {
+                var dirX = _input.InputDirection.x;
                 // フック後で速度が出ている場合はそのままの速度を保たせる
                 // TODO：フック後に移動していないと不自然に止まるので、直すかどうか検討
-                if (Mathf.Abs(_moveSpeedX * _inputDirection.x) > Mathf.Abs(_rb.linearVelocityX) // 入力値が現在の早さを上回るか
-                    || Mathf.Sign(_inputDirection.x) != Mathf.Sign(_rb.linearVelocityX) // 速度方向は一致していないか
-                    || Mathf.Abs(_inputDirection.x) < 0.01f) // x軸の入力が0付近か
+                if (Mathf.Abs(_moveSpeedX * dirX) > Mathf.Abs(_rb.linearVelocityX) // 入力値が現在の早さを上回るか
+                    || Mathf.Sign(dirX) != Mathf.Sign(_rb.linearVelocityX) // 速度方向は一致していないか
+                    || Mathf.Abs(dirX) < 0.01f) // x軸の入力が0付近か
                 {
-                    _rb.linearVelocityX = _moveSpeedX * _inputDirection.x;
+                    _rb.linearVelocityX = _moveSpeedX * dirX;
                 }
             }
 
@@ -340,7 +311,7 @@ namespace MyMetroidVania.Entity.Character.Player
                         break;
                     }
                     // ジャンプボタンを押している間は上向きの微量な加速をさせ、落下を遅らせる
-                    if (_isPushedJumpButton)
+                    if (_input.IsPressedJumpButton)
                     {
                         AccelerateJump();
                     }
@@ -442,7 +413,7 @@ namespace MyMetroidVania.Entity.Character.Player
                     _runEffect = Instantiate(_runEffectPrefab);
                 }
                 _runEffect.transform.position = transform.position; // 足元にエフェクトを生成
-                _runEffect.PlayAnimation(_inputDirection.x > 0); // 入力方向を引数で渡す
+                _runEffect.PlayAnimation(_input.InputDirection.x > 0); // 入力方向を引数で渡す
 
                 // エフェクトのインターバル 0.5s
                 yield return new WaitForSeconds(0.5f);
@@ -455,7 +426,7 @@ namespace MyMetroidVania.Entity.Character.Player
          * ------------------------------------------------------------------
          */
 
-        private void OnAttack(InputAction.CallbackContext _)
+        private void OnAttack()
         {
             // 後々アニメーションで制御することになりそう
             if (_isAttacking) return;
@@ -483,23 +454,12 @@ namespace MyMetroidVania.Entity.Character.Player
         /// <summary>
         /// ジャンプボタンを押した瞬間に発火
         /// </summary>
-        private void OnJump(InputAction.CallbackContext context)
+        private void OnJump()
         {
-            // ジャンプボタンを押した時
-            if (context.started)
-            {
-                if (_groundChecker.IsCasted)
-                {
-                    _currentState = ActionState.JumpAnticipation;
-                    _isPushedJumpButton = true;
-                    Jump();
-                }
-            }
-            // ジャンプボタンを離した時
-            else if (context.canceled)
-            {
-                _isPushedJumpButton = false;
-            }
+            if (!_groundChecker.IsCasted) return;
+
+            _currentState = ActionState.JumpAnticipation;
+            Jump();
         }
 
         /// <summary>
@@ -543,37 +503,44 @@ namespace MyMetroidVania.Entity.Character.Player
         /// <summary>
         /// フック処理
         /// ボタン長押し中は引っ張られる
-        /// ボタンを離したときはステートを戻す
         /// </summary>
-        /// <param name="context"></param>
-        private void OnHook(InputAction.CallbackContext context)
+        private void OnHookStarted()
         {
+            // フックが使用不可であるかどうか
             if (!_abilityManager.HasAbility(AbilityType.Hook) || !_canHook) return;
 
-            if (context.performed)
+            // フックをかけるポイントがあるかどうか
+            // キャスト切ったほうがいいかも
+            if (!_hookCheckerBox.IsCasted) return;
+
+            RaycastHit2D hit = default;
+            if (_hookCheckerBox != null)
             {
-                if (!_hookCheckerBox.IsCasted) return;
-
-                RaycastHit2D hit = default;
-                if (_hookCheckerBox != null)
-                {
-                    hit = _hookCheckerBox.GetBoxCast();
-                }
-
-                if (hit.collider != null)
-                {
-                    _currentState = ActionState.Hook;
-                    _audioSource.PlayOneShot(_hookSound.Clip, _hookSound.Volume);
-                    _hookPosition = hit.point;
-                }
+                hit = _hookCheckerBox.GetBoxCast();
             }
-            else if (context.canceled)
+
+            if (hit.collider != null)
             {
-                _currentState = ActionState.Run;
-                if (_hookCoolDownRoutine == null)
-                {
-                    _hookCoolDownRoutine = StartCoroutine(WaitHookCooldown());
-                }
+                _currentState = ActionState.Hook;
+                _audioSource.PlayOneShot(_hookSound.Clip, _hookSound.Volume);
+                _hookPosition = hit.point;
+            }
+        }
+
+        /// <summary>
+        /// フック処理
+        /// ボタンを離したときはステートを戻す
+        /// </summary>
+        private void OnHookCanceled()
+        {
+            // フックが使用不可であるかどうか
+            if (!_abilityManager.HasAbility(AbilityType.Hook)) return;
+
+            _currentState = ActionState.Run;
+            if (_hookCoolDownRoutine == null)
+            {
+                // フックのクールダウン開始
+                _hookCoolDownRoutine = StartCoroutine(WaitHookCooldown());
             }
         }
 
@@ -598,12 +565,16 @@ namespace MyMetroidVania.Entity.Character.Player
             _hookCoolDownRoutine = null;
         }
 
+
         /*
          * ------------------------------------------------------------------
          * インタラクト機能を制御
          * ------------------------------------------------------------------
          */
-        private void OnInteract(InputAction.CallbackContext _)
+        /// <summary>
+        /// インタラクト処理
+        /// </summary>
+        private void OnInteract()
         {
             if (!_interactChecker.TryGetClosestCollider(out var obj)) return;
 
