@@ -17,7 +17,7 @@ namespace MyMetroidVania.Entity.Gimmick
 
         protected virtual void Start()
         {
-            _interactedSound = AudioManager.Instance.GetSe(_interactedSoundName.GetHashCode());
+            _interactedSound = AudioManager.Instance.GetSe(_interactedSoundName);
         }
 
         protected void PlayOneShotInteractedSe()

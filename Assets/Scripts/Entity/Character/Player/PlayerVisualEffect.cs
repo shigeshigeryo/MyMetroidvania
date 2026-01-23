@@ -1,4 +1,5 @@
 using MyMetroidVania.Data.ScriptableObjects;
+using MyMetroidVania.Entity.Effect;
 using MyMetroidVania.System;
 using System.Collections;
 using UnityEngine;
@@ -15,10 +16,10 @@ namespace MyMetroidVania.Entity.Character.Player
         [Header("エフェクト")]
         [SerializeField, Tooltip("走るエフェクト")] private RunEffect _runEffectPrefab = null;
         private RunEffect _runEffect = null;
-        [SerializeField, Tooltip("ジャンプエフェクト")] private Effect _jumpEffectPrefab = null;
-        [SerializeField, Tooltip("着地エフェクト")] private Effect _landEffectPrefab = null;
-        private IObjectPool<Effect> _jumpEffectPool;
-        private IObjectPool<Effect> _landEffectPool;
+        [SerializeField, Tooltip("ジャンプエフェクト")] private PoolingEffect _jumpEffectPrefab = null;
+        [SerializeField, Tooltip("着地エフェクト")] private PoolingEffect _landEffectPrefab = null;
+        private IObjectPool<PoolingEffect> _jumpEffectPool;
+        private IObjectPool<PoolingEffect> _landEffectPool;
 
 
         [Header("サウンド")]
@@ -44,10 +45,10 @@ namespace MyMetroidVania.Entity.Character.Player
         private void InitializeEffects()
         {
             // ジャンプエフェクトプール
-            _jumpEffectPool = new ObjectPool<Effect>(
+            _jumpEffectPool = new ObjectPool<PoolingEffect>(
                 createFunc: () =>
                 {
-                    Effect effect = Instantiate(_jumpEffectPrefab);
+                    PoolingEffect effect = Instantiate(_jumpEffectPrefab);
                     effect.SetPool(_jumpEffectPool);
                     return effect;
                 },
@@ -68,10 +69,10 @@ namespace MyMetroidVania.Entity.Character.Player
             );
 
             // 着地エフェクトプール
-            _landEffectPool = new ObjectPool<Effect>(
+            _landEffectPool = new ObjectPool<PoolingEffect>(
                 createFunc: () =>
                 {
-                    Effect effect = Instantiate(_landEffectPrefab);
+                    PoolingEffect effect = Instantiate(_landEffectPrefab);
                     effect.SetPool(_landEffectPool);
                     return effect;
                 },
@@ -98,10 +99,10 @@ namespace MyMetroidVania.Entity.Character.Player
         private void InitializeSounds()
         {
             // サウンドの取得
-            _jumpSound = AudioManager.Instance.GetSe(_jumpSoundName.GetHashCode());
-            _hookSound = AudioManager.Instance.GetSe(_hookSoundName.GetHashCode());
-            _takeDamageSound = AudioManager.Instance.GetSe(_takeDamageSoundName.GetHashCode());
-            _deadSound = AudioManager.Instance.GetSe(_deadSoundName.GetHashCode());
+            _jumpSound = AudioManager.Instance.GetSe(_jumpSoundName);
+            _hookSound = AudioManager.Instance.GetSe(_hookSoundName);
+            _takeDamageSound = AudioManager.Instance.GetSe(_takeDamageSoundName);
+            _deadSound = AudioManager.Instance.GetSe(_deadSoundName);
 
             // サウンドの購読
             _statusManager.OnDamageTaken += () => _audioSource.PlayOneShot(_takeDamageSound.Clip, _takeDamageSound.Volume);

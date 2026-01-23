@@ -29,8 +29,8 @@ namespace MyMetroidVania.Entity.Character.Enemy
         /// </summary>
         public virtual void InitializeOnce()
         {
-            _takeDamageSound = AudioManager.Instance.GetSe(_takeDamageSoundName.GetHashCode());
-            _deadSound = AudioManager.Instance.GetSe(_deadSoundName.GetHashCode());
+            _takeDamageSound = AudioManager.Instance.GetSe(_takeDamageSoundName);
+            _deadSound = AudioManager.Instance.GetSe(_deadSoundName);
             _initialPosition = transform.position;
 
             //-ƒCƒxƒ“ƒg-------------------

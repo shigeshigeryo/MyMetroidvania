@@ -12,7 +12,7 @@ namespace MyMetroidVania.Entity.Item
 
         protected virtual void Start()
         {
-            _getSoundData = AudioManager.Instance.GetSe(_getSoundName.GetHashCode());
+            _getSoundData = AudioManager.Instance.GetSe(_getSoundName);
         }
 
         // æ“¾‚µ‚½‚Æ‚«‚Ìˆ—“à—e

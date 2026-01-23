@@ -53,10 +53,10 @@ namespace MyMetroidVania.System
         /// <summary>
         /// 名前をハッシュ化し、ゲットする。
         /// </summary>
-        public SoundData GetBgm(int id)
+        public SoundData GetBgm(string clipName)
         {
             // データベースから名前検索
-            SoundData bgm = _bgmList[id];
+            SoundData bgm = _bgmList[clipName.GetHashCode()];
 
             if (bgm == null)
             {
@@ -70,9 +70,9 @@ namespace MyMetroidVania.System
             _bgmSource.volume = bgm.Volume;
             _bgmSource.Play();
         }
-        public void GetAndPlayBgm(int id)
+        public void GetAndPlayBgm(string clipName)
         {
-            SoundData bgm = GetBgm(id);
+            SoundData bgm = GetBgm(clipName);
             if (bgm != null) PlayBgm(bgm);
         }
 
@@ -82,10 +82,10 @@ namespace MyMetroidVania.System
         /// <summary>
         /// 名前をハッシュ化し、ゲットする。
         /// </summary>
-        public SoundData GetSe(int id)
+        public SoundData GetSe(string clipName)
         {
-            // データベースから名前検索
-            SoundData se = _seList[id];
+            // データベースから名前検索（ハッシュ化してintで検索）
+            SoundData se = _seList[clipName.GetHashCode()];
 
             if (se == null)
             {
