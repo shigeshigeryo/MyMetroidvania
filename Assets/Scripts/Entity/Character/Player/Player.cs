@@ -18,6 +18,7 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField] private PlayerInputHandler _input = null;
         [SerializeField] private PlayerPhysics _physics = null;
         [SerializeField] private PlayerVisualEffect _visualEffect = null;
+        [SerializeField] private PlayerAnimation _animation = null;
         private Coroutine _runEffectRoutine = null;
 
         [SerializeField, Tooltip("アビリティの取得状況を管理")]
@@ -45,13 +46,6 @@ namespace MyMetroidVania.Entity.Character.Player
 
         [Header("インタラクト")]
         [SerializeField, Tooltip("インタラクト検知範囲")] private BoxCaster _interactChecker;
-
-        // イベント
-        public event Action OnIdle;
-        public event Action OnRun;
-        public event Action OnJumped;
-        public event Action OnLanded;
-        public event Action OnFallen;
 
         private enum ActionState
         {
@@ -121,7 +115,6 @@ namespace MyMetroidVania.Entity.Character.Player
                     if (!_groundChecker.IsCasted)
                     {
                         _currentState = ActionState.Fall;
-                        OnFallen?.Invoke();
                         break;
                     }
                     break;
@@ -140,10 +133,8 @@ namespace MyMetroidVania.Entity.Character.Player
                     {
                         // 着地エフェクトの生成
                         _visualEffect.PlayLandEffect();
-                        if (_currentState == ActionState.Jump) OnLanded?.Invoke();
 
                         _currentState = ActionState.Idle;
-                        OnIdle?.Invoke();
                         break;
                     }
                     break;
@@ -178,7 +169,6 @@ namespace MyMetroidVania.Entity.Character.Player
                             _runEffectRoutine = StartCoroutine(PlayRunEffect());
                         }
 
-                        OnRun?.Invoke();
                         break;
                     }
                     break;
@@ -187,7 +177,6 @@ namespace MyMetroidVania.Entity.Character.Player
                     if (!_physics.IsMoving)
                     {
                         _currentState = ActionState.Idle;
-                        OnIdle?.Invoke();
                         break;
                     }
 
@@ -205,7 +194,6 @@ namespace MyMetroidVania.Entity.Character.Player
                     if (_physics.Velocity.y < 0)
                     {
                         _currentState = ActionState.Fall;
-                        OnFallen?.Invoke();
                         break;
                     }
                     // ジャンプボタンを押している間は上向きの微量な加速をさせ、落下を遅らせる
@@ -221,7 +209,6 @@ namespace MyMetroidVania.Entity.Character.Player
                     if (dir.magnitude < _hookCancelRange)
                     {
                         _currentState = ActionState.Fall;
-                        OnFallen?.Invoke();
                         break;
                     }
                     _physics.SetVelocity(dir.normalized * _hookSpeed);
@@ -230,6 +217,9 @@ namespace MyMetroidVania.Entity.Character.Player
                 default:
                     break;
             }
+
+            // アニメーションで参照するパラメータ値を更新
+            _animation.UpdateParam(_physics.Velocity, _groundChecker.IsCasted);
         }
 
 
@@ -347,7 +337,7 @@ namespace MyMetroidVania.Entity.Character.Player
             _physics.Jump();
             _visualEffect.PlayJumpEffect();
 
-            OnJumped?.Invoke();
+            _animation.TriggerJump();
         }
 
         /*

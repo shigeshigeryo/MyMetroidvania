@@ -97,6 +97,7 @@ MonoBehaviour:
   _input: {fileID: 2774972889317257999}
   _physics: {fileID: 4188113795457307934}
   _visualEffect: {fileID: 943763540149450975}
+  _animation: {fileID: 6755718135541078020}
   _abilityManager: {fileID: 5809375478146826560}
   _groundChecker: {fileID: 7427499878688929372}
   _hitBoxOriginTransform: {fileID: 3604531770454019126}
