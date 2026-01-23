@@ -1,11 +1,9 @@
-using MyMetroidVania.Data.ScriptableObjects;
 using MyMetroidVania.Entity.Gimmick;
 using MyMetroidVania.System;
 using MyMetroidVania.Utility;
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Pool;
 
 namespace MyMetroidVania.Entity.Character.Player
 {
