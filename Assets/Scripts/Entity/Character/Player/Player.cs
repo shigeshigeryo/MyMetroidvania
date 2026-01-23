@@ -15,25 +15,19 @@ namespace MyMetroidVania.Entity.Character.Player
     public class Player : MonoBehaviour
     {
         [SerializeField] private AudioSource _audioSource = null;
-        [SerializeField] private Rigidbody2D _rb = null;
         [SerializeField] private StatusManager _statusManager = null;
         [SerializeField] private PlayerInputHandler _input = null;
+        [SerializeField] private PlayerPhysics _physics = null;
         [SerializeField, Tooltip("アビリティの取得状況を管理")]
         private AbilityManager _abilityManager;
         [SerializeField, Tooltip("プレイヤーのビジュアル")] private SpriteRenderer _renderer;
 
         [Header("移動")]
-        [SerializeField, Tooltip("x軸の移動の速さ")] private float _moveSpeedX = 5f;
-        private bool IsMove => Mathf.Abs(_rb.linearVelocityX) > 0.01f;
-        [SerializeField, Tooltip("Walk中に移動速度を超えたときに抵抗としてかかる毎秒の速度")]
-        private float _deceleration = 10f;
         [SerializeField, Tooltip("走るエフェクト")] private RunEffect _runEffectPrefab;
         private RunEffect _runEffect = null;
         private Coroutine _runEffectRoutine = null;
 
         [Header("ジャンプ")]
-        [SerializeField, Tooltip("ジャンプの初速")] private float _jumpSpeed = 8f;
-        [SerializeField, Tooltip("ジャンプボタン押下時にかかる+yの加速度")] private float _jumpAccel = 10f;
         [SerializeField, Tooltip("地面の接地判定")] private BoxCaster _groundChecker;
         [SerializeField, Tooltip("ジャンプエフェクト")] private Effect _jumpEffectPrefab;
         [SerializeField, Tooltip("着地エフェクト")] private Effect _landEffectPrefab;
@@ -254,21 +248,13 @@ namespace MyMetroidVania.Entity.Character.Player
             // 移動処理
             if (_currentState != ActionState.Hook)
             {
-                var dirX = _input.InputDirection.x;
-                // フック後で速度が出ている場合はそのままの速度を保たせる
-                // TODO：フック後に移動していないと不自然に止まるので、直すかどうか検討
-                if (Mathf.Abs(_moveSpeedX * dirX) > Mathf.Abs(_rb.linearVelocityX) // 入力値が現在の早さを上回るか
-                    || Mathf.Sign(dirX) != Mathf.Sign(_rb.linearVelocityX) // 速度方向は一致していないか
-                    || Mathf.Abs(dirX) < 0.01f) // x軸の入力が0付近か
-                {
-                    _rb.linearVelocityX = _moveSpeedX * dirX;
-                }
+                _physics.SetMoveVelocity(_input.InputDirection.x);
             }
 
             switch (_currentState)
             {
                 case ActionState.Idle:
-                    if (IsMove)
+                    if (_physics.IsMoving)
                     {
                         // 移動している場合Walkステート
                         _currentState = ActionState.Run;
@@ -285,7 +271,7 @@ namespace MyMetroidVania.Entity.Character.Player
                     break;
 
                 case ActionState.Run:
-                    if (!IsMove)
+                    if (!_physics.IsMoving)
                     {
                         // 移動している場合Walkステート
                         _currentState = ActionState.Idle;
@@ -294,17 +280,17 @@ namespace MyMetroidVania.Entity.Character.Player
                     }
 
                     // 現在の速さが規定の移動速を超えていた場合に徐々に速さを減らす
-                    ReduceExcessSpeed();
+                    _physics.ReduceExcessSpeed();
                     break;
 
                 case ActionState.Fall:
                     // 現在の速さが規定の移動速を超えていた場合に徐々に速さを減らす
-                    ReduceExcessSpeed();
+                    _physics.ReduceExcessSpeed();
                     break;
 
                 case ActionState.JumpAnticipation:
                 case ActionState.Jump:
-                    if (_rb.linearVelocityY < 0)
+                    if (_physics.Velocity.y < 0)
                     {
                         _currentState = ActionState.Fall;
                         OnFallen?.Invoke();
@@ -313,7 +299,7 @@ namespace MyMetroidVania.Entity.Character.Player
                     // ジャンプボタンを押している間は上向きの微量な加速をさせ、落下を遅らせる
                     if (_input.IsPressedJumpButton)
                     {
-                        AccelerateJump();
+                        _physics.AccelerateJump();
                     }
                     break;
 
@@ -326,7 +312,7 @@ namespace MyMetroidVania.Entity.Character.Player
                         OnFallen?.Invoke();
                         break;
                     }
-                    _rb.linearVelocity = dir.normalized * _hookSpeed;
+                    _physics.SetVelocity(dir.normalized * _hookSpeed);
                     break;
 
                 default:
@@ -380,18 +366,6 @@ namespace MyMetroidVania.Entity.Character.Player
          * 移動を制御
          * ------------------------------------------------------------------
          */
-        /// <summary>
-        /// 現在の速さが規定の移動速を超えていた場合に徐々に速さを減らす
-        /// </summary>
-        private void ReduceExcessSpeed()
-        {
-            if (Mathf.Abs(_rb.linearVelocityX) > _moveSpeedX)
-            {
-                float flg = _rb.linearVelocityX >= 0 ? -1 : 1;
-                _rb.linearVelocityX += flg * _deceleration * Time.fixedDeltaTime;
-            }
-        }
-
         /// <summary>
         /// 走るエフェクトの再生ルーチン
         /// ステートを見て自分で処理を終了する
@@ -470,9 +444,7 @@ namespace MyMetroidVania.Entity.Character.Player
             _audioSource.PlayOneShot(_jumpSound.Clip, _jumpSound.Volume);
 
             // ジャンプ速度設定
-            var newVelocity = _rb.linearVelocity;
-            newVelocity.y = _jumpSpeed;
-            _rb.linearVelocity = newVelocity;
+            _physics.Jump();
 
             // ジャンプエフェクトの生成
             var effect = _jumpEffectPool.Get();
@@ -480,20 +452,6 @@ namespace MyMetroidVania.Entity.Character.Player
 
             OnJumped?.Invoke();
         }
-
-        /// <summary>
-        /// ジャンプ中にジャンプボタンを押している時にかかる上向き正の加速
-        /// </summary>
-        private void AccelerateJump()
-        {
-            var tmpVelocity = _rb.linearVelocity;
-            // 落下し始めたタイミングから加速を切る
-            if (tmpVelocity.y < 0) return;
-
-            tmpVelocity.y += _jumpAccel * Time.fixedDeltaTime;
-            _rb.linearVelocity = tmpVelocity;
-        }
-
 
         /*
          * ------------------------------------------------------------------
