@@ -99,10 +99,10 @@ namespace MyMetroidVania.Entity.Character.Player
         private void InitializeSounds()
         {
             // サウンドの取得
-            _jumpSound = AudioManager.Instance.GetSe(_jumpSoundName.GetHashCode());
-            _hookSound = AudioManager.Instance.GetSe(_hookSoundName.GetHashCode());
-            _takeDamageSound = AudioManager.Instance.GetSe(_takeDamageSoundName.GetHashCode());
-            _deadSound = AudioManager.Instance.GetSe(_deadSoundName.GetHashCode());
+            _jumpSound = AudioManager.Instance.GetSe(_jumpSoundName);
+            _hookSound = AudioManager.Instance.GetSe(_hookSoundName);
+            _takeDamageSound = AudioManager.Instance.GetSe(_takeDamageSoundName);
+            _deadSound = AudioManager.Instance.GetSe(_deadSoundName);
 
             // サウンドの購読
             _statusManager.OnDamageTaken += () => _audioSource.PlayOneShot(_takeDamageSound.Clip, _takeDamageSound.Volume);
