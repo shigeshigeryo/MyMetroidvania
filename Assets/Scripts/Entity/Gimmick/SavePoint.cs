@@ -6,11 +6,13 @@ namespace MyMetroidVania.Entity.Gimmick
 {
     public class SavePoint : GimmickBase, IInteractable
     {
+        [SerializeField, Tooltip("セーブポイントの中のぐるぐる")] private SpriteRenderer _innerRenderer;
+
         public enum State
         {
-            None, // 未チェック
+            None, // 未アクセス
             Accessed, // アクセス済み（ワープポイントとして活躍できるといいかも）
-            AccessedNow // 最近アクセスしたセーブポイント（GameManagerで持っているので必要ないかも？）
+            AccessedNow // 最近アクセスしたセーブポイント
         }
         private State _currentState = State.None;
 
@@ -18,6 +20,11 @@ namespace MyMetroidVania.Entity.Gimmick
         {
             switch ((State)_stateData.State)
             {
+                case State.None:
+                    // アクセスしていない場合はinnerを表示させない
+                    _innerRenderer.enabled = false;
+                    break;
+
                 case State.Accessed:
                     ChangeState(State.Accessed);
                     break;
@@ -26,7 +33,6 @@ namespace MyMetroidVania.Entity.Gimmick
                     ChangeState(State.AccessedNow);
                     break;
 
-                case State.None:
                 default:
                     _currentState = State.None;
                     break;
@@ -49,7 +55,11 @@ namespace MyMetroidVania.Entity.Gimmick
         public void ChangeState(State state)
         {
             _currentState = state;
-            _stateData.SetState((int)state);
+            _stateData.SetState((int)state); // エリアデータの更新
+
+            // アクセスしたらinnerを表示させる
+            _innerRenderer.enabled = (state != State.None);
+
             if (state == State.AccessedNow)
             {
                 WorldManager.Instance.SetCurrentSavePoint(this);
