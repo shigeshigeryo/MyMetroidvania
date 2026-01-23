@@ -541,7 +541,7 @@ MonoBehaviour:
   _targetLayers:
     serializedVersion: 2
     m_Bits: 64
-  _useOverlapBox: 1
+  _useOverlapBox: 0
   _offsetOverlap: {x: 2.5, y: 0}
   _sizeOverlap: {x: 5, y: 0.5}
   _gizmoColorOverlap: {r: 1, g: 1, b: 1, a: 1}
@@ -1190,5 +1190,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 7609312847458624480}
-  _player: {fileID: 8848839338403636000}
   _statusManager: {fileID: 5697400064710948249}

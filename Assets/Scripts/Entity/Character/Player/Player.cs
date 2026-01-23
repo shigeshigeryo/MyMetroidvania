@@ -354,10 +354,6 @@ namespace MyMetroidVania.Entity.Character.Player
             // フックが使用不可であるかどうか
             if (!_abilityManager.HasAbility(AbilityType.Hook) || !_canHook) return;
 
-            // フックをかけるポイントがあるかどうか
-            // キャスト切ったほうがいいかも
-            if (!_hookCheckerBox.IsCasted) return;
-
             RaycastHit2D hit = default;
             if (_hookCheckerBox != null)
             {
