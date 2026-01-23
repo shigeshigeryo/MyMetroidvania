@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 4763088312607136753}
   - component: {fileID: 8848839338403636000}
   - component: {fileID: 4188113795457307934}
+  - component: {fileID: 943763540149450975}
   - component: {fileID: 2774972889317257999}
   - component: {fileID: 5697400064710948249}
   - component: {fileID: 5809375478146826560}
@@ -92,16 +93,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dd973ffbbb4b7d4bbe38180d7156aaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioSource: {fileID: 4174282207552990810}
   _statusManager: {fileID: 5697400064710948249}
   _input: {fileID: 2774972889317257999}
   _physics: {fileID: 4188113795457307934}
+  _visualEffect: {fileID: 943763540149450975}
   _abilityManager: {fileID: 5809375478146826560}
-  _renderer: {fileID: 8989043578910406599}
-  _runEffectPrefab: {fileID: 7540366499406907110, guid: eaddd7c7ccf12f9498eda20e3218e3c3, type: 3}
   _groundChecker: {fileID: 7427499878688929372}
-  _jumpEffectPrefab: {fileID: 2237098855559916237, guid: 7bdee7d108c713542aeb468896a460b8, type: 3}
-  _landEffectPrefab: {fileID: 2237098855559916237, guid: cd30dca75e678bc47a43577cd548e0bb, type: 3}
   _hitBoxOriginTransform: {fileID: 3604531770454019126}
   _hitBox: {fileID: 1374017822495714362}
   _coolSec: 0.25
@@ -111,10 +108,6 @@ MonoBehaviour:
   _hookCancelRange: 0.25
   _hookCTSeconds: 0.5
   _interactChecker: {fileID: 323699590221333887}
-  _jumpSoundName: SE_PlayerJump
-  _hookSoundName: SE_PlayerHook
-  _takeDamageSoundName: SE_PlayerTakeDamage
-  _deadSoundName: SE_PlayerDead
 --- !u!114 &4188113795457307934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,6 +125,28 @@ MonoBehaviour:
   _deceleration: 10
   _jumpSpeed: 8
   _jumpAccel: 10
+--- !u!114 &943763540149450975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422691174592518709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ab3dbc93ab2212458aebea57c799619, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _statusManager: {fileID: 5697400064710948249}
+  _audioSource: {fileID: 4174282207552990810}
+  _renderer: {fileID: 8989043578910406599}
+  _runEffectPrefab: {fileID: 7540366499406907110, guid: eaddd7c7ccf12f9498eda20e3218e3c3, type: 3}
+  _jumpEffectPrefab: {fileID: 2237098855559916237, guid: 7bdee7d108c713542aeb468896a460b8, type: 3}
+  _landEffectPrefab: {fileID: 2237098855559916237, guid: cd30dca75e678bc47a43577cd548e0bb, type: 3}
+  _jumpSoundName: SE_PlayerJump
+  _hookSoundName: SE_PlayerHook
+  _takeDamageSoundName: SE_PlayerTakeDamage
+  _deadSoundName: SE_PlayerDead
 --- !u!114 &2774972889317257999
 MonoBehaviour:
   m_ObjectHideFlags: 0

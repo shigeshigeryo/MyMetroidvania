@@ -14,25 +14,17 @@ namespace MyMetroidVania.Entity.Character.Player
     /// </summary>
     public class Player : MonoBehaviour
     {
-        [SerializeField] private AudioSource _audioSource = null;
         [SerializeField] private StatusManager _statusManager = null;
         [SerializeField] private PlayerInputHandler _input = null;
         [SerializeField] private PlayerPhysics _physics = null;
+        [SerializeField] private PlayerVisualEffect _visualEffect = null;
+        private Coroutine _runEffectRoutine = null;
+
         [SerializeField, Tooltip("アビリティの取得状況を管理")]
         private AbilityManager _abilityManager;
-        [SerializeField, Tooltip("プレイヤーのビジュアル")] private SpriteRenderer _renderer;
-
-        [Header("移動")]
-        [SerializeField, Tooltip("走るエフェクト")] private RunEffect _runEffectPrefab;
-        private RunEffect _runEffect = null;
-        private Coroutine _runEffectRoutine = null;
 
         [Header("ジャンプ")]
         [SerializeField, Tooltip("地面の接地判定")] private BoxCaster _groundChecker;
-        [SerializeField, Tooltip("ジャンプエフェクト")] private Effect _jumpEffectPrefab;
-        [SerializeField, Tooltip("着地エフェクト")] private Effect _landEffectPrefab;
-        private IObjectPool<Effect> _jumpEffectPool;
-        private IObjectPool<Effect> _landEffectPool;
 
         [Header("攻撃")]
         [SerializeField, Tooltip("攻撃判定の原点")] private Transform _hitBoxOriginTransform = null;
@@ -53,16 +45,6 @@ namespace MyMetroidVania.Entity.Character.Player
 
         [Header("インタラクト")]
         [SerializeField, Tooltip("インタラクト検知範囲")] private BoxCaster _interactChecker;
-
-        [Header("サウンド")]
-        [SerializeField, Tooltip("ジャンプ音源ファイル名")] private string _jumpSoundName = "SE_PlayerJump";
-        private SoundData _jumpSound = null;
-        [SerializeField, Tooltip("フック音源ファイル名")] private string _hookSoundName = "SE_PlayerHook";
-        private SoundData _hookSound = null;
-        [SerializeField, Tooltip("被弾時音源ファイル名")] private string _takeDamageSoundName = "SE_PlayerTakeDamage";
-        private SoundData _takeDamageSound = null;
-        [SerializeField, Tooltip("死亡時音源ファイル名")] private string _deadSoundName = "SE_PlayerDead";
-        private SoundData _deadSound = null;
 
         // イベント
         public event Action OnIdle;
@@ -85,75 +67,14 @@ namespace MyMetroidVania.Entity.Character.Player
         void Start()
         {
             Initialize();
-            InitializeEffects();
             InitializeEvents();
+            _visualEffect.Initialize();
         }
 
         private void Initialize()
         {
             _currentState = ActionState.Run;
-
-            _jumpSound = AudioManager.Instance.GetSe(_jumpSoundName.GetHashCode());
-            _hookSound = AudioManager.Instance.GetSe(_hookSoundName.GetHashCode());
-            _takeDamageSound = AudioManager.Instance.GetSe(_takeDamageSoundName.GetHashCode());
-            _deadSound = AudioManager.Instance.GetSe(_deadSoundName.GetHashCode());
         }
-
-        /// <summary>
-        /// エフェクト（プール）の初期化
-        /// </summary>
-        private void InitializeEffects()
-        {
-            // ジャンプエフェクトプール
-            _jumpEffectPool = new ObjectPool<Effect>(
-                createFunc: () =>
-                {
-                    Effect effect = Instantiate(_jumpEffectPrefab);
-                    effect.SetPool(_jumpEffectPool);
-                    return effect;
-                },
-                actionOnGet: (effect) =>
-                {
-                    effect.gameObject.SetActive(true);
-                },
-                actionOnRelease: (effect) =>
-                {
-                    effect.gameObject.SetActive(false);
-                },
-                actionOnDestroy: (effect) =>
-                {
-                    Destroy(effect.gameObject);
-                },
-                defaultCapacity: 3, // 準備数（仮）
-                maxSize: 5 // 最大数（仮）
-            );
-
-            // 着地エフェクトプール
-            _landEffectPool = new ObjectPool<Effect>(
-                createFunc: () =>
-                {
-                    Effect effect = Instantiate(_landEffectPrefab);
-                    effect.SetPool(_landEffectPool);
-                    return effect;
-                },
-                actionOnGet: (effect) =>
-                {
-                    effect.gameObject.SetActive(true);
-                },
-                actionOnRelease: (effect) =>
-                {
-                    effect.gameObject.SetActive(false);
-                },
-                actionOnDestroy: (effect) =>
-                {
-                    Destroy(effect.gameObject);
-                },
-                defaultCapacity: 3, // 準備数（仮）
-                maxSize: 5 // 最大数（仮）
-            );
-        }
-
-
         private void InitializeEvents()
         {
             // プレイヤーの操作
@@ -180,15 +101,8 @@ namespace MyMetroidVania.Entity.Character.Player
             // 現在の入力情報を保持
             var dir = _input.InputDirection;
 
-            // X軸の入力がある かつ 前フレームと入力方向が違う場合 プレイヤーの向きを変更する
-            if (dir.x > 0.01f)
-            {
-                _renderer.flipX = false;
-            }
-            else if (dir.x < -0.01f)
-            {
-                _renderer.flipX = true;
-            }
+            // プレイヤーの向きをセット
+            _visualEffect.SetFlip(dir.x);
 
             // 移動入力の方向に攻撃判定、フック原点を回転させる。
             if (dir != Vector2.zero)
@@ -225,9 +139,8 @@ namespace MyMetroidVania.Entity.Character.Player
                     if (_groundChecker.IsCasted)
                     {
                         // 着地エフェクトの生成
-                        var landEffect = _landEffectPool.Get();
+                        _visualEffect.PlayLandEffect();
                         if (_currentState == ActionState.Jump) OnLanded?.Invoke();
-                        landEffect.transform.position = transform.position; // 足元に着地エフェクト生成
 
                         _currentState = ActionState.Idle;
                         OnIdle?.Invoke();
@@ -273,7 +186,6 @@ namespace MyMetroidVania.Entity.Character.Player
                 case ActionState.Run:
                     if (!_physics.IsMoving)
                     {
-                        // 移動している場合Walkステート
                         _currentState = ActionState.Idle;
                         OnIdle?.Invoke();
                         break;
@@ -347,7 +259,7 @@ namespace MyMetroidVania.Entity.Character.Player
         /// </summary>
         private void OnDamageTaken()
         {
-            AudioManager.Instance.PlayOneShotSe(_takeDamageSound);
+            // ノックバックなど入れるかも
         }
 
         /// <summary>
@@ -356,7 +268,6 @@ namespace MyMetroidVania.Entity.Character.Player
         private void OnDead()
         {
             _statusManager.InitializeStatus();
-            AudioManager.Instance.PlayOneShotSe(_deadSound);
             WorldManager.Instance.RespawnPlayer();
         }
 
@@ -381,16 +292,8 @@ namespace MyMetroidVania.Entity.Character.Player
                     yield break;
                 }
 
-                if (_runEffect == null)
-                {
-                    // ランエフェクトがない場合は生成
-                    _runEffect = Instantiate(_runEffectPrefab);
-                }
-                _runEffect.transform.position = transform.position; // 足元にエフェクトを生成
-                _runEffect.PlayAnimation(_input.InputDirection.x > 0); // 入力方向を引数で渡す
-
-                // エフェクトのインターバル 0.5s
-                yield return new WaitForSeconds(0.5f);
+                // 走った際の砂埃エフェクト
+                yield return _visualEffect.PlayRunEffect(_input.InputDirection.x);
             }
         }
 
@@ -441,14 +344,8 @@ namespace MyMetroidVania.Entity.Character.Player
         /// </summary>
         private void Jump()
         {
-            _audioSource.PlayOneShot(_jumpSound.Clip, _jumpSound.Volume);
-
-            // ジャンプ速度設定
             _physics.Jump();
-
-            // ジャンプエフェクトの生成
-            var effect = _jumpEffectPool.Get();
-            effect.transform.position = transform.position; // 足元に生成
+            _visualEffect.PlayJumpEffect();
 
             OnJumped?.Invoke();
         }
@@ -480,8 +377,8 @@ namespace MyMetroidVania.Entity.Character.Player
             if (hit.collider != null)
             {
                 _currentState = ActionState.Hook;
-                _audioSource.PlayOneShot(_hookSound.Clip, _hookSound.Volume);
                 _hookPosition = hit.point;
+                _visualEffect.PlayHookEffect();
             }
         }
 
