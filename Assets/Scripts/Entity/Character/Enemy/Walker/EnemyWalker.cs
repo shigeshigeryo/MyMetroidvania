@@ -200,9 +200,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
          * ƒŠƒAƒNƒVƒ‡ƒ“‚ğ§Œä
          * ------------------------------------------------------------------
          */
-        protected override void OnDamageTaken()
+        protected override void OnTakenDamage()
         {
-            base.OnDamageTaken();
+            base.OnTakenDamage();
             Debug.Log($"Life:{_statusManager.CurrentStatus.Life}", _statusManager);
         }
     }

@@ -43,14 +43,14 @@ namespace MyMetroidVania.Entity
             {
                 OnDamageTaken?.Invoke();
                 OnLifeChanged?.Invoke(_currentStatus.Life);
-                StartCoroutine(OnTakeDamage());
+                StartCoroutine(OnTakenDamage());
             }
         }
 
         /// <summary>
         /// É_ÉÅÅ[ÉWî≠ê∂å„ÇÃñ≥ìGâª
         /// </summary>
-        private IEnumerator OnTakeDamage()
+        private IEnumerator OnTakenDamage()
         {
             _isInvincible = true;
             yield return new WaitForSeconds(_currentStatus.InvincibleSec);
