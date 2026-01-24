@@ -41,6 +41,7 @@ namespace MyMetroidVania.System
             else
             {
                 Destroy(gameObject);
+                return;
             }
 
             // ¢ŠE‘S‚Ä‚Ìî•ñ

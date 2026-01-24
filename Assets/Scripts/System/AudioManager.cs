@@ -32,6 +32,7 @@ namespace MyMetroidVania.System
             else
             {
                 Destroy(gameObject);
+                return;
             }
 
             // データベースからサウンドを取得
