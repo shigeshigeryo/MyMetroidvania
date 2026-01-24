@@ -477,6 +477,7 @@ MonoBehaviour:
   _groundChecker: {fileID: 4866534370304046471}
   _takeDamageSoundName: SE_PlayerTakeDamage
   _deadSoundName: SE_PlayerDead
+  _animation: {fileID: 2320448066669024302}
   _hitBox: {fileID: 8249786393369527631}
   _attackRange: 1
   _coolSec: 1

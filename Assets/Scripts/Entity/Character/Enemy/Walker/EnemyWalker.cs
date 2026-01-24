@@ -1,14 +1,12 @@
 using MyMetroidVania.Utility;
 using System.Collections;
 using UnityEngine;
-using Action = System.Action;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Walker
 {
     public class EnemyWalker : EnemyBase
     {
         private float _lastMoveDirection;// 最後に動いた方向 +x方向 = 1, -x方向 = -1
-        public float CurrentSpeed => Mathf.Abs(_rb.linearVelocityX);
 
         [Header("攻撃（TestEnemy）")]
         [SerializeField, Tooltip("攻撃判定")] private HitBox _hitBox;
@@ -28,12 +26,10 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
 
         [Header("追跡")]
         [Tooltip("追跡する際の速さ")] private float _chaseSpeedX = 2.0f;
-
         private Transform _target;
 
-        public event Action OnWalked;
-        public event Action OnChased;
-        public event Action OnStopped;
+        [Space]
+        [SerializeField] private EnemyWalkerAnimation _animation = null;
 
         public override void Initialize()
         {
@@ -41,6 +37,10 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
             ChangeState(new SleepState(this, new WalkerIdleState(this)));
         }
 
+        private void FixedUpdate()
+        {
+            _animation.UpdateParam(Mathf.Abs(_rb.linearVelocityX));
+        }
 
         /// <summary>
         /// 検知範囲内にプレイヤーが存在するか返す
@@ -90,7 +90,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         /// 最後に移動した方向を参照して攻撃判定のポジションをセットする
         /// X軸のみを移動
         /// </summary>
-        /// <param name="dir">X軸速度</param>
         private void SetAttackColliderByLastMoveDirection()
         {
             // 引数は攻撃の射程と向いている向きを考慮したもの
@@ -110,12 +109,10 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
             // 一定時間徘徊する
             Coroutine walkRoutine = StartCoroutine(WalkRoutine());
             float offset = Random.Range(-_offsetSec, _offsetSec);
-            OnWalked?.Invoke();
             yield return new WaitForSeconds(_idleDurationSec + offset);
 
             // 一定時間のインターバル
             StopCoroutine(walkRoutine);
-            OnStopped?.Invoke();
             offset = Random.Range(-_offsetSec, _offsetSec);
             yield return new WaitForSeconds(_intervalSec + offset);
         }
@@ -156,7 +153,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         /// </summary>
         public void StartChase()
         {
-            OnChased?.Invoke();
+            // 追跡開始時の処理を書く
         }
 
         /// <summary>
@@ -176,7 +173,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         public override void StopChase()
         {
             _rb.linearVelocity = Vector3.zero;
-            OnStopped?.Invoke();
         }
 
         /*
