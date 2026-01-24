@@ -546,7 +546,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1081250548}
-  m_Father: {fileID: 1063851720}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &255073131 stripped
 Transform:
@@ -969,7 +969,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1063851720}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &519420033
 MonoBehaviour:
@@ -2265,13 +2265,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 519420032}
-  - {fileID: 99352016}
-  - {fileID: 6200967431743478422}
   - {fileID: 619394802}
   - {fileID: 3213379788753237851}
   - {fileID: 7590177125690748735}
-  - {fileID: 1462433258}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1081250547
@@ -3004,7 +3000,7 @@ RectTransform:
   m_Children:
   - {fileID: 1331782736}
   - {fileID: 548391267}
-  m_Father: {fileID: 1063851720}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3753,7 +3749,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1063851720}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1422691174592518709, guid: 6ee4bda9166c747468795b3b6a52a4e2, type: 3}
       propertyPath: m_Name
@@ -4460,7 +4456,11 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1685975099}
+  - {fileID: 519420032}
+  - {fileID: 99352016}
+  - {fileID: 6200967431743478421}
   - {fileID: 1063851720}
+  - {fileID: 1462433258}
   - {fileID: 7786696056501281901}
   - {fileID: 1877250129}
   - {fileID: 331138618}
