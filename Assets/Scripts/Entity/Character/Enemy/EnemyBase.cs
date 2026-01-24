@@ -35,7 +35,7 @@ namespace MyMetroidVania.Entity.Character.Enemy
 
             //-イベント-------------------
             // ステータス周り
-            _statusManager.OnDamageTaken += OnDamageTaken;
+            _statusManager.OnDamageTaken += OnTakenDamage;
             _statusManager.OnDead += OnDead;
         }
 
@@ -109,7 +109,7 @@ namespace MyMetroidVania.Entity.Character.Enemy
         /// <summary>
         /// 被弾時のリアクション
         /// </summary>
-        protected virtual void OnDamageTaken()
+        protected virtual void OnTakenDamage()
         {
             AudioManager.Instance.PlayOneShotSe(_takeDamageSound);
         }
