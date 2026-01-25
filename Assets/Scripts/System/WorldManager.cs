@@ -26,7 +26,7 @@ namespace MyMetroidVania.System
         // リスポーン地点は全てセーブポイントでない可能性があるため別で保持しておく
         private Vector3 _respawnPosition;
         private SavePoint _currentSavePoint = null;
-        private bool _isInitializeSpawn = false;
+        private bool _isInitializeSpawn = true;
 
 #if UNITY_EDITOR
         [SerializeField] private bool _isDebug = false;
@@ -126,7 +126,7 @@ namespace MyMetroidVania.System
         /// <param name="newSavePoint"></param>
         public void SetCurrentSavePoint(SavePoint newSavePoint)
         {
-            if (_currentSavePoint != null)
+            if (_currentSavePoint != null && newSavePoint != _currentSavePoint)
             {
                 // 最近でアクセスしたセーブポイントを更新するため
                 // 現在最新状態として保存されているStateを更新
@@ -138,9 +138,9 @@ namespace MyMetroidVania.System
             _lastRespawnAreaId = _currentAreaManager.AreaId;
 
             // 初回はプレイヤーをスポーンさせる
-            if (!_isInitializeSpawn)
+            if (_isInitializeSpawn)
             {
-                _isInitializeSpawn = true;
+                _isInitializeSpawn = false;
                 RespawnPlayer();
             }
             else
