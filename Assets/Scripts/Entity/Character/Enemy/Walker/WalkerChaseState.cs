@@ -61,6 +61,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
             if (_owner.IsStun)
             {
                 // ダメージを受けてスタンした
+                StunState.SetNextState(this);
                 _owner.ChangeState(StunState);
                 return;
             }

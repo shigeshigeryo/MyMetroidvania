@@ -49,5 +49,10 @@ namespace MyMetroidVania.Entity.Character.Enemy
             // ƒXƒ^ƒ“ó‘Ô‚ğ‰ğœ
             _owner.RecoverStun();
         }
+
+        public void SetNextState(EnemyState state)
+        {
+            NextState = state;
+        }
     }
 }
