@@ -45,13 +45,14 @@ namespace MyMetroidVania.Entity.Gimmick
             Debug.Log($"インタラクト:{_id}");
             PlayOneShotInteractedSe();
             player.Heal();
-            //最近アクセスしたセーブポイントがこのセーブポイントでない場合に更新
-            if (_currentState != State.AccessedNow)
-            {
-                ChangeState(State.AccessedNow);
-            }
+            
+            ChangeState(State.AccessedNow); 
         }
 
+        /// <summary>
+        /// エリア初期化時、セーブポイントアクセス時に発火
+        /// </summary>
+        /// <param name="state">セットするState</param>
         public void ChangeState(State state)
         {
             _currentState = state;

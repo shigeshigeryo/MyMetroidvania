@@ -53,9 +53,20 @@ namespace MyMetroidVania.System
             InitializeAllGimmicks();
         }
 
+        /// <summary>
+        /// エリア移動時の初期化
+        /// </summary>
         public void InitializeAreaState()
         {
             InitializeAllEnemies();
+        }
+
+        /// <summary>
+        /// 初回起動時、セーブポイントアクセス時、リスポーン時の初期化
+        /// </summary>
+        public void InitializeAreaStateRespawn()
+        {
+            RespawnAllEnemies();
         }
 
         /// <summary>
@@ -95,6 +106,25 @@ namespace MyMetroidVania.System
             {
                 if (isFirst) enemy.InitializeOnce(); // 初回時のみ実行する初期化
                 enemy.Initialize();
+            }
+        }
+
+        /// <summary>
+        /// エリア内の敵の初期化処理
+        /// </summary>
+        private void RespawnAllEnemies()
+        {
+            bool isFirst = EnemyList == null;
+            if (isFirst)
+            {
+                // lazyLoad
+                EnemyList = GetComponentsInChildren<EnemyBase>();
+            }
+
+            foreach (var enemy in EnemyList)
+            {
+                if (isFirst) enemy.InitializeOnce(); // 初回時のみ実行する初期化
+                enemy.Respawn();
             }
         }
 

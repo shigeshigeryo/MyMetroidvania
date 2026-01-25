@@ -84,8 +84,21 @@ namespace MyMetroidVania.System
 
             // 移動後のエリアをActive
             _currentAreaManager.gameObject.SetActive(true);
+            // エリアの初期化
+            _currentAreaManager.InitializeAreaState();
             // 移動先にスポーンさせる
             _player.transform.position = spawnPosition;
+        }
+
+        /// <summary>
+        /// セーブポイントアクセス時、リスポーン時に発火する全てのエリアの初期化処理
+        /// </summary>
+        private void InitializeAllAreaRespawn()
+        {
+            foreach (var am in AreaManager.AreaManagerList.Values)
+            {
+                am.InitializeAreaStateRespawn();
+            }
         }
 
         /// <summary>
@@ -104,13 +117,9 @@ namespace MyMetroidVania.System
                 _player.transform.position = _respawnPosition;
             }
 
-            foreach (var am in AreaManager.AreaManagerList.Values)
-            {
-                am.InitializeAreaState();
-            }
+            InitializeAllAreaRespawn();
         }
 
-        // TODO:初回起動時に呼び出されない不具合あり。　事前にアクセス済みセーブポイントを設けるか、別手段を検討
         /// <summary>
         /// 最近でアクセスしたセーブポイントの更新
         /// </summary>
@@ -133,6 +142,11 @@ namespace MyMetroidVania.System
             {
                 _isInitializeSpawn = true;
                 RespawnPlayer();
+            }
+            else
+            {
+                // 初回起動時は RespawnPlayer() のタイミングで呼ばれる。
+                InitializeAllAreaRespawn();
             }
         }
 

@@ -44,11 +44,26 @@ namespace MyMetroidVania.Entity.Character.Enemy
         }
 
         /// <summary>
-        /// 初期化処理（初回、セーブ時、死亡時に発火）
+        /// 初期化処理
+        /// 初回、エリア移動時に発火
         /// </summary>
         public virtual void Initialize()
         {
+            // 初期位置に移動
+            transform.position = _initialPosition;
+            // 生存している場合にのみステータスを初期化
+            if (gameObject.activeSelf) _statusManager.InitializeStatus();
+        }
+
+        /// <summary>
+        /// リスポーン処理
+        /// セーブ時、死亡時に発火
+        /// </summary>
+        public virtual void Respawn()
+        {
+            // 死亡していた場合にActiveにする
             if (!gameObject.activeSelf) gameObject.SetActive(true);
+            // 初期位置に移動
             transform.position = _initialPosition;
             _statusManager.InitializeStatus();
         }
