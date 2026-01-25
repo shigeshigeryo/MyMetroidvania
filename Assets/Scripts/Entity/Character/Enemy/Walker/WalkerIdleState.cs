@@ -54,6 +54,14 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         protected override void OnTick()
         {
             Debug.Log("ウォーカーの待機ステート行動中");
+            if (_owner.IsStun)
+            {
+                // ダメージを受けてスタンした
+                StunState.SetNextState(this);
+                _owner.ChangeState(StunState);
+                return;
+            }
+
             if (_owner.IsPlayerDetected())
             {
                 // プレイヤーを検知した

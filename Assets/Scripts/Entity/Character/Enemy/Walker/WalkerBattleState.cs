@@ -43,11 +43,27 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         protected override void OnTick()
         {
             Debug.Log("ウォーカーのバトルステート行動中");
+
+            if (!_isAttacking && _owner.IsStun)
+            {
+                // ダメージを受けてスタンした
+                // 攻撃中はスタンしない
+                StunState.SetNextState(this);
+                _owner.ChangeState(StunState);
+                return;
+            }
+            else if (_owner.IsStun)
+            {
+                // スタンしないためスタン状態を回復する
+                _owner.RecoverStun();
+            }
+
             if (!_isAttacking && !_owner.IsPlayerInRange())
             {
                 // 攻撃中にステートの変更を行わない
                 // プレイヤーが攻撃射程内にいない
                 _owner.ChangeState(ChaseState);
+                return;
             }
         }
 
@@ -69,7 +85,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
                 _isAttacking = false;
 
                 // Tickによるステート遷移条件の監視を保証する
-                yield return new WaitForSeconds(_tickIntervalSec);
+                yield return new WaitForSeconds(TICK_INTERVAL_SEC);
             }
         }
     }

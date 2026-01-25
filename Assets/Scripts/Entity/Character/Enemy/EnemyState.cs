@@ -8,7 +8,7 @@ namespace MyMetroidVania.Entity.Character.Enemy
     public abstract class EnemyState
     {
         protected float _timer = 0;
-        protected float _tickIntervalSec = 0.25f; // Tickインターバル秒
+        protected const float TICK_INTERVAL_SEC = 0.25f; // Tickインターバル秒
 
         /// <summary>
         /// ステートに遷移時に発火
@@ -21,7 +21,7 @@ namespace MyMetroidVania.Entity.Character.Enemy
         public void Tick()
         {
             // 遷移の監視にインターバルを設ける
-            if (_timer < _tickIntervalSec)
+            if (_timer < TICK_INTERVAL_SEC)
             {
                 _timer += Time.deltaTime;
                 return;
@@ -44,6 +44,23 @@ namespace MyMetroidVania.Entity.Character.Enemy
     public abstract class EnemyState<T> : EnemyState where T : EnemyBase
     {
         protected T _owner;
+        protected StunState _stunState = null;
+        protected StunState StunState
+        {
+            get
+            {
+                if (_stunState == null)
+                {
+                    // 存在しなかった場合は生成して返す
+                    return _stunState = new StunState(_owner, this);
+                }
+                else
+                {
+                    return _stunState;
+                }
+            }
+        }
+
         public EnemyState(T enemy)
         {
             _owner = enemy;
