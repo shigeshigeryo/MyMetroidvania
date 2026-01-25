@@ -35,7 +35,10 @@ namespace MyMetroidVania.System.Map
         /// </summary>
         public void SetVisitedArea(string areaId)
         {
-            AreaMap.AreaMapList[areaId].SetVisitedState();
+            if (AreaMap.AreaMapList.ContainsKey(areaId))
+            {
+                AreaMap.AreaMapList[areaId].SetVisitedState();
+            }
         }
     }
 }
