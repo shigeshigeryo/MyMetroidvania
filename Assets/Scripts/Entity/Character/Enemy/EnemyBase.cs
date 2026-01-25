@@ -24,6 +24,10 @@ namespace MyMetroidVania.Entity.Character.Enemy
         private Vector3 _initialPosition; // 初期位置
         private EnemyState _currentState = null; // 現在のステート
 
+        // ダメージを受けたかどうか
+        private bool _isStun = false;
+        public bool IsStun => _isStun;
+
         /// <summary>
         /// 初期化処理（初回のみ発火）
         /// </summary>
@@ -81,6 +85,13 @@ namespace MyMetroidVania.Entity.Character.Enemy
         /// 攻撃射程にプレイヤーが存在するか返す
         /// </summary>
         public abstract bool IsPlayerInRange();
+        /// <summary>
+        /// スタン状態を解除
+        /// </summary>
+        public void RecoverStun()
+        {
+            _isStun = false;
+        }
 
 
         /*
@@ -112,6 +123,7 @@ namespace MyMetroidVania.Entity.Character.Enemy
         protected virtual void OnTakenDamage()
         {
             AudioManager.Instance.PlayOneShotSe(_takeDamageSound);
+            _isStun = true; // スタン状態にする
         }
 
         /// <summary>
