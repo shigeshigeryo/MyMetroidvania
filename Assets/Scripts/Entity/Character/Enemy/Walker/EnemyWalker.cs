@@ -31,10 +31,30 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         [Space]
         [SerializeField] private EnemyWalkerAnimation _animation = null;
 
+        private SleepState _sleepState = null;
+        private SleepState SleepState
+        {
+            get
+            {
+                if(_sleepState == null)
+                {
+                    _sleepState = new SleepState(this, new WalkerIdleState(this));
+                }
+
+                return _sleepState;
+            }
+        }
+
         public override void Initialize()
         {
             base.Initialize();
-            ChangeState(new SleepState(this, new WalkerIdleState(this)));
+            ChangeState(SleepState);
+        }
+
+        public override void Respawn()
+        {
+            base.Respawn();
+            ChangeState(SleepState);
         }
 
         private void FixedUpdate()
