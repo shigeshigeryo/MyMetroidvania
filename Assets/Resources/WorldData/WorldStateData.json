@@ -1,5 +1,5 @@
 {
-  "LastRespawnAreaId": "Area_001",
+  "LastRespawnAreaId": "Area_000",
   "AllAreaTargetStateDataList": {
     "Ability": {
       "TargetId": "Ability",
@@ -11,9 +11,10 @@
     }
   },
   "VisitedAreaIdList": [
-    "Area_001"
+    "Area_000"
   ],
   "AreaStateDataPathList": {
+    "Area_000": "WorldData/Area_000",
     "Area_001": "WorldData/Area_001",
     "Area_002": "WorldData/Area_002"
   }
