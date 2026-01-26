@@ -29,7 +29,10 @@ namespace MyMetroidVania.System
         private bool _isInitializeSpawn = true;
 
 #if UNITY_EDITOR
-        [SerializeField] private bool _isDebug = false;
+        [Header("Debug")]
+        [SerializeField, Tooltip("デバッグ用フラグ　エリアマネージャにも影響あり")] public bool IsDebug = false;
+        [SerializeField, Tooltip("デバッグ用初期スポーンエリア名")] private string _debugSpawnPointAreaId = "";
+        [SerializeField, Tooltip("デバッグ用初期スポーン地点")] private Transform _debugSpawnPoint = null;
 #endif
 
         private void Awake()
@@ -137,6 +140,17 @@ namespace MyMetroidVania.System
             // アクセスされるセーブポイントがあるエリアは必ず現在のエリアになる
             _lastRespawnAreaId = _currentAreaManager.AreaId;
 
+#if UNITY_EDITOR
+            // デバッグ用 指定の位置に初期スポーンさせる
+            if (IsDebug && _isInitializeSpawn && _debugSpawnPointAreaId != "" && _debugSpawnPoint != null)
+            {
+                _lastRespawnAreaId = _debugSpawnPointAreaId;
+                _respawnPosition = _debugSpawnPoint.position;
+                RespawnPlayer();
+                return;
+            }
+#endif
+
             // 初回はプレイヤーをスポーンさせる
             if (_isInitializeSpawn)
             {
@@ -153,7 +167,7 @@ namespace MyMetroidVania.System
         private void SaveWorldStateData()
         {
 #if UNITY_EDITOR
-            if (_isDebug) return;
+            if (IsDebug) return;
 #endif
             _worldStateData.SetLastRespawnAreaId(_lastRespawnAreaId);
             JsonHandler.WriteJsonFile(WORLD_STATE_DATA_PATH, _worldStateData);
@@ -163,5 +177,26 @@ namespace MyMetroidVania.System
         {
             SaveWorldStateData();
         }
+
+#if UNITY_EDITOR
+        [ContextMenu("Respawn To Debug Point")]
+        private void RespawnDebugPoint()
+        {
+            if (!IsDebug)
+            {
+                Debug.LogError("IsDebugをtrueにしてから実行してください");
+                return;
+            }
+            if (_debugSpawnPointAreaId == "" || _debugSpawnPoint == null)
+            {
+                Debug.LogError("エリアID、またはスポーン地点の設定がありません。");
+                return;
+            }
+
+            _lastRespawnAreaId = _debugSpawnPointAreaId;
+            _respawnPosition = _debugSpawnPoint.position;
+            RespawnPlayer();
+        }
+#endif
     }
 }
