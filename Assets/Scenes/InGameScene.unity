@@ -938,6 +938,10 @@ PrefabInstance:
       propertyPath: _spawnPoint
       value: 
       objectReference: {fileID: 6741493200708966066}
+    - target: {fileID: 7811649059724929117, guid: 7e3802b3d0c624f499f57b19e0fb8c4a, type: 3}
+      propertyPath: m_ChunkCullingBounds.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
