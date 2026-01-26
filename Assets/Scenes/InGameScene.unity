@@ -1238,7 +1238,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 6200967431743478429}
-  _isDebug: 0
+  IsDebug: 0
+  _debugSpawnPointAreaId: Area_002
+  _debugSpawnPoint: {fileID: 679263569}
 --- !u!4 &1063851720
 Transform:
   m_ObjectHideFlags: 0

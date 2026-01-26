@@ -21,11 +21,6 @@ namespace MyMetroidVania.System
         public AreaStateData AreaStateData => _areaStateData;
         private string _areaStateDataPath;
 
-#if UNITY_EDITOR
-        [SerializeField, Tooltip("デバッグ用にステージ状態の更新を行いたくない場合true")]
-        private bool _isDebug = false;
-#endif
-
         private void Awake()
         {
             AreaManagerList.Add(_areaId, this);
@@ -135,7 +130,7 @@ namespace MyMetroidVania.System
         private void SaveAreaStateData()
         {
 #if UNITY_EDITOR
-            if (_isDebug) return;
+            if (WorldManager.Instance.IsDebug) return;
 #endif
             JsonHandler.WriteJsonFile(_areaStateDataPath, _areaStateData);
         }
