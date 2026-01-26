@@ -100,6 +100,10 @@ MonoBehaviour:
   _animation: {fileID: 6755718135541078020}
   _abilityManager: {fileID: 5809375478146826560}
   _groundChecker: {fileID: 7427499878688929372}
+  _footCollider: {fileID: 3910211139842317561}
+  _canPathThroughLayer:
+    serializedVersion: 2
+    m_Bits: 32768
   _hitBoxOriginTransform: {fileID: 3604531770454019126}
   _hitBox: {fileID: 1374017822495714362}
   _coolSec: 0.25
@@ -229,7 +233,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 32768
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -963,7 +967,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _targetLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 32832
   _useOverlapBox: 1
   _offsetOverlap: {x: 0, y: -0.1}
   _sizeOverlap: {x: 0.3, y: 0.25}

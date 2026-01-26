@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 601013252307342344}
   - component: {fileID: 8226497067068203098}
   - component: {fileID: 1535986143011789172}
-  m_Layer: 6
+  m_Layer: 15
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,7 +336,7 @@ PlatformEffector2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4713363636036029733}
   m_Enabled: 1
-  m_UseColliderMask: 1
+  m_UseColliderMask: 0
   m_ColliderMask:
     serializedVersion: 2
     m_Bits: 4294967295

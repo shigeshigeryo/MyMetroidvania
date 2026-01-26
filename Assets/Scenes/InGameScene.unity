@@ -689,7 +689,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 32759
+    m_Bits: 65527
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1238,7 +1238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 6200967431743478429}
-  IsDebug: 0
+  IsDebug: 1
   _debugSpawnPointAreaId: Area_002
   _debugSpawnPoint: {fileID: 679263569}
 --- !u!4 &1063851720
