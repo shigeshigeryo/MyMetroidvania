@@ -24,6 +24,8 @@ namespace MyMetroidVania.Entity.Character.Player
 
         [Header("ジャンプ")]
         [SerializeField, Tooltip("地面の接地判定")] private BoxCaster _groundChecker;
+        [SerializeField, Tooltip("足元のコライダー")] private Collider2D _footCollider;
+        [SerializeField, Tooltip("通りぬけ可能なレイヤーを指定")] private LayerMask _canPathThroughLayer = 0;
 
         [Header("攻撃")]
         [SerializeField, Tooltip("攻撃判定の原点")] private Transform _hitBoxOriginTransform = null;
@@ -323,8 +325,17 @@ namespace MyMetroidVania.Entity.Character.Player
         {
             if (!_groundChecker.IsCasted) return;
 
-            _currentState = ActionState.JumpAnticipation;
-            Jump();
+            if (_input.InputDirection.y < -0.5f)
+            {
+                // 下入力がある場合は通りぬけ
+                StartCoroutine(PathThroughPlatform());
+            }
+            else
+            {
+                // 下入力がない場合は通常のジャンプ
+                _currentState = ActionState.JumpAnticipation;
+                Jump();
+            }
         }
 
         /// <summary>
@@ -336,6 +347,18 @@ namespace MyMetroidVania.Entity.Character.Player
             _visualEffect.PlayJumpEffect();
 
             _animation.TriggerJump();
+        }
+
+        /// <summary>
+        /// 下＋ジャンプ入力でプラットフォームを通りぬける
+        /// 足元のコライダーとプラットフォームのレイヤーを一時的に判定しないようにする
+        /// 足元以外のコライダーにはヒットしないように事前にExcluderLayersに設定済み
+        /// </summary>
+        private IEnumerator PathThroughPlatform()
+        {
+            _footCollider.excludeLayers = _canPathThroughLayer;
+            yield return new WaitForSeconds(0.2f);
+            _footCollider.excludeLayers = 0; // Nothing
         }
 
         /*
