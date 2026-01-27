@@ -79,14 +79,16 @@ namespace MyMetroidVania.Entity.Character.Player
             _input.OnInteractStarted += OnInteract;
 
             // ステータス周り
-            _statusManager.OnDamageTaken += OnDamageTaken;
+            _statusManager.OnDamageTaken += _input.VibrateController;
+            _statusManager.OnDead += _input.VibrateController;
             _statusManager.OnDead += OnDead;
         }
 
         private void DisposeEvents()
         {
             // ステータス周り
-            _statusManager.OnDamageTaken -= OnDamageTaken;
+            _statusManager.OnDamageTaken -= _input.VibrateController;
+            _statusManager.OnDead -= _input.VibrateController;
             _statusManager.OnDead -= OnDead;
         }
 

@@ -1,6 +1,8 @@
 using MyMetroidVania.System;
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace MyMetroidVania.Entity.Character.Player
 {
@@ -25,6 +27,10 @@ namespace MyMetroidVania.Entity.Character.Player
                 }
             }
         }
+
+        [Header("U“®")]
+        [SerializeField, Tooltip("U“®‚Ìƒpƒ["), Range(0f, 1f)] private float _vibrationPower = 0.4f;
+        [SerializeField, Tooltip("U“®‚Ì‘±•b”")] private float _vibrationSec = 0.1f;
 
         // ˆÚ“®“ü—Í•ûŒü
         private Vector2 _inputDirection = Vector2.zero;
@@ -69,6 +75,27 @@ namespace MyMetroidVania.Entity.Character.Player
         private void Update()
         {
             _inputDirection = Actions.Player.Move.ReadValue<Vector2>();
+        }
+
+        /// <summary>
+        /// ƒRƒ“ƒgƒ[ƒ‰[‚ğU“®‚³‚¹‚é
+        /// </summary>
+        public void VibrateController()
+        {
+            StartCoroutine(OnVibrateController());
+        }
+
+        private IEnumerator OnVibrateController()
+        {
+            var pad = Gamepad.current;
+            if (pad == null) yield break;
+
+            // U“®ŠJn
+            pad.SetMotorSpeeds(_vibrationPower, _vibrationPower);
+            yield return new WaitForSeconds(_vibrationSec);
+
+            // U“®I—¹
+            pad.SetMotorSpeeds(0f, 0f);
         }
     }
 }
