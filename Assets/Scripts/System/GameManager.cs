@@ -1,7 +1,6 @@
 using PlayerInputActions = MyMetroidVania.Entity.Character.Player.PlayerInputActions;
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace MyMetroidVania.System
 {
@@ -51,24 +50,15 @@ namespace MyMetroidVania.System
         {
             // UIの操作を登録
             InputActions.UI.Enable();
-            InputActions.UI.ToggleMiniMap.started += OnToggleMiniMap;
-            InputActions.UI.ToggleMiniMap.canceled += OnToggleMiniMap;
-        }
-
-        /// <summary>
-        /// ミニマップの切り替えを行う
-        /// 実態はMiniMapUI参照
-        /// </summary>
-        private void OnToggleMiniMap(InputAction.CallbackContext _)
-        {
-            OnToggledMiniMap?.Invoke();
+            InputActions.UI.ToggleMiniMap.started += _ =>  OnToggledMiniMap?.Invoke();
+            InputActions.UI.ToggleMiniMap.canceled += _ => OnToggledMiniMap?.Invoke();
         }
 
         private void OnDestroy()
         {
             // 購読解除
-            InputActions.UI.ToggleMiniMap.started -= OnToggleMiniMap;
-            InputActions.UI.ToggleMiniMap.canceled -= OnToggleMiniMap;
+            InputActions.UI.ToggleMiniMap.started -= _ => OnToggledMiniMap?.Invoke();
+            InputActions.UI.ToggleMiniMap.canceled -= _ => OnToggledMiniMap?.Invoke();
         }
     }
 }
