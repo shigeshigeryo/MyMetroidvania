@@ -164,6 +164,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25363f771d90e8f4d9c90511b4a2976c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _vibrationPower: 0.4
+  _vibrationSec: 0.1
 --- !u!114 &5697400064710948249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,7 +546,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _targetLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 32832
   _useOverlapBox: 0
   _offsetOverlap: {x: 2.5, y: 0}
   _sizeOverlap: {x: 5, y: 0.5}
