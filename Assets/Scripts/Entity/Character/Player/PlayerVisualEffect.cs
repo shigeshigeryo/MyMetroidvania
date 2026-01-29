@@ -7,6 +7,9 @@ using UnityEngine.Pool;
 
 namespace MyMetroidVania.Entity.Character.Player
 {
+    /// <summary>
+    /// プレイヤーのビジュアル、SE、エフェクト関係を管理
+    /// </summary>
     public class PlayerVisualEffect : MonoBehaviour
     {
         [SerializeField] private StatusManager _statusManager = null;
@@ -16,6 +19,8 @@ namespace MyMetroidVania.Entity.Character.Player
         [Header("エフェクト")]
         [SerializeField, Tooltip("走るエフェクト")] private RunEffect _runEffectPrefab = null;
         private RunEffect _runEffect = null;
+        [SerializeField, Tooltip("フッククールタイム完了エフェクトのアニメーション")]
+        private CoolTimeCompleteEffect _CTCompleteEffect = null;
         [SerializeField, Tooltip("ジャンプエフェクト")] private PoolingEffect _jumpEffectPrefab = null;
         [SerializeField, Tooltip("着地エフェクト")] private PoolingEffect _landEffectPrefab = null;
         private IObjectPool<PoolingEffect> _jumpEffectPool;
@@ -145,6 +150,14 @@ namespace MyMetroidVania.Entity.Character.Player
         public void PlayHookEffect()
         {
             _audioSource.PlayOneShot(_hookSound.Clip, _hookSound.Volume);
+        }
+
+        /// <summary>
+        /// フッククールタイム完了のエフェクトを再生
+        /// </summary>
+        public void PlayHookCTCompleteEffect()
+        {
+            _CTCompleteEffect.PlayAnimation();
         }
 
         /// <summary>

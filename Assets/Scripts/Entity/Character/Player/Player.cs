@@ -421,13 +421,12 @@ namespace MyMetroidVania.Entity.Character.Player
             {
                 yield return null;
                 timer += Time.deltaTime;
-                OnCoolHook?.Invoke(timer / _hookCTSeconds); // クールタイムの進捗
                 if (timer >= _hookCTSeconds && _groundChecker.IsCasted) break;
             }
 
-            _canHook = true;
-            OnCoolHook?.Invoke(0); // 非表示
+            _visualEffect.PlayHookCTCompleteEffect();
             _hookCoolDownRoutine = null;
+            _canHook = true;
         }
 
 
