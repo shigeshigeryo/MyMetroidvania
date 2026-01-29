@@ -410,18 +410,19 @@ namespace MyMetroidVania.Entity.Character.Player
 
         /// <summary>
         /// フックのクールダウン
+        /// クールタイム && クールタイム後に着地している と再使用可能
         /// </summary>
-        /// <returns></returns>
         private IEnumerator WaitHookCooldown()
         {
             _canHook = false;
 
             float timer = 0f;
-            while (timer < _hookCTSeconds)
+            while (true)
             {
                 yield return null;
                 timer += Time.deltaTime;
                 OnCoolHook?.Invoke(timer / _hookCTSeconds); // クールタイムの進捗
+                if (timer >= _hookCTSeconds && _groundChecker.IsCasted) break;
             }
 
             _canHook = true;
