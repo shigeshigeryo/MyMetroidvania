@@ -128,6 +128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4354316}
+  - component: {fileID: 4354320}
   - component: {fileID: 4354319}
   - component: {fileID: 4354318}
   - component: {fileID: 4354317}
@@ -217,6 +218,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4354315}
   m_CullTransparentMesh: 1
+--- !u!114 &4354320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4354315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b7bf75170c28604e90a52500fba6939, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 4354317}
 --- !u!1 &9744821
 GameObject:
   m_ObjectHideFlags: 0
@@ -825,7 +839,7 @@ MonoBehaviour:
     Enabled: 0
     DefaultMode: 2
   DefaultBlend:
-    Style: 1
+    Style: 0
     Time: 2
     CustomCurve:
       serializedVersion: 2
@@ -1893,6 +1907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc8a7062cc29f5b428bca63b56362e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _transitionUI: {fileID: 4354320}
 --- !u!4 &1685975099
 Transform:
   m_ObjectHideFlags: 0

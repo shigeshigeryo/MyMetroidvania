@@ -1,6 +1,7 @@
 using PlayerInputActions = MyMetroidVania.Entity.Character.Player.PlayerInputActions;
 using System;
 using UnityEngine;
+using MyMetroidVania.System.UI;
 
 namespace MyMetroidVania.System
 {
@@ -35,6 +36,8 @@ namespace MyMetroidVania.System
         }
 
         public event Action OnToggledMiniMap;
+        [SerializeField, Tooltip("画面遷移フェードUI")] private TransitionUI _transitionUI = null;
+
 
         private void Awake()
         {
@@ -53,6 +56,16 @@ namespace MyMetroidVania.System
             InputActions.UI.ToggleMiniMap.started += _ =>  OnToggledMiniMap?.Invoke();
             InputActions.UI.ToggleMiniMap.canceled += _ => OnToggledMiniMap?.Invoke();
         }
+
+        /// <summary>
+        /// エリア移動時処理
+        /// </summary>
+        public void ChangeArea(string areaId, Vector3 spawnPosition)
+        {
+            _transitionUI.Show();
+            WorldManager.Instance.ChangeArea(areaId, spawnPosition);
+        }
+
 
         private void OnDestroy()
         {

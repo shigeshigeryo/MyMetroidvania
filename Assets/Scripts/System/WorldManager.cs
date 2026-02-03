@@ -113,7 +113,7 @@ namespace MyMetroidVania.System
             // エリアを切り替えてからスポーンさせる必要がある
             if (_currentAreaManager.AreaId != _lastRespawnAreaId)
             {
-                ChangeArea(_lastRespawnAreaId, _respawnPosition);
+                GameManager.Instance.ChangeArea(_lastRespawnAreaId, _respawnPosition);
             }
             else
             {

@@ -14,7 +14,7 @@ namespace MyMetroidVania.Entity
         {
             if (collision.CompareTag("Player"))
             {
-                WorldManager.Instance.ChangeArea(_nextAreaId, SpawnPoint.position);
+                GameManager.Instance.ChangeArea(_nextAreaId, SpawnPoint.position);
             }
         }
     }
