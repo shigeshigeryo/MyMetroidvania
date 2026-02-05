@@ -15,10 +15,27 @@ namespace MyMetroidVania.Utility
         private LayerMask _targetLayers = default;
         [SerializeField, Tooltip("ギズモの色を指定")]
         private Color _gizmoColor = Color.white;
+        [SerializeField, Tooltip("FixedUpdateで当たり判定のチェックを行う<br>必要のない場合は false")]
+        private bool _checkFixedUpdate = false;
+        public bool IsCasted { get; private set; } = false;
+
+        private void FixedUpdate()
+        {
+            if (_checkFixedUpdate)
+            {
+                IsCasted = GetHitCollider();
+            }
+        }
 
         public Collider2D GetHitCollider()
         {
             return Physics2D.OverlapCircle(transform.position, _radius, _targetLayers);
+        }
+
+        private void OnEnable()
+        {
+            // Inactive時に判定結果の初期化をしておく
+            IsCasted = false;
         }
 
         // Unityエディター上で常時描画するギズモを記述します。

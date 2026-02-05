@@ -100,6 +100,11 @@ namespace MyMetroidVania.Utility
                                      _targetLayers);
         }
 
+        private void OnEnable()
+        {
+            // Inactive‚É”»’èŒ‹‰Ê‚Ì‰Šú‰»‚ğ‚µ‚Ä‚¨‚­
+            IsCasted = false;
+        }
         private void OnDrawGizmos()
         {
             var angle = transform.eulerAngles.z;

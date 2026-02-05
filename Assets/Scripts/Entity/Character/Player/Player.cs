@@ -1,9 +1,11 @@
+using MyMetroidVania.Entity.Effect;
 using MyMetroidVania.Entity.Gimmick;
 using MyMetroidVania.System;
 using MyMetroidVania.Utility;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace MyMetroidVania.Entity.Character.Player
 {
@@ -29,9 +31,10 @@ namespace MyMetroidVania.Entity.Character.Player
 
         [Header("攻撃")]
         [SerializeField, Tooltip("攻撃判定の原点")] private Transform _hitBoxOriginTransform = null;
-        [SerializeField, Tooltip("攻撃判定")] private HitBox _hitBox;
         [SerializeField, Tooltip("攻撃CT（秒）")] private float _coolSec = 0.25f;
         private bool _isAttacking = false;
+        [SerializeField, Tooltip("手裏剣")] Shuriken _shurikenPrefab = null;
+        private IObjectPool<Shuriken> _shurikenPool = null;
 
         [Header("フック")]
         [SerializeField, Tooltip("フックの原点")] private Transform _hookOriginTransform = null;
@@ -68,6 +71,30 @@ namespace MyMetroidVania.Entity.Character.Player
         private void Initialize()
         {
             _currentState = ActionState.Run;
+
+            // 手裏剣プール
+            _shurikenPool = new ObjectPool<Shuriken>(
+                createFunc: () =>
+                {
+                    Shuriken shuriken = Instantiate(_shurikenPrefab);
+                    shuriken.SetPool(_shurikenPool);
+                    return shuriken;
+                },
+                actionOnGet: (shuriken) =>
+                {
+                    shuriken.gameObject.SetActive(true);
+                },
+                actionOnRelease: (shuriken) =>
+                {
+                    shuriken.gameObject.SetActive(false);
+                },
+                actionOnDestroy: (shuriken) =>
+                {
+                    Destroy(shuriken.gameObject);
+                },
+                defaultCapacity: 3, // 準備数（仮）
+                maxSize: 5 // 最大数（仮）
+            );
         }
         private void InitializeEvents()
         {
@@ -295,22 +322,29 @@ namespace MyMetroidVania.Entity.Character.Player
          * ------------------------------------------------------------------
          */
 
+        /// <summary>
+        /// 攻撃の発火
+        /// </summary>
         private void OnAttack()
         {
-            // 後々アニメーションで制御することになりそう
             if (_isAttacking) return;
-            Debug.Log("攻撃！");
             StartCoroutine(Attack());
         }
 
+        /// <summary>
+        /// 攻撃の処理とクールタイムを管理
+        /// </summary>
         private IEnumerator Attack()
         {
+            Debug.Log("攻撃！");
             _isAttacking = true;
-            _hitBox.SetEnableCollider();
+            var shuriken = _shurikenPool.Get();
+            shuriken.Initialize(_hitBoxOriginTransform.position,
+                    _hitBoxOriginTransform.rotation,
+                    _statusManager.GetAttackPower());
 
             yield return new WaitForSeconds(_coolSec);
 
-            _hitBox.SetDisableCollider();
             _isAttacking = false;
         }
 

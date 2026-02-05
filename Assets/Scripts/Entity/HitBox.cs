@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace MyMetroidVania.Entity
@@ -14,6 +15,7 @@ namespace MyMetroidVania.Entity
         [SerializeField, Tooltip("ステータスを参照する場合のダメージ倍率")]
         private float _attackMul = 1.0f;
         private Collider2D _collider;
+        public event Action OnTriggered;
 
         private void Start()
         {
@@ -57,6 +59,7 @@ namespace MyMetroidVania.Entity
             if (collision.TryGetComponent<HurtBox>(out var hurtBox))
             {
                 hurtBox.TakeDamage(GetDamageValue());
+                OnTriggered?.Invoke();
             }
         }
     }
