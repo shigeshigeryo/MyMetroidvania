@@ -94,16 +94,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
 
             // à»â∫åüímÇµÇΩèÍçá
             var distance = transform.position - hit.transform.position;
-            if (distance.sqrMagnitude <= SqrAttackRange)
-            {
-                // çUåÇéÀíˆì‡
-                return true;
-            }
-            else
-            {
-                // çUåÇéÀíˆäO
-                return false;
-            }
+            return distance.sqrMagnitude <= SqrAttackRange;
         }
 
         /// <summary>
@@ -192,7 +183,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         /// </summary>
         public override void StopChase()
         {
-            _rb.linearVelocity = Vector3.zero;
+            _rb.linearVelocity = Vector2.zero;
         }
 
         /*
