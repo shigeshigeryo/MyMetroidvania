@@ -32,6 +32,12 @@ namespace MyMetroidVania.Utility
             return Physics2D.OverlapCircle(transform.position, _radius, _targetLayers);
         }
 
+        private void OnEnable()
+        {
+            // Inactive時に判定結果の初期化をしておく
+            IsCasted = false;
+        }
+
         // Unityエディター上で常時描画するギズモを記述します。
         private void OnDrawGizmos()
         {
