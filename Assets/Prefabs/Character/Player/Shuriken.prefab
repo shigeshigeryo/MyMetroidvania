@@ -184,8 +184,8 @@ MonoBehaviour:
   _groundChecker: {fileID: 6195979247602159115}
   _hitBox: {fileID: 7939168803998028402}
   _visual: {fileID: 7608703402685229344}
-  _moveDistance: 1
-  _moveTimeSec: 1
+  _moveDistance: 3
+  _moveTimeSec: 0.3
   _rotateSpeed: 360
 --- !u!1 &8739343589925590056
 GameObject:

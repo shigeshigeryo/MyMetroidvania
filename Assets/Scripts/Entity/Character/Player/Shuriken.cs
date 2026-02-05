@@ -1,5 +1,6 @@
 using MyMetroidVania.Utility;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace MyMetroidVania.Entity.Character.Player
 {
@@ -13,10 +14,18 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField, Tooltip("移動時間（秒）")] private float _moveTimeSec;
         [SerializeField, Tooltip("毎秒の回転速度")] private float _rotateSpeed;
 
-        private int _playerAtkPower = 1;
+        private bool _isInit = false;
+        private int _atkPower = 1;
         private Vector3 _startPosition;
         private Vector3 _arrivalPosition;
         private float _currentTime = 0f;
+
+        private IObjectPool<Shuriken> _pool;
+        public void SetPool(IObjectPool<Shuriken> pool)
+        {
+            _pool = pool;
+        }
+
 
         private void Start()
         {
@@ -26,16 +35,30 @@ namespace MyMetroidVania.Entity.Character.Player
                 return;
             }
 
-            // 初期位置、到達位置を設定
-            _startPosition = transform.position;
-            _arrivalPosition = _startPosition + (transform.right * _moveDistance);
-
             // イベント購読
             _hitBox.OnTriggered += Disappear;
         }
 
+        public void Initialize(Vector3 position, Quaternion rotation, int atkPower)
+        {
+            // 現在位置と角度と攻撃力を初期化
+            transform.position = position;
+            transform.rotation = rotation;
+            _atkPower = atkPower;
+
+            // 初期位置、到達位置を設定
+            _startPosition = position;
+            _arrivalPosition = _startPosition + (transform.right * _moveDistance);
+
+            _currentTime = 0;
+
+            _isInit = true;
+        }
+
         private void Update()
         {
+            if (!_isInit) return;
+
             // 移動時間を過ぎるか、接地判定があった場合に手裏剣を消す
             if (_currentTime > _moveTimeSec || _groundChecker.IsCasted)
             {
@@ -57,22 +80,20 @@ namespace MyMetroidVania.Entity.Character.Player
         /// <returns>攻撃力の値</returns>
         public int GetAttackPower()
         {
-            return _playerAtkPower;
-        }
-
-        public void SetAttackPower(int attackPower)
-        {
-            _playerAtkPower = attackPower;
+            return _atkPower;
         }
 
         // 時間経過、敵、壁にヒットで消滅
         private void Disappear()
         {
-            Destroy(gameObject);
+            if (!_isInit) return;
+
+            _isInit = false;
+            _pool.Release(this);
         }
 
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             // イベント購読解除
             _hitBox.OnTriggered -= Disappear;
