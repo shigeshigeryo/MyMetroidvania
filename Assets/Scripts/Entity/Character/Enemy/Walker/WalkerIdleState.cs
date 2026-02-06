@@ -89,7 +89,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         {
             while (true)
             {
-                yield return _owner.OnMove();
+                yield return _owner.OnIdle();
             }
         }
     }

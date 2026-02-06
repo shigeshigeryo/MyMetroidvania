@@ -218,6 +218,7 @@ MonoBehaviour:
   _animator: {fileID: 7385177842809366354}
   _enemyWalker: {fileID: 6173466905474084008}
   _statusManager: {fileID: 1243930244234204274}
+  _renderer: {fileID: 1302095488961186547}
 --- !u!1 &512842105983723041
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,6 +418,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   _gizmoColor: {r: 0.94716984, g: 0.15547878, b: 0.85480577, a: 1}
+  _checkFixedUpdate: 0
 --- !u!1 &8581492097899189496
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,17 +475,17 @@ MonoBehaviour:
   _audioSource: {fileID: 3540492228128941750}
   _rb: {fileID: 6707840728052785788}
   _statusManager: {fileID: 1243930244234204274}
-  _moveSpeedX: 1
-  _groundChecker: {fileID: 4866534370304046471}
   _takeDamageSoundName: SE_PlayerTakeDamage
   _deadSoundName: SE_PlayerDead
-  _animation: {fileID: 2320448066669024302}
+  _groundChecker: {fileID: 4866534370304046471}
   _hitBox: {fileID: 8249786393369527631}
   _attackRange: 1
   _coolSec: 1
   _playerChecker: {fileID: 1585226471552130171}
+  _moveSpeedX: 1
   _idleDurationSec: 2
   _intervalSec: 1
+  _animation: {fileID: 2320448066669024302}
 --- !u!114 &1243930244234204274
 MonoBehaviour:
   m_ObjectHideFlags: 0

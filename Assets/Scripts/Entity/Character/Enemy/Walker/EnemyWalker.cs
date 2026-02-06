@@ -7,6 +7,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
     public class EnemyWalker : EnemyBase
     {
         private float _lastMoveDirection;// 最後に動いた方向 +x方向 = 1, -x方向 = -1
+        [SerializeField, Tooltip("地面の接地判定")] protected BoxCaster _groundChecker = null;
 
         [Header("攻撃（TestEnemy）")]
         [SerializeField, Tooltip("攻撃判定")] private HitBox _hitBox;
@@ -17,6 +18,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         [SerializeField, Tooltip("プレイヤーチェッカー")] private CircleCaster _playerChecker = null;
 
         [Header("待機")]
+        [SerializeField, Tooltip("x軸の移動の速さ")] protected float _moveSpeedX = 5f;
         [SerializeField, Tooltip("1ループでの徘徊時間")]
         private float _idleDurationSec = 2f;
         [SerializeField, Tooltip("ループで発生するインターバル秒")]
@@ -59,7 +61,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
 
         private void FixedUpdate()
         {
-            _animation.UpdateParam(Mathf.Abs(_rb.linearVelocityX));
+            _animation.UpdateParam(_rb.linearVelocityX);
         }
 
         /// <summary>
@@ -94,16 +96,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
 
             // 以下検知した場合
             var distance = transform.position - hit.transform.position;
-            if (distance.sqrMagnitude <= SqrAttackRange)
-            {
-                // 攻撃射程内
-                return true;
-            }
-            else
-            {
-                // 攻撃射程外
-                return false;
-            }
+            return distance.sqrMagnitude <= SqrAttackRange;
         }
 
         /// <summary>
@@ -124,7 +117,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         /// <summary>
         /// 徘徊する
         /// </summary>
-        public override IEnumerator OnMove()
+        public override IEnumerator OnIdle()
         {
             // 一定時間徘徊する
             Coroutine walkRoutine = StartCoroutine(WalkRoutine());
@@ -192,7 +185,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         /// </summary>
         public override void StopChase()
         {
-            _rb.linearVelocity = Vector3.zero;
+            _rb.linearVelocity = Vector2.zero;
         }
 
         /*

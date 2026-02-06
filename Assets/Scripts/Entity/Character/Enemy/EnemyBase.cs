@@ -1,8 +1,7 @@
 using MyMetroidVania.Data.ScriptableObjects;
+using MyMetroidVania.System;
 using System.Collections;
 using UnityEngine;
-using MyMetroidVania.Utility;
-using MyMetroidVania.System;
 
 namespace MyMetroidVania.Entity.Character.Enemy
 {
@@ -12,8 +11,6 @@ namespace MyMetroidVania.Entity.Character.Enemy
         [SerializeField] protected AudioSource _audioSource = null;
         [SerializeField] protected Rigidbody2D _rb = null;
         [SerializeField] protected StatusManager _statusManager = null;
-        [SerializeField, Tooltip("x軸の移動の速さ")] protected float _moveSpeedX = 5f;
-        [SerializeField, Tooltip("地面の接地判定")] protected BoxCaster _groundChecker = null;
 
         [Header("サウンド（Enemy Base）")]
         [SerializeField, Tooltip("被弾時音源ファイル名")] protected string _takeDamageSoundName;
@@ -21,7 +18,7 @@ namespace MyMetroidVania.Entity.Character.Enemy
         [SerializeField, Tooltip("死亡時音源ファイル名")] protected string _deadSoundName;
         protected SoundData _deadSound = null;
 
-        private Vector3 _initialPosition; // 初期位置
+        protected Vector3 _initialPosition; // 初期位置
         private EnemyState _currentState = null; // 現在のステート
 
         // ダメージを受けたかどうか
@@ -116,7 +113,7 @@ namespace MyMetroidVania.Entity.Character.Enemy
          */
 
         // 待機
-        public abstract IEnumerator OnMove();
+        public abstract IEnumerator OnIdle();
         public abstract void StopMove();
 
         // 追跡
