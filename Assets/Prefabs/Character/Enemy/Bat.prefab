@@ -218,6 +218,7 @@ MonoBehaviour:
   _animator: {fileID: 7385177842809366354}
   _enemyBat: {fileID: 4135312844565572613}
   _statusManager: {fileID: 1243930244234204274}
+  _renderer: {fileID: 1302095488961186547}
 --- !u!1 &701480072267075017
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,7 +357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: {x: 0, y: 0, z: 0}
-  _radius: 2
+  _radius: 4
   _targetLayers:
     serializedVersion: 2
     m_Bits: 256
@@ -417,16 +418,15 @@ MonoBehaviour:
   _audioSource: {fileID: 3540492228128941750}
   _rb: {fileID: 6707840728052785788}
   _statusManager: {fileID: 1243930244234204274}
-  _moveSpeedX: 5
-  _groundChecker: {fileID: 0}
   _takeDamageSoundName: SE_PlayerTakeDamage
   _deadSoundName: SE_PlayerDead
   _hitBox: {fileID: 8249786393369527631}
-  _attackRange: 1
+  _attackRange: 2.5
+  _power: 8
   _coolSec: 1
   _playerChecker: {fileID: 1585226471552130171}
-  _idleDurationSec: 2
-  _intervalSec: 1
+  _moveSpeed: 0.9
+  _chaseSpeed: 4
   _animation: {fileID: 314976735127857316}
 --- !u!114 &1243930244234204274
 MonoBehaviour:

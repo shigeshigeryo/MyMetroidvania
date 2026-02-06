@@ -12,6 +12,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
         [SerializeField, Tooltip("UŒ‚”»’è")] private HitBox _hitBox;
         [SerializeField, Tooltip("UŒ‚‚ÌË’ö")] private float _attackRange = 1f;
         private float SqrAttackRange => _attackRange * _attackRange; // UŒ‚‚ÌË’ö‚Ì2æ
+        [SerializeField, Tooltip("UŒ‚‚Ì‘Ì“–‚½‚è‚Ì—Í")] private float _power = 5f;
         [SerializeField, Tooltip("UŒ‚CTi•bj")] private float _coolSec = 1f;
 
         [SerializeField, Tooltip("ƒvƒŒƒCƒ„[ƒ`ƒFƒbƒJ[")] private CircleCaster _playerChecker = null;
@@ -44,6 +45,8 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
         {
             base.Initialize();
             ChangeState(SleepState);
+
+            _animation.OnAttack += Charge;
         }
 
         public override void Respawn()
@@ -54,7 +57,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
 
         private void FixedUpdate()
         {
-            _animation.UpdateParam(Mathf.Abs(_rb.linearVelocity.sqrMagnitude));
+            _animation.UpdateParam(_rb.linearVelocity);
         }
 
         /// <summary>
@@ -175,12 +178,24 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
         public override IEnumerator OnAttack()
         {
             // UŒ‚ŠJn
-            _hitBox.SetEnableCollider();
-            yield return new WaitForSeconds(1f);
+            _animation.TriggerAttack();
+            yield return new WaitForSeconds(0.5f);
 
             // UŒ‚I—¹Œã‚ÌŒ„
             _hitBox.SetDisableCollider();
+            StopMove();
             yield return new WaitForSeconds(_coolSec);
+        }
+
+        /// <summary>
+        /// “ËŒ‚‹““®
+        /// </summary>
+        private void Charge()
+        {
+            _hitBox.SetEnableCollider();
+
+            var dir = (_target.position - transform.position).normalized;
+            _rb.AddForce(dir * _power, ForceMode2D.Impulse);
         }
 
 
@@ -193,6 +208,11 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
         {
             base.OnTakenDamage();
             Debug.Log($"Life:{_statusManager.CurrentStatus.Life}", _statusManager);
+        }
+
+        private void OnDisable()
+        {
+            _animation.OnAttack -= Charge;
         }
     }
 }
