@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Walker
 {
@@ -7,6 +8,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         [SerializeField] private Animator _animator;
         [SerializeField] private EnemyWalker _enemyWalker;
         [SerializeField] private StatusManager _statusManager;
+        [SerializeField] protected SpriteRenderer _renderer = null;
 
         private static readonly int _moveSpeedId = Animator.StringToHash("MoveSpeed"); // 移動速度
         private static readonly int _takenDamageId = Animator.StringToHash("TakenDamage"); // 被弾アニメーション
@@ -29,7 +31,27 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         public void UpdateParam(float velocityX)
         {
             // 移動速度を常に更新
-            _animator.SetFloat(_moveSpeedId, velocityX);
+            _animator.SetFloat(_moveSpeedId, Mathf.Abs(velocityX));
+
+            SetFlip(velocityX);
+        }
+
+
+        /// <summary>
+        /// 入力方向によってスプライトの向きを変える
+        /// </summary>
+        /// <param name="velocityX">X軸の速度</param>
+        private void SetFlip(float velocityX)
+        {
+            // 入力がない場合はFlipの更新を行わない
+            if (velocityX > 0.01f)
+            {
+                _renderer.flipX = false;
+            }
+            else if (velocityX < -0.01f)
+            {
+                _renderer.flipX = true;
+            }
         }
 
         /// <summary>

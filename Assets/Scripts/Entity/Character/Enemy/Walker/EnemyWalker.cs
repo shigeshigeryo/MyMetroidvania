@@ -61,7 +61,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
 
         private void FixedUpdate()
         {
-            _animation.UpdateParam(Mathf.Abs(_rb.linearVelocityX));
+            _animation.UpdateParam(_rb.linearVelocityX);
         }
 
         /// <summary>

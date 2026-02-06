@@ -33,7 +33,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
         public void UpdateParam(Vector2 velocity)
         {
             // 移動速度を常に更新
-            _animator.SetFloat(_moveSpeedId, velocity.sqrMagnitude);
+            _animator.SetFloat(_moveSpeedId, Mathf.Abs(velocity.sqrMagnitude));
 
             SetFlip(velocity.x);
         }
@@ -41,15 +41,15 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
         /// <summary>
         /// 入力方向によってスプライトの向きを変える
         /// </summary>
-        /// <param name="dirX">X軸の速度</param>
-        private void SetFlip(float dirX)
+        /// <param name="velocityX">X軸の速度</param>
+        private void SetFlip(float velocityX)
         {
             // 入力がない場合はFlipの更新を行わない
-            if (dirX > 0.01f)
+            if (velocityX > 0.01f)
             {
                 _renderer.flipX = false;
             }
-            else if (dirX < -0.01f)
+            else if (velocityX < -0.01f)
             {
                 _renderer.flipX = true;
             }
