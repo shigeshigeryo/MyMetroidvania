@@ -1,8 +1,7 @@
 using MyMetroidVania.Data.ScriptableObjects;
+using MyMetroidVania.System;
 using System.Collections;
 using UnityEngine;
-using MyMetroidVania.Utility;
-using MyMetroidVania.System;
 
 namespace MyMetroidVania.Entity.Character.Enemy
 {
