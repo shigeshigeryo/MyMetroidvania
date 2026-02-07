@@ -33,7 +33,9 @@ namespace MyMetroidVania.Entity
 
         public void TakeDamage(int damage)
         {
-            if (_isInvincible) return;
+            // 無敵状態、または体力が0以下の場合は処理をスキップ
+            if (_isInvincible || (_currentStatus.Life <= 0)) return;
+
             _currentStatus.UpdateLife(-damage); //ダメージなので負の数で計算
             if (_currentStatus.Life <= 0)
             {
