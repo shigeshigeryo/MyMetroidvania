@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 7385177842809366354}
   - component: {fileID: 314976735127857316}
   m_Layer: 11
-  m_Name: Viual
+  m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
