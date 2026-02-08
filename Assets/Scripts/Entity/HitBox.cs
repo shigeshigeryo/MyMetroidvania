@@ -17,7 +17,7 @@ namespace MyMetroidVania.Entity
         private Collider2D _collider;
         public event Action OnTriggered;
 
-        private void Start()
+        private void Awake()
         {
             _dealer = GetComponentInParent<IDamageDealer>();
             _collider = GetComponent<Collider2D>();
