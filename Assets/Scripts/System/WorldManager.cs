@@ -62,6 +62,9 @@ namespace MyMetroidVania.System
             MapManager.Instance.Initialize(_worldStateData.VisitedAreaIdList);
 
             _lastRespawnAreaId = _worldStateData.LastRespawnAreaId;
+#if UNITY_EDITOR
+            if (IsDebug) _lastRespawnAreaId = _debugSpawnPointAreaId;
+#endif
             _currentAreaManager = AreaManager.AreaManagerList[_lastRespawnAreaId];
             _currentAreaManager.gameObject.SetActive(true);
         }
