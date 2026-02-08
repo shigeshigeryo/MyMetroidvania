@@ -1,6 +1,7 @@
 using MyMetroidVania.Utility;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Slime
 {
@@ -10,8 +11,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
 
         [Header("待機（TestEnemy）")]
         [SerializeField, Tooltip("x軸の移動の速さ")] protected float _moveSpeedX = 5f;
-        [SerializeField, Tooltip("1ループでの徘徊時間")]
-        private float _idleDurationSec = 2f;
         [SerializeField, Tooltip("ループで発生するインターバル秒")]
         private float _intervalSec = 1f;
         [SerializeField, Tooltip("時間にランダム性を持たせる最大オフセット値")]
@@ -19,9 +18,13 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
 
         [Header("近距離バトルステート")]
         [SerializeField, Tooltip("攻撃判定")] private HitBox _hitBox;
-        [SerializeField, Tooltip("攻撃の射程")] private float _attackRange = 1f;
+        [SerializeField, Tooltip("攻撃の射程")] private float _attackRange = 5f;
         private float SqrAttackRange => _attackRange * _attackRange; // 攻撃の射程の2乗
         [SerializeField, Tooltip("攻撃CT（秒）")] private float _coolSec = 1f;
+        [SerializeField, Tooltip("衝撃波")] private ShockWave _shockWavePrefab = null;
+        private IObjectPool<ShockWave> _shockWavePool;
+        [SerializeField, Tooltip("衝撃波の広がる数")] private int _shockWaveCount = 4;
+        [SerializeField, Tooltip("次の衝撃波が出現する時間")] private float _shockWaveInterval = 0.3f;
 
         [SerializeField, Tooltip("プレイヤーチェッカー")] private CircleCaster _playerChecker = null;
 
@@ -54,6 +57,31 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
 
             _animation.OnAttack += CrushUp;
             _animation.OnAbility += UseAbility;
+
+            // 衝撃波のプールを生成
+            _shockWavePool = new ObjectPool<ShockWave>(
+                createFunc: () =>
+                {
+                    ShockWave shockWave = Instantiate(_shockWavePrefab);
+                    shockWave.Initialize(_statusManager);
+                    shockWave.SetPool(_shockWavePool);
+                    return shockWave;
+                },
+                actionOnGet: (shockWave) =>
+                {
+                    shockWave.gameObject.SetActive(true);
+                },
+                actionOnRelease: (shockWave) =>
+                {
+                    shockWave.gameObject.SetActive(false);
+                },
+                actionOnDestroy: (shockWave) =>
+                {
+                    Destroy(shockWave.gameObject);
+                },
+                defaultCapacity: 4, // 準備数（仮）
+                maxSize: _shockWaveCount*2 // 最大数（仮）
+            );
         }
 
         public override void Respawn()
@@ -159,13 +187,33 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         }
 
         /// <summary>
-        /// 押しつぶす挙動
+        /// 押しつぶす挙動と衝撃波の生成の生成を発火
         /// </summary>
         private void CrushUp()
         {
             _hitBox.SetEnableCollider();
+            StartCoroutine(GenerateShockWave());
         }
 
+        /// <summary>
+        /// 衝撃波の生成
+        /// </summary>
+        private IEnumerator GenerateShockWave()
+        {
+            for (int i = 1; i <= _shockWaveCount; i++)
+            {
+                // 両側に広がるように衝撃波の生成
+                var leftWave = _shockWavePool.Get();
+                leftWave.transform.position = transform.position - Vector3.right * i;
+                leftWave.SetFlipX(false);
+
+                var rightWave = _shockWavePool.Get();
+                rightWave.transform.position = transform.position + Vector3.right * i;
+                rightWave.SetFlipX(true);
+
+                yield return new WaitForSeconds(_shockWaveInterval);
+            }
+        }
 
         /// <summary>
         /// 追跡する

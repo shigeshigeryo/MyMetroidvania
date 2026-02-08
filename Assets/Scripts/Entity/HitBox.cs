@@ -23,6 +23,15 @@ namespace MyMetroidVania.Entity
             _collider = GetComponent<Collider2D>();
         }
 
+        /// <summary>
+        /// ‰Šú‰»ˆ—
+        /// </summary>
+        /// <param name="dealer"></param>
+        public void Initialize(IDamageDealer dealer)
+        {
+            _dealer = dealer;
+        }
+
         private int GetDamageValue()
         {
             if (_dealer == null)
