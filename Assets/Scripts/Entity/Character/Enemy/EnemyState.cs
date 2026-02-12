@@ -40,11 +40,11 @@ namespace MyMetroidVania.Entity.Character.Enemy
     /// <summary>
     /// _owner‚ÌŒ^î•ñ‚ğ‹ï‘Ì‰»‚·‚é‚½‚ß‚ÉÀ‘•
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">EnemyBase‚Ì”h¶ƒNƒ‰ƒX</typeparam>
     public abstract class EnemyState<T> : EnemyState where T : EnemyBase
     {
         protected T _owner;
-        protected StunState _stunState = null;
+        private StunState _stunState = null;
         protected StunState StunState
         {
             get
