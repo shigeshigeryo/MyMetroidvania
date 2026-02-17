@@ -30,6 +30,12 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
 
         [Header("遠距離バトルステート")]
         [SerializeField, Tooltip("逃げる挙動の最大持続時間（秒）")] private float _timeLimit = 2f;
+        [SerializeField, Tooltip("スライムボールの生成ポイント")] private Transform _slimeBallSpawnPoint = null;
+        [SerializeField, Tooltip("スライムボール")] private SlimeBall _slimeBallPrefab = null;
+        private IObjectPool<SlimeBall> _slimeBallPool;
+        [SerializeField, Tooltip("ばらまき攻撃のスライムボールの生成数")] private int _slimeBallCount = 4;
+        [SerializeField, Tooltip("ばらまき攻撃の最小Force")] private float _minForce = 2f;
+        [SerializeField, Tooltip("ばらまき攻撃の最大Force")] private float _maxForce = 8f;
         private Transform _target;
 
         [Space]
@@ -40,7 +46,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         {
             get
             {
-                if(_sleepState == null)
+                if (_sleepState == null)
                 {
                     _sleepState = new SleepState(this, new SlimeIdleState(this));
                 }
@@ -80,7 +86,32 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
                     Destroy(shockWave.gameObject);
                 },
                 defaultCapacity: 4, // 準備数（仮）
-                maxSize: _shockWaveCount*2 // 最大数（仮）
+                maxSize: _shockWaveCount * 2
+            );
+
+            // スライムボールのプールを生成
+            _slimeBallPool = new ObjectPool<SlimeBall>(
+                createFunc: () =>
+                {
+                    SlimeBall slimeBall = Instantiate(_slimeBallPrefab);
+                    slimeBall.InitializeOnCreate(_statusManager);
+                    slimeBall.SetPool(_slimeBallPool);
+                    return slimeBall;
+                },
+                actionOnGet: (slimeBall) =>
+                {
+                    slimeBall.gameObject.SetActive(true);
+                },
+                actionOnRelease: (slimeBall) =>
+                {
+                    slimeBall.gameObject.SetActive(false);
+                },
+                actionOnDestroy: (slimeBall) =>
+                {
+                    Destroy(slimeBall.gameObject);
+                },
+                defaultCapacity: _slimeBallCount, // 準備数（仮）
+                maxSize: _slimeBallCount + 2 // 最大数（仮）
             );
         }
 
@@ -258,7 +289,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
             while (timer < _timeLimit)
             {
                 if (!IsPlayerInRange()) yield break;
-                
+
                 _rb.linearVelocityX = _lastMoveDirection * _moveSpeedX;
                 yield return new WaitForFixedUpdate();
                 timer += Time.fixedDeltaTime;
@@ -286,6 +317,22 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         private void UseAbility()
         {
             Debug.Log("アビリティを処理");
+            ScatterSlimeBall();
+        }
+
+        /// <summary>
+        /// スライムボールをまき散らす
+        /// </summary>
+        private void ScatterSlimeBall()
+        {
+            for (int i = 0; i < _slimeBallCount; i++)
+            {
+                float flag = i % 2 == 0 ? 1 : -1; // 偶数番目+x方向 奇数番目-x方向
+                var slimeBall = _slimeBallPool.Get();
+                slimeBall.transform.position = _slimeBallSpawnPoint.position;
+                float force = Random.Range(_minForce, _maxForce);
+                slimeBall.AddForceParabolicTrajectory(flag * force);
+            }
         }
 
         /*
