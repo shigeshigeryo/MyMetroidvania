@@ -182,7 +182,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "SPACE / \u25B2 : JUMP"
+  m_text: "\u2193 + \u30B8\u30E3\u30F3\u30D7\n\u3042\u3057\u3070\u304B\u3089\u304A\u308A\u308B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a25c51bb886caad46b59ca14e1b9b2aa, type: 2}
   m_sharedMaterial: {fileID: 5677812704588956722, guid: a25c51bb886caad46b59ca14e1b9b2aa, type: 2}
