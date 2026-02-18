@@ -160,7 +160,7 @@ MonoBehaviour:
   _moveSpeedX: 5
   _deceleration: 10
   _jumpSpeed: 8
-  _jumpAccel: 10
+  _jumpAccel: 11.5
 --- !u!114 &943763540149450975
 MonoBehaviour:
   m_ObjectHideFlags: 0
