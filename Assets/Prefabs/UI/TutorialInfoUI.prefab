@@ -262,8 +262,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4034752909781393332}
+  - component: {fileID: 3041147087860194457}
+  - component: {fileID: 8383506677003011188}
+  - component: {fileID: 1628586528660792122}
   m_Layer: 0
-  m_Name: TutorialInfo
+  m_Name: TutorialInfoUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -285,3 +288,63 @@ Transform:
   - {fileID: 7743281789022718183}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3041147087860194457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7532419118728432764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ea019128f06e0e45b79c26f43a6b6cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerChecker: {fileID: 8383506677003011188}
+  _animator: {fileID: 1628586528660792122}
+--- !u!114 &8383506677003011188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7532419118728432764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e26cbbc8d84fa4459c8203240148acd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  _useOverlapBox: 1
+  _offsetOverlap: {x: 0, y: 0}
+  _sizeOverlap: {x: 10, y: 10}
+  _gizmoColorOverlap: {r: 0, g: 1, b: 0.99796796, a: 1}
+  _useBoxCast: 0
+  _offsetCast: {x: 0, y: 0}
+  _sizeCast: {x: 1, y: 1}
+  _distanceCast: 5
+  _gizmoColorCast: {r: 0, g: 0, b: 1, a: 1}
+--- !u!95 &1628586528660792122
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7532419118728432764}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: dd7adaebe24aa244180cf104739a754f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
