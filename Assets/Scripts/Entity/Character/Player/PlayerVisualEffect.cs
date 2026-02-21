@@ -13,7 +13,8 @@ namespace MyMetroidVania.Entity.Character.Player
     public class PlayerVisualEffect : MonoBehaviour
     {
         [SerializeField] private StatusManager _statusManager = null;
-        [SerializeField] private AudioSource _audioSource = null;
+        [SerializeField, Tooltip("Run用AudioSource（上）")] private AudioSource _runAudioSource = null;
+        [SerializeField, Tooltip("基本SE用AudioSource（下）")] private AudioSource _audioSource = null;
         [SerializeField, Tooltip("プレイヤーのビジュアル")] private SpriteRenderer _renderer = null;
 
         [Header("エフェクト")]
@@ -196,23 +197,23 @@ namespace MyMetroidVania.Entity.Character.Player
         /// </summary>
         public void PlayRunSound()
         {
-            if(_audioSource.clip == null)
+            if(_runAudioSource.clip == null)
             {
                 SoundData runSound = AudioManager.Instance.GetSe(_runSoundName);
-                _audioSource.clip = runSound.Clip;
-                _audioSource.volume = runSound.Volume;
-                _audioSource.loop = runSound.IsLoop;
+                _runAudioSource.clip = runSound.Clip;
+                _runAudioSource.volume = runSound.Volume;
+                _runAudioSource.loop = runSound.IsLoop;
             }
 
-             _audioSource.Play();
+            _runAudioSource.Play();
         }
 
         /// <summary>
         /// 効果音の再生を停止
         /// </summary>
-        public void StopLoopSound()
+        public void StopRunSound()
         {
-            _audioSource.Stop();
+            _runAudioSource.Stop();
         }
 
 
