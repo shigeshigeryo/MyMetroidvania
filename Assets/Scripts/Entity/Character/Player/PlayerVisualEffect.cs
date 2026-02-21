@@ -13,7 +13,8 @@ namespace MyMetroidVania.Entity.Character.Player
     public class PlayerVisualEffect : MonoBehaviour
     {
         [SerializeField] private StatusManager _statusManager = null;
-        [SerializeField] private AudioSource _audioSource = null;
+        [SerializeField, Tooltip("Run用AudioSource（上）")] private AudioSource _runAudioSource = null;
+        [SerializeField, Tooltip("基本SE用AudioSource（下）")] private AudioSource _audioSource = null;
         [SerializeField, Tooltip("プレイヤーのビジュアル")] private SpriteRenderer _renderer = null;
 
         [Header("エフェクト")]
@@ -28,6 +29,9 @@ namespace MyMetroidVania.Entity.Character.Player
 
 
         [Header("サウンド")]
+        [SerializeField, Tooltip("走る音源ファイル名")] private string _runSoundName = "SE_PlayerRun";
+        [SerializeField, Tooltip("手裏剣音源ファイル名")] private string _shurikenSoundName = "SE_Shuriken";
+        private SoundData _shurikenSound = null;
         [SerializeField, Tooltip("ジャンプ音源ファイル名")] private string _jumpSoundName = "SE_PlayerJump";
         private SoundData _jumpSound = null;
         [SerializeField, Tooltip("フック音源ファイル名")] private string _hookSoundName = "SE_PlayerHook";
@@ -105,6 +109,7 @@ namespace MyMetroidVania.Entity.Character.Player
         {
             // サウンドの取得
             _jumpSound = AudioManager.Instance.GetSe(_jumpSoundName);
+            _shurikenSound = AudioManager.Instance.GetSe(_shurikenSoundName);
             _hookSound = AudioManager.Instance.GetSe(_hookSoundName);
             _takeDamageSound = AudioManager.Instance.GetSe(_takeDamageSoundName);
             _deadSound = AudioManager.Instance.GetSe(_deadSoundName);
@@ -185,6 +190,39 @@ namespace MyMetroidVania.Entity.Character.Player
 
             // エフェクトのインターバル 0.5s
             yield return new WaitForSeconds(0.5f);
+        }
+
+        /// <summary>
+        /// 走る効果音を再生
+        /// </summary>
+        public void PlayRunSound()
+        {
+            if(_runAudioSource.clip == null)
+            {
+                SoundData runSound = AudioManager.Instance.GetSe(_runSoundName);
+                _runAudioSource.clip = runSound.Clip;
+                _runAudioSource.volume = runSound.Volume;
+                _runAudioSource.loop = runSound.IsLoop;
+            }
+
+            _runAudioSource.Play();
+        }
+
+        /// <summary>
+        /// 効果音の再生を停止
+        /// </summary>
+        public void StopRunSound()
+        {
+            _runAudioSource.Stop();
+        }
+
+
+        /// <summary>
+        /// 手裏剣効果音を再生
+        /// </summary>
+        public void PlayShurikenSound()
+        {
+             _audioSource.PlayOneShot(_shurikenSound.Clip, _shurikenSound.Volume);
         }
     }
 }

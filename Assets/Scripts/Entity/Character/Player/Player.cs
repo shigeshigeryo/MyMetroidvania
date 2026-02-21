@@ -70,7 +70,7 @@ namespace MyMetroidVania.Entity.Character.Player
 
         private void Initialize()
         {
-            _currentState = ActionState.Run;
+            _currentState = ActionState.Idle;
 
             // 手裏剣プール
             _shurikenPool = new ObjectPool<Shuriken>(
@@ -144,6 +144,7 @@ namespace MyMetroidVania.Entity.Character.Player
                     if (!_groundChecker.IsCasted)
                     {
                         _currentState = ActionState.Fall;
+                        _visualEffect.StopRunSound();
                         break;
                     }
                     break;
@@ -152,6 +153,7 @@ namespace MyMetroidVania.Entity.Character.Player
                     if (!_groundChecker.IsCasted)
                     {
                         _currentState = ActionState.Jump;
+                        _visualEffect.StopRunSound();
                         break;
                     }
                     break;
@@ -191,6 +193,7 @@ namespace MyMetroidVania.Entity.Character.Player
                     {
                         // 移動している場合Walkステート
                         _currentState = ActionState.Run;
+                        _visualEffect.PlayRunSound();
 
                         // ランエフェクト
                         if (_runEffectRoutine == null)
@@ -206,6 +209,7 @@ namespace MyMetroidVania.Entity.Character.Player
                     if (!_physics.IsMoving)
                     {
                         _currentState = ActionState.Idle;
+                        _visualEffect.StopRunSound();
                         break;
                     }
 
@@ -336,12 +340,12 @@ namespace MyMetroidVania.Entity.Character.Player
         /// </summary>
         private IEnumerator Attack()
         {
-            Debug.Log("攻撃！");
             _isAttacking = true;
             var shuriken = _shurikenPool.Get();
             shuriken.Initialize(_hitBoxOriginTransform.position,
                     _hitBoxOriginTransform.rotation,
                     _statusManager.GetAttackPower());
+            _visualEffect.PlayShurikenSound();
 
             yield return new WaitForSeconds(_coolSec);
 

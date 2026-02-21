@@ -28,6 +28,7 @@ namespace MyMetroidVania
 
                 // 各要素のフィールドを1行で表示する（Clip, Volume, Loop）
                 float spacing = 5;
+                float labelWidth = 40f;
                 float clipWidth = rect.width * 0.4f;
                 float volWidth = rect.width * 0.35f;
                 float loopWidth = rect.width * 0.15f;
@@ -38,18 +39,17 @@ namespace MyMetroidVania
                     element.FindPropertyRelative("_clip"), GUIContent.none);
 
                 // _volume
+                EditorGUI.LabelField(new Rect(rect.x + clipWidth + spacing, rect.y, labelWidth, rect.height), "Vol");
                 EditorGUI.PropertyField(
-                    new Rect(rect.x + clipWidth + spacing, rect.y, volWidth, EditorGUIUtility.singleLineHeight),
+                    new Rect(rect.x + clipWidth + spacing + labelWidth + spacing, rect.y, volWidth, EditorGUIUtility.singleLineHeight),
                     element.FindPropertyRelative("_volume"), GUIContent.none);
-                element.FindPropertyRelative("_volume").floatValue = 0.5f;
 
 
                 // _vsLoop
-                EditorGUI.LabelField(new Rect(rect.x + clipWidth + volWidth + spacing * 2, rect.y, 40, rect.height), "Loop");
+                EditorGUI.LabelField(new Rect(rect.x + clipWidth + spacing + labelWidth + spacing + volWidth + spacing, rect.y, labelWidth, rect.height), "Loop");
                 EditorGUI.PropertyField(
-                    new Rect(rect.x + clipWidth + volWidth + spacing * 2 + 35, rect.y, loopWidth, EditorGUIUtility.singleLineHeight),
+                    new Rect(rect.x + clipWidth + volWidth + spacing + labelWidth + spacing + labelWidth + spacing, rect.y, loopWidth, EditorGUIUtility.singleLineHeight),
                     element.FindPropertyRelative("_isLoop"), GUIContent.none);
-                element.FindPropertyRelative("_isLoop").boolValue = false;
             };
 
 
