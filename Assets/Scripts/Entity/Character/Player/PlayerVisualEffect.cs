@@ -28,7 +28,9 @@ namespace MyMetroidVania.Entity.Character.Player
 
 
         [Header("サウンド")]
-        [SerializeField, Tooltip("ジャンプ音源ファイル名")] private string _runSoundName = "SE_PlayerRun";
+        [SerializeField, Tooltip("走る音源ファイル名")] private string _runSoundName = "SE_PlayerRun";
+        [SerializeField, Tooltip("手裏剣音源ファイル名")] private string _shurikenSoundName = "SE_Shuriken";
+        private SoundData _shurikenSound = null;
         [SerializeField, Tooltip("ジャンプ音源ファイル名")] private string _jumpSoundName = "SE_PlayerJump";
         private SoundData _jumpSound = null;
         [SerializeField, Tooltip("フック音源ファイル名")] private string _hookSoundName = "SE_PlayerHook";
@@ -106,6 +108,7 @@ namespace MyMetroidVania.Entity.Character.Player
         {
             // サウンドの取得
             _jumpSound = AudioManager.Instance.GetSe(_jumpSoundName);
+            _shurikenSound = AudioManager.Instance.GetSe(_shurikenSoundName);
             _hookSound = AudioManager.Instance.GetSe(_hookSoundName);
             _takeDamageSound = AudioManager.Instance.GetSe(_takeDamageSoundName);
             _deadSound = AudioManager.Instance.GetSe(_deadSoundName);
@@ -210,6 +213,15 @@ namespace MyMetroidVania.Entity.Character.Player
         public void StopLoopSound()
         {
             _audioSource.Stop();
+        }
+
+
+        /// <summary>
+        /// 手裏剣効果音を再生
+        /// </summary>
+        public void PlayShurikenSound()
+        {
+             _audioSource.PlayOneShot(_shurikenSound.Clip, _shurikenSound.Volume);
         }
     }
 }

@@ -340,12 +340,12 @@ namespace MyMetroidVania.Entity.Character.Player
         /// </summary>
         private IEnumerator Attack()
         {
-            Debug.Log("çUåÇÅI");
             _isAttacking = true;
             var shuriken = _shurikenPool.Get();
             shuriken.Initialize(_hitBoxOriginTransform.position,
                     _hitBoxOriginTransform.rotation,
                     _statusManager.GetAttackPower());
+            _visualEffect.PlayShurikenSound();
 
             yield return new WaitForSeconds(_coolSec);
 
