@@ -70,7 +70,7 @@ namespace MyMetroidVania.Entity.Character.Player
 
         private void Initialize()
         {
-            _currentState = ActionState.Run;
+            _currentState = ActionState.Idle;
 
             // 手裏剣プール
             _shurikenPool = new ObjectPool<Shuriken>(
@@ -144,6 +144,7 @@ namespace MyMetroidVania.Entity.Character.Player
                     if (!_groundChecker.IsCasted)
                     {
                         _currentState = ActionState.Fall;
+                        _visualEffect.StopLoopSound();
                         break;
                     }
                     break;
@@ -152,6 +153,7 @@ namespace MyMetroidVania.Entity.Character.Player
                     if (!_groundChecker.IsCasted)
                     {
                         _currentState = ActionState.Jump;
+                        _visualEffect.StopLoopSound();
                         break;
                     }
                     break;
@@ -191,6 +193,7 @@ namespace MyMetroidVania.Entity.Character.Player
                     {
                         // 移動している場合Walkステート
                         _currentState = ActionState.Run;
+                        _visualEffect.PlayRunSound();
 
                         // ランエフェクト
                         if (_runEffectRoutine == null)
@@ -206,6 +209,7 @@ namespace MyMetroidVania.Entity.Character.Player
                     if (!_physics.IsMoving)
                     {
                         _currentState = ActionState.Idle;
+                        _visualEffect.StopLoopSound();
                         break;
                     }
 

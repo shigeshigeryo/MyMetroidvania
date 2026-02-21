@@ -28,6 +28,7 @@ namespace MyMetroidVania.Entity.Character.Player
 
 
         [Header("サウンド")]
+        [SerializeField, Tooltip("ジャンプ音源ファイル名")] private string _runSoundName = "SE_PlayerRun";
         [SerializeField, Tooltip("ジャンプ音源ファイル名")] private string _jumpSoundName = "SE_PlayerJump";
         private SoundData _jumpSound = null;
         [SerializeField, Tooltip("フック音源ファイル名")] private string _hookSoundName = "SE_PlayerHook";
@@ -185,6 +186,30 @@ namespace MyMetroidVania.Entity.Character.Player
 
             // エフェクトのインターバル 0.5s
             yield return new WaitForSeconds(0.5f);
+        }
+
+        /// <summary>
+        /// 走る効果音を再生
+        /// </summary>
+        public void PlayRunSound()
+        {
+            if(_audioSource.clip == null)
+            {
+                SoundData runSound = AudioManager.Instance.GetSe(_runSoundName);
+                _audioSource.clip = runSound.Clip;
+                _audioSource.volume = runSound.Volume;
+                _audioSource.loop = runSound.IsLoop;
+            }
+
+             _audioSource.Play();
+        }
+
+        /// <summary>
+        /// 効果音の再生を停止
+        /// </summary>
+        public void StopLoopSound()
+        {
+            _audioSource.Stop();
         }
     }
 }
