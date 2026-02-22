@@ -111,7 +111,7 @@ namespace MyMetroidVania.System
         {
             // 現在いるエリアとセーブポイントのエリアが異なる場合は、
             // エリアを切り替えてからスポーンさせる必要がある
-            if (_currentAreaManager.AreaId != _lastRespawnAreaId)
+            if (_currentAreaManager.AreaId != _lastRespawnAreaId || _isInitializeSpawn)
             {
                 GameManager.Instance.ChangeArea(_lastRespawnAreaId, _respawnPosition);
             }
@@ -154,8 +154,8 @@ namespace MyMetroidVania.System
             // 初回はプレイヤーをスポーンさせる
             if (_isInitializeSpawn)
             {
-                _isInitializeSpawn = false;
                 RespawnPlayer();
+                _isInitializeSpawn = false;
             }
             else
             {

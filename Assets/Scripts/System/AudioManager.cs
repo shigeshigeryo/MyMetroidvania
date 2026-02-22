@@ -69,6 +69,7 @@ namespace MyMetroidVania.System
         {
             _bgmSource.clip = bgm.Clip;
             _bgmSource.volume = bgm.Volume;
+            _bgmSource.loop = bgm.IsLoop;
             _bgmSource.Play();
         }
         public void GetAndPlayBgm(string clipName)
