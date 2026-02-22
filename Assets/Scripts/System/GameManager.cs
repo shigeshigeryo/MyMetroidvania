@@ -51,6 +51,8 @@ namespace MyMetroidVania.System
 
         private void Start()
         {
+            AudioManager.Instance.GetAndPlayBgm("BGM_InGame");
+
             // UI‚Ì‘€ì‚ð“o˜^
             InputActions.UI.Enable();
             InputActions.UI.ToggleMiniMap.started += _ =>  OnToggledMiniMap?.Invoke();
