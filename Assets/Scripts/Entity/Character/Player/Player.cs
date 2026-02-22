@@ -242,6 +242,7 @@ namespace MyMetroidVania.Entity.Character.Player
                     if (dir.magnitude < _hookCancelRange)
                     {
                         _currentState = ActionState.Fall;
+                        _visualEffect.StopHookEffect();
                         break;
                     }
                     _physics.SetVelocity(dir.normalized * _hookSpeed);
@@ -425,7 +426,7 @@ namespace MyMetroidVania.Entity.Character.Player
             {
                 _currentState = ActionState.Hook;
                 _hookPosition = hit.point;
-                _visualEffect.PlayHookEffect();
+                _visualEffect.PlayHookEffect(_hookPosition);
             }
         }
 
@@ -435,10 +436,11 @@ namespace MyMetroidVania.Entity.Character.Player
         /// </summary>
         private void OnHookCanceled()
         {
-            // フックが使用不可であるかどうか
-            if (!_abilityManager.HasAbility(AbilityType.Hook)) return;
+            // フック状態であるかどうか
+            if (_currentState != ActionState.Hook) return;
 
             _currentState = ActionState.Run;
+            _visualEffect.StopHookEffect();
             if (_hookCoolDownRoutine == null)
             {
                 // フックのクールダウン開始
