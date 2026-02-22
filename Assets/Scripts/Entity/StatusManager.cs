@@ -13,6 +13,7 @@ namespace MyMetroidVania.Entity
         private Status _currentStatus = null;
         public Status CurrentStatus => _currentStatus;
         private bool _isInvincible = false;
+        public bool IsDead => _currentStatus.Life <= 0;
 
         public event Action OnDamageTaken;
         public event Action OnDead;

@@ -2,6 +2,7 @@ using MyMetroidVania.Data;
 using MyMetroidVania.Entity.Character.Enemy;
 using MyMetroidVania.Entity.Gimmick;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace MyMetroidVania.System
@@ -12,7 +13,7 @@ namespace MyMetroidVania.System
     public class AreaManager : MonoBehaviour
     {
         public static Dictionary<string, AreaManager> AreaManagerList = new Dictionary<string, AreaManager>();
-        private EnemyBase[] EnemyList = null;
+        private List<EnemyBase> _enemyList = new List<EnemyBase>();
 
         [SerializeField, Tooltip("エリアID")] private string _areaId;
         public string AreaId => _areaId;
@@ -90,16 +91,20 @@ namespace MyMetroidVania.System
         /// </summary>
         private void InitializeAllEnemies()
         {
-            bool isFirst = EnemyList == null;
+            bool isFirst = _enemyList.Count == 0;
             if (isFirst)
             {
                 // lazyLoad
-                EnemyList = GetComponentsInChildren<EnemyBase>();
+                _enemyList = GetComponentsInChildren<EnemyBase>().ToList<EnemyBase>();
             }
 
-            foreach (var enemy in EnemyList)
+            foreach (var enemy in _enemyList)
             {
-                if (isFirst) enemy.InitializeOnce(); // 初回時のみ実行する初期化
+                if (isFirst)
+                {
+                    enemy.InitializeOnce(); // 初回時のみ実行する初期化
+                    enemy.OnDestroyed += RemoveEnemy;
+                }
                 enemy.Initialize();
             }
         }
@@ -109,18 +114,32 @@ namespace MyMetroidVania.System
         /// </summary>
         private void RespawnAllEnemies()
         {
-            bool isFirst = EnemyList == null;
-            if (isFirst)
-            {
-                // lazyLoad
-                EnemyList = GetComponentsInChildren<EnemyBase>();
-            }
+            //bool isFirst = _enemyList == default;
+            //if (isFirst)
+            //{
+            //    // lazyLoad
+            //    _enemyList = GetComponentsInChildren<EnemyBase>().ToList<EnemyBase>();
+            //}
 
-            foreach (var enemy in EnemyList)
+            foreach (var enemy in _enemyList)
             {
-                if (isFirst) enemy.InitializeOnce(); // 初回時のみ実行する初期化
+                //if (isFirst)
+                //{
+                //    enemy.InitializeOnce(); // 初回時のみ実行する初期化
+                //    enemy.OnDestroyed += RemoveEnemy;
+                //}
                 enemy.Respawn();
             }
+        }
+
+        /// <summary>
+        /// エネミーリストから対象のエネミーを削除
+        /// </summary>
+        /// <param name="target">対象のエネミー</param>
+        private void RemoveEnemy(EnemyBase target)
+        {
+            target.OnDestroyed -= RemoveEnemy;
+            _enemyList.Remove(target);
         }
 
         /// <summary>
