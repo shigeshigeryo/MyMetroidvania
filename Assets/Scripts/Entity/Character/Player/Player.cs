@@ -373,6 +373,11 @@ namespace MyMetroidVania.Entity.Character.Player
             }
             else
             {
+                if (_currentState == ActionState.Hook)
+                {
+                    _visualEffect.StopHookEffect();
+                }
+
                 // ‰º“ü—Í‚ª‚È‚¢ê‡‚Í’Êí‚ÌƒWƒƒƒ“ƒv
                 _currentState = ActionState.JumpAnticipation;
                 Jump();
