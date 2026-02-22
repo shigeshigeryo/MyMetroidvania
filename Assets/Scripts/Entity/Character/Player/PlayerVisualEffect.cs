@@ -16,6 +16,7 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField, Tooltip("Run用AudioSource（上）")] private AudioSource _runAudioSource = null;
         [SerializeField, Tooltip("基本SE用AudioSource（下）")] private AudioSource _audioSource = null;
         [SerializeField, Tooltip("プレイヤーのビジュアル")] private SpriteRenderer _renderer = null;
+        [SerializeField] private LineRenderer _lineRenderer = null;
 
         [Header("エフェクト")]
         [SerializeField, Tooltip("走るエフェクト")] private RunEffect _runEffectPrefab = null;
@@ -41,8 +42,12 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField, Tooltip("死亡時音源ファイル名")] private string _deadSoundName = "SE_PlayerDead";
         private SoundData _deadSound = null;
 
+        private Coroutine _lineRendererRoutine = null;
+
         public void Initialize()
         {
+            _lineRenderer.enabled = false;
+
             InitializeEffects();
             InitializeSounds();
         }
@@ -150,11 +155,44 @@ namespace MyMetroidVania.Entity.Character.Player
         }
 
         /// <summary>
-        /// フックのSEを再生
+        /// フックのエフェクトを再生
         /// </summary>
-        public void PlayHookEffect()
+        /// <param name="endPos">終点</param>
+        public void PlayHookEffect(Vector2 endPos)
         {
             _audioSource.PlayOneShot(_hookSound.Clip, _hookSound.Volume);
+            if (_lineRendererRoutine == null)
+            {
+                _lineRenderer.enabled = true;
+                _lineRendererRoutine = StartCoroutine(RenderHook(endPos));
+            }
+        }
+
+        /// <summary>
+        /// フックの描画処理
+        /// </summary>
+        /// <param name="endPos">終点</param>
+        private IEnumerator RenderHook(Vector2 endPos)
+        {
+            _lineRenderer.SetPosition(1, endPos);
+            while (true)
+            {
+                _lineRenderer.SetPosition(0, _lineRenderer.transform.position);
+                yield return null;
+            }
+        }
+
+        /// <summary>
+        /// フックのエフェクトを停止
+        /// </summary>
+        public void StopHookEffect()
+        {
+            if(_lineRendererRoutine != null)
+            {
+                _lineRenderer.enabled = false;
+                StopCoroutine(_lineRendererRoutine);
+                _lineRendererRoutine = null;
+            }
         }
 
         /// <summary>
