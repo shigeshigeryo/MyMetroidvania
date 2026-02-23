@@ -28,6 +28,7 @@ namespace MyMetroidVania.Entity.Gimmick
         private string _unlockedSoundName;
         private SoundData _unlockedSound;
         [SerializeField, Tooltip("見た目")] private SpriteRenderer _visual;
+        [SerializeField, Tooltip("ロック表示の南京錠")] private SpriteRenderer _padlockVisual;
         [SerializeField, Tooltip("コライダー")] private Collider2D _collider;
         [SerializeReference, Tooltip("開錠に必要なキー<br>開錠が必要なければnull")]
         private GameObject _unlockKeyObj = null;
@@ -72,6 +73,7 @@ namespace MyMetroidVania.Entity.Gimmick
             switch ((State)_stateData.State)
             {
                 case State.Open:
+                    _padlockVisual.enabled = false;
                     Open();
                     break;
 
@@ -81,6 +83,8 @@ namespace MyMetroidVania.Entity.Gimmick
 
                 // 初期状態のため処理は不要
                 case State.Close:
+                    _padlockVisual.enabled = false;
+                    break;
                 default:
                     break;
             }
@@ -137,6 +141,7 @@ namespace MyMetroidVania.Entity.Gimmick
             if (_currentState != State.Lock) return;
 
             AudioManager.Instance.PlayOneShotSe(_unlockedSound);
+            _padlockVisual.enabled = false;
             _currentState = State.Close;
         }
 
