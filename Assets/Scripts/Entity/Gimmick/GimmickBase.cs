@@ -1,6 +1,4 @@
-using MyMetroidVania.System;
 using UnityEngine;
-using MyMetroidVania.Data.ScriptableObjects;
 using MyMetroidVania.Data;
 
 namespace MyMetroidVania.Entity.Gimmick

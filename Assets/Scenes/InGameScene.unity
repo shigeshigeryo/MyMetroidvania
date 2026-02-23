@@ -1655,14 +1655,6 @@ PrefabInstance:
       propertyPath: _spawnPoint
       value: 
       objectReference: {fileID: 952886949}
-    - target: {fileID: 4164774609915415851, guid: 9e05e4821c492194b8eb7252654816ad, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4164774609915415851, guid: 9e05e4821c492194b8eb7252654816ad, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 5379875759715597362, guid: 9e05e4821c492194b8eb7252654816ad, type: 3}
       propertyPath: Target.TrackingTarget
       value: 

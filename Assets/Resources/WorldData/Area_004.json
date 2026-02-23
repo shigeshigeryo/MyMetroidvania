@@ -12,6 +12,10 @@
     "Boss_001": {
       "TargetId": "Boss_001",
       "State": 0
+    },
+    "UnlockAbilityItem_000": {
+      "TargetId": "UnlockAbilityItem_000",
+      "State": 1
     }
   }
 }
