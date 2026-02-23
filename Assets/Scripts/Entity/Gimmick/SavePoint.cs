@@ -1,3 +1,4 @@
+using MyMetroidVania.Data.ScriptableObjects;
 using MyMetroidVania.Entity.Character.Player;
 using MyMetroidVania.System;
 using UnityEngine;
@@ -6,8 +7,10 @@ namespace MyMetroidVania.Entity.Gimmick
 {
     public class SavePoint : GimmickBase, IInteractable
     {
+        [SerializeField, Tooltip("インタラクトされて流れる音源のファイル名")]
+        private string _interactedSoundName;
+        private SoundData _interactedSound;
         [SerializeField, Tooltip("セーブポイントの中のぐるぐる")] private SpriteRenderer _innerRenderer;
-
         public enum State
         {
             None, // 未アクセス
@@ -15,6 +18,11 @@ namespace MyMetroidVania.Entity.Gimmick
             AccessedNow // 最近アクセスしたセーブポイント
         }
         private State _currentState = State.None;
+
+        private void Start()
+        {
+            _interactedSound = AudioManager.Instance.GetSe(_interactedSoundName);
+        }
 
         public override void InitializeState()
         {
@@ -43,7 +51,7 @@ namespace MyMetroidVania.Entity.Gimmick
         public void Interact(Player player)
         {
             Debug.Log($"インタラクト:{_id}");
-            PlayOneShotInteractedSe();
+            AudioManager.Instance.PlayOneShotSe(_interactedSound);
             player.Heal();
             
             ChangeState(State.AccessedNow); 
