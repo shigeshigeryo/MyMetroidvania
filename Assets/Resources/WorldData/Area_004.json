@@ -7,7 +7,7 @@
     },
     "Door_001": {
       "TargetId": "Door_001",
-      "State": 0
+      "State": 2
     },
     "Boss_001": {
       "TargetId": "Boss_001",

@@ -180,6 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: Door_001
-  _interactedSoundName: SE_DoorOpen
+  _closedSoundName: SE_DoorOpen
+  _lockedSoundName: SE_LockedDoor
   _visual: {fileID: 3568956127910555916}
   _collider: {fileID: 7292330578189659983}

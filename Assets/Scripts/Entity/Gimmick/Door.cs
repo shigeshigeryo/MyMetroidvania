@@ -15,15 +15,21 @@ namespace MyMetroidVania.Entity.Gimmick
             Open, // 開放
             Lock // 施錠
         }
-        [SerializeField, Tooltip("インタラクトされて流れる音源のファイル名")]
-        private string _interactedSoundName;
-        private SoundData _interactedSound;
+        private State _currentState;
+
+        [SerializeField, Tooltip("Close時のInteract音源")]
+        private string _closedSoundName;
+        private SoundData _closedSound;
+        [SerializeField, Tooltip("Lock時のInteract音源")]
+        private string _lockedSoundName;
+        private SoundData _lockedSound;
         [SerializeField, Tooltip("見た目")] private SpriteRenderer _visual;
         [SerializeField, Tooltip("コライダー")] private Collider2D _collider;
 
         private void Start()
         {
-            _interactedSound = AudioManager.Instance.GetSe(_interactedSoundName);
+            _closedSound = AudioManager.Instance.GetSe(_closedSoundName);
+            _lockedSound = AudioManager.Instance.GetSe(_lockedSoundName);
         }
 
         /// <summary>
@@ -31,6 +37,7 @@ namespace MyMetroidVania.Entity.Gimmick
         /// </summary>
         public override void InitializeState()
         {
+            _currentState = (State)_stateData.State;
             switch ((State)_stateData.State)
             {
                 case State.Open:
@@ -50,13 +57,18 @@ namespace MyMetroidVania.Entity.Gimmick
 
         public void Interact(Player _)
         {
-            PlayOneShotInteractedSe();
-            Open();
-        }
-
-        private void PlayOneShotInteractedSe()
-        {
-            AudioManager.Instance.PlayOneShotSe(_interactedSound);
+            switch (_currentState)
+            {
+                case State.Close:
+                    AudioManager.Instance.PlayOneShotSe(_closedSound);
+                    Open();
+                    break;
+                case State.Lock:
+                    AudioManager.Instance.PlayOneShotSe(_lockedSound);
+                    break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>
@@ -66,7 +78,8 @@ namespace MyMetroidVania.Entity.Gimmick
         {
             _visual.enabled = false;
             _collider.enabled = false;
-            _stateData.SetState((int)State.Open);
+            _currentState = State.Open;
+            _stateData.SetState((int)_currentState);
         }
     }
 }
