@@ -1,6 +1,8 @@
-using UnityEngine;
-using System;
+using MyMetroidVania.Data.ScriptableObjects;
 using MyMetroidVania.Entity.Character.Player;
+using MyMetroidVania.System;
+using System;
+using UnityEngine;
 
 namespace MyMetroidVania.Entity.Gimmick
 {
@@ -13,9 +15,16 @@ namespace MyMetroidVania.Entity.Gimmick
             Open, // 開放
             Lock // 施錠
         }
-
+        [SerializeField, Tooltip("インタラクトされて流れる音源のファイル名")]
+        private string _interactedSoundName;
+        private SoundData _interactedSound;
         [SerializeField, Tooltip("見た目")] private SpriteRenderer _visual;
         [SerializeField, Tooltip("コライダー")] private Collider2D _collider;
+
+        private void Start()
+        {
+            _interactedSound = AudioManager.Instance.GetSe(_interactedSoundName);
+        }
 
         /// <summary>
         /// ドアの状態を初期化
@@ -43,6 +52,11 @@ namespace MyMetroidVania.Entity.Gimmick
         {
             PlayOneShotInteractedSe();
             Open();
+        }
+
+        private void PlayOneShotInteractedSe()
+        {
+            AudioManager.Instance.PlayOneShotSe(_interactedSound);
         }
 
         /// <summary>
