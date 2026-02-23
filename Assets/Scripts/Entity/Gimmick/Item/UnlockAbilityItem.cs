@@ -1,7 +1,7 @@
 using MyMetroidVania.Entity.Character.Player;
 using UnityEngine;
 
-namespace MyMetroidVania.Entity.Item
+namespace MyMetroidVania.Entity.Gimmick.Item
 {
     public class UnlockAbilityItem : ItemBase
     {
@@ -14,6 +14,9 @@ namespace MyMetroidVania.Entity.Item
         /// <param name="collision"></param>
         protected override void Apply(Collider2D collision)
         {
+            _currentState = State.PickedUpUnique;
+            _stateData.SetState((int)_currentState);
+
             if (collision.TryGetComponent<Player>(out var player))
             {
                 player.UnlockAbility(_unlockAbilityType);
