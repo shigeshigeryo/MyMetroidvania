@@ -2,6 +2,7 @@ using MyMetroidVania.Data.ScriptableObjects;
 using MyMetroidVania.Entity.Character.Player;
 using MyMetroidVania.System;
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace MyMetroidVania.Entity.Gimmick
@@ -25,6 +26,8 @@ namespace MyMetroidVania.Entity.Gimmick
         private SoundData _lockedSound;
         [SerializeField, Tooltip("見た目")] private SpriteRenderer _visual;
         [SerializeField, Tooltip("コライダー")] private Collider2D _collider;
+
+        private Coroutine _lockedRoutine = null;
 
         private void Start()
         {
@@ -65,6 +68,10 @@ namespace MyMetroidVania.Entity.Gimmick
                     break;
                 case State.Lock:
                     AudioManager.Instance.PlayOneShotSe(_lockedSound);
+                    if (_lockedRoutine == null)
+                    {
+                        _lockedRoutine = StartCoroutine(ReactInLocked());
+                    }
                     break;
                 default:
                     break;
@@ -80,6 +87,23 @@ namespace MyMetroidVania.Entity.Gimmick
             _collider.enabled = false;
             _currentState = State.Open;
             _stateData.SetState((int)_currentState);
+        }
+
+        /// <summary>
+        /// ロック反応
+        /// </summary>
+        private IEnumerator ReactInLocked()
+        {
+            var tmpScale = _visual.transform.localScale;
+            _visual.transform.localScale *= 1.1f;
+            yield return new WaitForSeconds(0.1f);
+            _visual.transform.localScale = tmpScale;
+            _lockedRoutine = null;
+        }
+
+        private void OnDisable()
+        {
+            _lockedRoutine = null;
         }
     }
 }
