@@ -24,16 +24,44 @@ namespace MyMetroidVania.Entity.Gimmick
         [SerializeField, Tooltip("Lock時のInteract音源")]
         private string _lockedSoundName;
         private SoundData _lockedSound;
+        [SerializeField, Tooltip("UnLock時のInteract音源")]
+        private string _unlockedSoundName;
+        private SoundData _unlockedSound;
         [SerializeField, Tooltip("見た目")] private SpriteRenderer _visual;
         [SerializeField, Tooltip("コライダー")] private Collider2D _collider;
+        [SerializeReference, Tooltip("開錠に必要なキー<br>開錠が必要なければnull")]
+        private GameObject _unlockKeyObj = null;
+        private IUnlockKey _unlockKey = null;
 
         private Coroutine _lockedRoutine = null;
+        private void OnEnable()
+        {
+            if (_unlockKey == null && _unlockKeyObj != null)
+            {
+                if (_unlockKeyObj.TryGetComponent<IUnlockKey>(out var key))
+                {
+                    _unlockKey = key;
+                }
+                else
+                {
+                    Debug.LogError($"IUnlockKeyインタフェースを実装したオブジェクトを指定してください。<br>{_unlockKeyObj}", gameObject);
+                    return;
+                }
+            }
+
+            if (_unlockKey != null)
+            {
+                _unlockKey.OnUnlocked += UnLock;
+            }
+        }
 
         private void Start()
         {
             _closedSound = AudioManager.Instance.GetSe(_closedSoundName);
             _lockedSound = AudioManager.Instance.GetSe(_lockedSoundName);
+            _unlockedSound = AudioManager.Instance.GetSe(_unlockedSoundName);
         }
+
 
         /// <summary>
         /// ドアの状態を初期化
@@ -101,9 +129,24 @@ namespace MyMetroidVania.Entity.Gimmick
             _lockedRoutine = null;
         }
 
+        /// <summary>
+        /// アンロック処理
+        /// </summary>
+        public void UnLock()
+        {
+            if (_currentState != State.Lock) return;
+
+            AudioManager.Instance.PlayOneShotSe(_unlockedSound);
+            _currentState = State.Close;
+        }
+
         private void OnDisable()
         {
             _lockedRoutine = null;
+            if (_unlockKey != null)
+            {
+                _unlockKey.OnUnlocked -= UnLock;
+            }
         }
     }
 }
