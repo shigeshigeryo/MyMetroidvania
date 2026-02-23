@@ -18,6 +18,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
 
         public event Action OnAttack;
         public event Action OnAbility;
+        public event Action OnCompleteDeadAnimation;
 
         /// <summary>
         /// アニメーションイベントの購読
@@ -113,7 +114,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         /// </summary>
         public void Dead()
         {
-            _enemySlime.gameObject.SetActive(false);
+            OnCompleteDeadAnimation?.Invoke();
         }
 
         private void OnDestroy()

@@ -51,6 +51,8 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         {
             base.Initialize();
             ChangeState(SleepState);
+
+            _animation.OnCompleteDeadAnimation += OnCompletedDeadAnimation;
         }
 
         public override void Respawn()
@@ -217,6 +219,11 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         {
             base.OnTakenDamage();
             Debug.Log($"Life:{_statusManager.CurrentStatus.Life}", _statusManager);
+        }
+
+        private void OnDisable()
+        {
+            _animation.OnCompleteDeadAnimation -= OnCompletedDeadAnimation;
         }
     }
 }

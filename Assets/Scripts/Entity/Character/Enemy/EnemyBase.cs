@@ -1,5 +1,6 @@
 using MyMetroidVania.Data.ScriptableObjects;
 using MyMetroidVania.System;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace MyMetroidVania.Entity.Character.Enemy
         [SerializeField] protected AudioSource _audioSource = null;
         [SerializeField] protected Rigidbody2D _rb = null;
         [SerializeField] protected StatusManager _statusManager = null;
+        public bool IsDead => _statusManager.IsDead;
 
         [Header("サウンド（Enemy Base）")]
         [SerializeField, Tooltip("被弾時音源ファイル名")] protected string _takeDamageSoundName;
@@ -24,6 +26,9 @@ namespace MyMetroidVania.Entity.Character.Enemy
         // ダメージを受けたかどうか
         private bool _isStun = false;
         public bool IsStun => _isStun;
+
+        public event Action OnCompletedDeadAnimationEvent;
+        public event Action<EnemyBase> OnDestroyed;
 
         /// <summary>
         /// 初期化処理（初回のみ発火）
@@ -150,6 +155,15 @@ namespace MyMetroidVania.Entity.Character.Enemy
         }
 
         /// <summary>
+        /// 死亡アニメーション完了
+        /// </summary>
+        protected void OnCompletedDeadAnimation()
+        {
+            gameObject.SetActive(false);
+            OnCompletedDeadAnimationEvent?.Invoke();
+        }
+
+        /// <summary>
         /// メインカメラの画角内に存在するかをカメラとエネミーのポジションで計算し
         /// カメラ内に存在するかどうかを返す
         /// ※ メインカメラはプレイヤーに追従している
@@ -165,6 +179,11 @@ namespace MyMetroidVania.Entity.Character.Enemy
             // カメラの範囲内かどうか 2fはバッファ
             return pos.x > camPos.x - halfW - 2f && pos.x < camPos.x + halfW + 2f
                 && pos.y > camPos.y - halfH - 2f && pos.y < camPos.y + halfH + 2f;
+        }
+
+        private void OnDestroy()
+        {
+            OnDestroyed?.Invoke(this);
         }
     }
 }

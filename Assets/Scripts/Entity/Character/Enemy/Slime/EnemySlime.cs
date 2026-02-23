@@ -61,6 +61,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
             _hitBox.SetDisableCollider();
             ChangeState(SleepState);
 
+            _animation.OnCompleteDeadAnimation += OnCompletedDeadAnimation;
             _animation.OnAttack += CrushUp;
             _animation.OnAbility += UseAbility;
 
@@ -350,6 +351,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         {
             _animation.OnAttack -= CrushUp;
             _animation.OnAbility -= UseAbility;
+            _animation.OnCompleteDeadAnimation -= OnCompletedDeadAnimation;
         }
     }
 }
