@@ -16,6 +16,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
         private static readonly int _deadId = Animator.StringToHash("Dead"); // 死亡アニメーション
 
         public event Action OnAttack;
+        public event Action OnCompleteDeadAnimation;
 
         /// <summary>
         /// アニメーションイベントの購読
@@ -92,7 +93,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
         /// </summary>
         public void Dead()
         {
-            _enemyBat.gameObject.SetActive(false);
+            OnCompleteDeadAnimation?.Invoke();
         }
 
         private void OnDestroy()

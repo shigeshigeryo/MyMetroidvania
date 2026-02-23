@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -14,6 +15,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         private static readonly int _takenDamageId = Animator.StringToHash("TakenDamage"); // 被弾アニメーション
         private static readonly int _deadId = Animator.StringToHash("Dead"); // 死亡アニメーション
 
+        public event Action OnCompleteDeadAnimation;
 
         /// <summary>
         /// アニメーションイベントの購読
@@ -75,7 +77,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         /// </summary>
         public void Dead()
         {
-            _enemyWalker.gameObject.SetActive(false);
+            OnCompleteDeadAnimation?.Invoke();
         }
 
         private void OnDestroy()

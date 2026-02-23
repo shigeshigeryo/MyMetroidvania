@@ -47,6 +47,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
             ChangeState(SleepState);
 
             _animation.OnAttack += Charge;
+            _animation.OnCompleteDeadAnimation += OnCompletedDeadAnimation;
         }
 
         public override void Respawn()
@@ -213,6 +214,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
         private void OnDisable()
         {
             _animation.OnAttack -= Charge;
+            _animation.OnCompleteDeadAnimation -= OnCompletedDeadAnimation;
         }
     }
 }
