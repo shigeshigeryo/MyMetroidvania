@@ -1,3 +1,4 @@
+using CPlayer = MyMetroidVania.Entity.Character.Player.Player;
 using MyMetroidVania.Utility;
 using System.Collections;
 using UnityEngine;
@@ -70,7 +71,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
             var hit = _playerChecker.GetHitCollider();
             if (hit)
             {
-                _target = hit.transform;
+                _target = hit.GetComponent<CPlayer>().Center;
                 return true;
             }
             else

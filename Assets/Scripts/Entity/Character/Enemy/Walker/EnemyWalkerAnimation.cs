@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Walker
 {

@@ -1,4 +1,3 @@
-using MyMetroidVania.Entity.Effect;
 using MyMetroidVania.Entity.Gimmick;
 using MyMetroidVania.System;
 using MyMetroidVania.Utility;
@@ -23,6 +22,8 @@ namespace MyMetroidVania.Entity.Character.Player
 
         [SerializeField, Tooltip("アビリティの取得状況を管理")]
         private AbilityManager _abilityManager;
+        [SerializeField, Tooltip("当たり判定の中心")] private Transform _center;
+        public Transform Center => _center;
 
         [Header("ジャンプ")]
         [SerializeField, Tooltip("地面の接地判定")] private BoxCaster _groundChecker;
