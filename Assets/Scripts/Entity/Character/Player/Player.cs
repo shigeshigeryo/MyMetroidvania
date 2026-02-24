@@ -1,4 +1,3 @@
-using MyMetroidVania.Entity.Effect;
 using MyMetroidVania.Entity.Gimmick;
 using MyMetroidVania.System;
 using MyMetroidVania.Utility;
