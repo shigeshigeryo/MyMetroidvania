@@ -1,7 +1,10 @@
 using System;
 
-public interface IUnlockKey
+namespace MyMetroidVania.Entity.Gimmick
 {
-    public event Action OnUnlocked;
-    public void Unlock();
+    public interface IUnlockKey
+    {
+        public event Action OnUnlocked;
+        public void Unlock();
+    }
 }
