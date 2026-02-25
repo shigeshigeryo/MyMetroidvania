@@ -1,4 +1,6 @@
+using MyMetroidVania.Data.ScriptableObjects;
 using MyMetroidVania.Entity.Character.Enemy;
+using MyMetroidVania.System;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +16,11 @@ namespace MyMetroidVania.Entity.Gimmick
             Beaten // 勝利済み
         }
         private State _currentState = State.None;
+        [SerializeField] private string _bossSoundName = "BGM_BossBattle";
+        private SoundData _bossSound = null;
+        private bool _isPlayingBossSound = false;
         [SerializeField] private List<EnemyBase> _bossList = new List<EnemyBase>();
+        [SerializeField] private LayerMask _playerLayer;
 
         public event Action OnUnlocked;
 
@@ -31,6 +37,29 @@ namespace MyMetroidVania.Entity.Gimmick
             {
                 _bossList[i].OnCompletedDeadAnimationEvent += CheckConditions;
             }
+
+            _bossSound = AudioManager.Instance.GetBgm(_bossSoundName);
+        }
+
+        /// <summary>
+        /// ボスBGMを流す
+        /// </summary>
+        private void PlayBossSound()
+        {
+            if (_isPlayingBossSound) return;
+
+            AudioManager.Instance.InterruptPlayBgm(_bossSound);
+            _isPlayingBossSound = true;
+        }
+        /// <summary>
+        /// ボスBGMを流す
+        /// </summary>
+        private void ReturnBackupSound()
+        {
+            if (!_isPlayingBossSound) return;
+
+            AudioManager.Instance.ReturnBackupBgm();
+            _isPlayingBossSound = false;
         }
 
         /// <summary>
@@ -48,6 +77,9 @@ namespace MyMetroidVania.Entity.Gimmick
             // ボスをすべて討伐した場合
             DestroyBosses();
             Unlock();
+
+            // ボス前のBGMに戻す
+            ReturnBackupSound();
 
             _currentState = State.Beaten;
             _stateData.SetState((int)State.Beaten);
@@ -72,6 +104,26 @@ namespace MyMetroidVania.Entity.Gimmick
         {
             Debug.Log("アンロック処理");
             OnUnlocked?.Invoke();
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (_currentState == State.Beaten) return;
+
+            if (1 << collision.gameObject.layer == _playerLayer)
+            {
+                PlayBossSound();
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            if (_currentState == State.Beaten) return;
+
+            if (1 << collision.gameObject.layer == _playerLayer)
+            {
+                ReturnBackupSound();
+            }
         }
     }
 }
