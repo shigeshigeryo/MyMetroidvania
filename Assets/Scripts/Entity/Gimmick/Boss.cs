@@ -18,6 +18,8 @@ namespace MyMetroidVania.Entity.Gimmick
         private State _currentState = State.None;
         [SerializeField] private string _bossSoundName = "BGM_BossBattle";
         private SoundData _bossSound = null;
+        [SerializeField] private string _winSoundName = "Jingle_Win";
+        private SoundData _winSound = null;
         private bool _isPlayingBossSound = false;
         [SerializeField] private List<EnemyBase> _bossList = new List<EnemyBase>();
         [SerializeField] private LayerMask _playerLayer;
@@ -39,6 +41,7 @@ namespace MyMetroidVania.Entity.Gimmick
             }
 
             _bossSound = AudioManager.Instance.GetBgm(_bossSoundName);
+            _winSound = AudioManager.Instance.GetBgm(_winSoundName);
         }
 
         /// <summary>
@@ -76,10 +79,13 @@ namespace MyMetroidVania.Entity.Gimmick
             Debug.Log("ボス討伐確認");
             // ボスをすべて討伐した場合
             DestroyBosses();
-            Unlock();
 
-            // ボス前のBGMに戻す
-            ReturnBackupSound();
+            // ジングルを鳴らした後にボス前のBGMに戻す
+            AudioManager.Instance.PlayJingle(_winSound, () =>
+            {
+                ReturnBackupSound();
+                Unlock();
+            });
 
             _currentState = State.Beaten;
             _stateData.SetState((int)State.Beaten);

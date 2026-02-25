@@ -194,11 +194,48 @@ namespace MyMetroidVania.System
             callback?.Invoke();
         }
 
+        /*
+         * ------------------------------
+         * Jingle
+         * ------------------------------
+         */
+        /// <summary>
+        /// ジングル再生
+        /// </summary>
+        /// <param name="jingle">再生するジングル</param>
+        /// <param name="callback">コールバック関数</param>
+        public void PlayJingle(SoundData jingle, Action callback = null)
+        {
+            _bgmSource.clip = jingle.Clip;
+            _bgmSource.volume = jingle.Volume;
+            _bgmSource.loop = false;
+            _bgmSource.Play();
+
+            if(callback != null)
+            {
+                StartCoroutine(MonitorPlaying(callback));
+            }
+        }
+
+        /// <summary>
+        /// ジングル再生の監視
+        /// </summary>
+        /// <param name="callback">コールバック関数</param>
+        private IEnumerator MonitorPlaying(Action callback)
+        {
+            while (_bgmSource.isPlaying)
+            {
+                yield return null;
+            }
+
+            _bgmSource.volume = 0f; // フェードインがスムーズに行われるようにボリュームを下げておく
+            callback.Invoke();
+        }
 
         /*
          * ------------------------------
          * SE
-         *------------------------------
+         * ------------------------------
          */
         /// <summary>
         /// 名前をハッシュ化し、ゲットする。
