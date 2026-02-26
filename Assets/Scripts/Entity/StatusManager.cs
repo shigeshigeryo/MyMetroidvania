@@ -20,7 +20,7 @@ namespace MyMetroidVania.Entity
         public event Action<int> OnLifeCountChanged; // ライフ数のUIを更新
         public event Action<int> OnLifeChanged; // ライフのUIを更新
 
-        void Start()
+        private void Start()
         {
             InitializeStatus();
         }
@@ -68,6 +68,18 @@ namespace MyMetroidVania.Entity
             _currentStatus = _defaultStatus.CreateCurrentStatus();
 
             // ステータスのUIの更新
+            OnLifeCountChanged?.Invoke(_defaultStatus.Life);
+            OnLifeChanged?.Invoke(_currentStatus.Life);
+        }
+
+        /// <summary>
+        /// ライフ最大値を上昇させる
+        /// </summary>
+        public void LifeUp()
+        {
+            _defaultStatus.UpdateLife(1);
+            _currentStatus.UpdateLife(1);
+
             OnLifeCountChanged?.Invoke(_defaultStatus.Life);
             OnLifeChanged?.Invoke(_currentStatus.Life);
         }
