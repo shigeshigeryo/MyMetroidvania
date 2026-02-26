@@ -14,7 +14,7 @@ namespace MyMetroidVania.Entity.Character.Player
         [Header("ジャンプ")]
         [SerializeField, Tooltip("ジャンプの初速")] private float _jumpSpeed = 8f;
         [SerializeField, Tooltip("ジャンプボタン押下時にかかる+yの加速度")] private float _jumpAccel = 10f;
-
+        [SerializeField, Tooltip("落下速上限")] private float _maxFallingSpeed = 13f;
         public Vector2 Velocity => _rb.linearVelocity;
         public bool IsMoving => Mathf.Abs(_rb.linearVelocityX) > 0.01f;
 
@@ -52,6 +52,13 @@ namespace MyMetroidVania.Entity.Character.Player
             }
         }
 
+        /// <summary>
+        /// 落下速度を抑制する
+        /// </summary>
+        public void RestrainFallingSpeed()
+        {
+            _rb.linearVelocityY = Mathf.Max(_rb.linearVelocityY, -_maxFallingSpeed);
+        }
 
         /*
          * ------------------------------------------------------------------
