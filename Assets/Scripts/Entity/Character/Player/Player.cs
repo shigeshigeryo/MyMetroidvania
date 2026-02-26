@@ -221,6 +221,7 @@ namespace MyMetroidVania.Entity.Character.Player
                 case ActionState.Fall:
                     // Œ»İ‚Ì‘¬‚³‚ª‹K’è‚ÌˆÚ“®‘¬‚ğ’´‚¦‚Ä‚¢‚½ê‡‚É™X‚É‘¬‚³‚ğŒ¸‚ç‚·
                     _physics.ReduceExcessSpeed();
+                    _physics.RestrainFallingSpeed();
                     break;
 
                 case ActionState.JumpAnticipation:

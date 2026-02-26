@@ -466,7 +466,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2028150745920935016, guid: 5e9f9671d213f0c4f8b107f2eaddd5d2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.3999996
+      value: 4.7999997
       objectReference: {fileID: 0}
     - target: {fileID: 2750742041972495228, guid: 5e9f9671d213f0c4f8b107f2eaddd5d2, type: 3}
       propertyPath: m_Name
@@ -634,7 +634,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 125.76737, y: -31.000002, z: -10}
+  m_LocalPosition: {x: 128.97577, y: 4.80008, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -830,7 +830,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8964281865605829737, guid: 7e3802b3d0c624f499f57b19e0fb8c4a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.3999996
+      value: 4.7999997
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -996,9 +996,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 6200967431743478429}
-  IsDebug: 0
-  _debugSpawnPointAreaId: Area_001
-  _debugSpawnPoint: {fileID: 6741493200708966067}
+  IsDebug: 1
+  _debugSpawnPointAreaId: Area_003
+  _debugSpawnPoint: {fileID: 2085611215}
 --- !u!4 &1063851720
 Transform:
   m_ObjectHideFlags: 0
@@ -1554,7 +1554,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1575269433905159630, guid: b7c9920c4c1fc5945a0c9c80201a0c2f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.3999996
+      value: 4.7999997
       objectReference: {fileID: 0}
     - target: {fileID: 2750742041972495228, guid: b7c9920c4c1fc5945a0c9c80201a0c2f, type: 3}
       propertyPath: m_Name
@@ -1601,7 +1601,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 145586768738190851, guid: 9e05e4821c492194b8eb7252654816ad, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 45.4
+      value: 44.8
       objectReference: {fileID: 0}
     - target: {fileID: 2577186475325198981, guid: 9e05e4821c492194b8eb7252654816ad, type: 3}
       propertyPath: _spawnPoint
@@ -1811,7 +1811,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2198108286075247007, guid: 776395c0a7f082142ac0ab309502d18f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.3999996
+      value: 4.7999997
       objectReference: {fileID: 0}
     - target: {fileID: 2750742041972495228, guid: 776395c0a7f082142ac0ab309502d18f, type: 3}
       propertyPath: m_Name
