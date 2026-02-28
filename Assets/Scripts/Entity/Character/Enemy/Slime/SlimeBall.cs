@@ -6,7 +6,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
     public class SlimeBall : MonoBehaviour
     {
         [SerializeField] private HitBox _hitBox = null;
-        [SerializeField] private SpriteRenderer _renderer = null;
         [SerializeField] private Rigidbody2D _rb = null;
 
         private IObjectPool<SlimeBall> _pool;

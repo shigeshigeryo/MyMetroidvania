@@ -12,8 +12,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
 
         [Header("待機（TestEnemy）")]
         [SerializeField, Tooltip("x軸の移動の速さ")] protected float _moveSpeedX = 5f;
-        [SerializeField, Tooltip("ループで発生するインターバル秒")]
-        private float _intervalSec = 1f;
         [SerializeField, Tooltip("時間にランダム性を持たせる最大オフセット値")]
         private const float _offsetSec = 0.5f;
 
