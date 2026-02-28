@@ -87,8 +87,11 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         /// </summary>
         private void PlayOneShotLandSound()
         {
-            var i = Random.Range(0, _landSoundNames.Length);
-            _audioSource.PlayOneShot(_landSounds[i].Clip, _landSounds[i].Volume);
+            if (_groundChecker.IsCasted)
+            {
+                var i = Random.Range(0, _landSoundNames.Length);
+                _audioSource.PlayOneShot(_landSounds[i].Clip, _landSounds[i].Volume);
+            }
         }
 
         /// <summary>
