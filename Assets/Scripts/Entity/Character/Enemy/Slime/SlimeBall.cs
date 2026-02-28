@@ -1,3 +1,4 @@
+using MyMetroidVania.Utility;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -6,6 +7,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
     public class SlimeBall : MonoBehaviour
     {
         [SerializeField] private HitBox _hitBox = null;
+        [SerializeField] private CircleCaster _groundChecker = null;
         [SerializeField] private Rigidbody2D _rb = null;
 
         private IObjectPool<SlimeBall> _pool;
@@ -23,6 +25,15 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         public void SetPool(IObjectPool<SlimeBall> pool)
         {
             _pool = pool;
+        }
+
+        private void FixedUpdate()
+        {
+            // ê⁄ínîªíËÇ≈ÉäÉäÅ[ÉX
+            if(_groundChecker.IsCasted)
+            {
+                _pool.Release(this);
+            }
         }
 
         /// <summary>
