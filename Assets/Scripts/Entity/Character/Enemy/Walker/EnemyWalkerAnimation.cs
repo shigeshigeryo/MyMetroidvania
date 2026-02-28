@@ -14,6 +14,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         private static readonly int _takenDamageId = Animator.StringToHash("TakenDamage"); // 被弾アニメーション
         private static readonly int _deadId = Animator.StringToHash("Dead"); // 死亡アニメーション
 
+        public event Action OnLand;
         public event Action OnCompleteDeadAnimation;
 
         /// <summary>
@@ -53,6 +54,14 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
             {
                 _renderer.flipX = true;
             }
+        }
+
+        /// <summary>
+        /// 着地をした際に発火
+        /// </summary>
+        public void Land()
+        {
+            OnLand?.Invoke();
         }
 
         /// <summary>

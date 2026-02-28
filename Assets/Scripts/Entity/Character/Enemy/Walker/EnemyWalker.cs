@@ -2,12 +2,22 @@ using CPlayer = MyMetroidVania.Entity.Character.Player.Player;
 using MyMetroidVania.Utility;
 using System.Collections;
 using UnityEngine;
+using MyMetroidVania.Data.ScriptableObjects;
+using System.Collections.Generic;
+using MyMetroidVania.System;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Walker
 {
     public class EnemyWalker : EnemyBase
     {
         private float _lastMoveDirection;// 最後に動いた方向 +x方向 = 1, -x方向 = -1
+
+        [Header("サウンド（Walker）")]
+        [SerializeField, Tooltip("着地時音源ファイル名")]
+        private string[] _landSoundNames = { "SE_WalkerLand1", "SE_WalkerLand2" };
+        private List<SoundData> _landSounds = new();
+
+        [Space]
         [SerializeField, Tooltip("地面の接地判定")] protected BoxCaster _groundChecker = null;
         [SerializeField, Tooltip("プレイヤーチェッカー")] private CircleCaster _playerChecker = null;
 
@@ -32,7 +42,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         {
             get
             {
-                if(_sleepState == null)
+                if (_sleepState == null)
                 {
                     _sleepState = new SleepState(this, new WalkerIdleState(this));
                 }
@@ -41,11 +51,22 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
             }
         }
 
+        public override void InitializeOnce()
+        {
+            base.InitializeOnce();
+
+            for (int i = 0; i < _landSoundNames.Length; i++)
+            {
+                _landSounds.Add(AudioManager.Instance.GetSe(_landSoundNames[i]));
+            }
+        }
+
         public override void Initialize()
         {
             base.Initialize();
             ChangeState(SleepState);
 
+            _animation.OnLand += PlayOneShotLandSound;
             _animation.OnCompleteDeadAnimation += OnCompletedDeadAnimation;
         }
 
@@ -58,6 +79,16 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         private void FixedUpdate()
         {
             _animation.UpdateParam(_rb.linearVelocityX);
+        }
+
+        /// <summary>
+        /// 着地サウンドを再生する
+        /// どれを再生するかはランダムで決める
+        /// </summary>
+        private void PlayOneShotLandSound()
+        {
+            var i = Random.Range(0, _landSoundNames.Length);
+            _audioSource.PlayOneShot(_landSounds[i].Clip, _landSounds[i].Volume);
         }
 
         /// <summary>
@@ -196,6 +227,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
 
         private void OnDisable()
         {
+            _animation.OnLand -= PlayOneShotLandSound;
             _animation.OnCompleteDeadAnimation -= OnCompletedDeadAnimation;
         }
     }
