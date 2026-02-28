@@ -302,7 +302,7 @@ Transform:
   m_GameObject: {fileID: 701480072267075017}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -329,7 +329,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 701480072267075017}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -356,7 +356,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -366,7 +366,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 0.5}
+  m_Size: {x: 0.8, y: 0.8}
   m_EdgeRadius: 0
 --- !u!1 &1301524945300181890
 GameObject:
@@ -413,7 +413,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: {x: 0, y: 0, z: 0}
-  _radius: 2
+  _radius: 5.5
   _targetLayers:
     serializedVersion: 2
     m_Bits: 256
@@ -478,13 +478,11 @@ MonoBehaviour:
   _takeDamageSoundName: SE_PlayerTakeDamage
   _deadSoundName: SE_PlayerDead
   _groundChecker: {fileID: 4866534370304046471}
-  _hitBox: {fileID: 8249786393369527631}
-  _attackRange: 1
-  _coolSec: 1
   _playerChecker: {fileID: 1585226471552130171}
   _moveSpeedX: 1
   _idleDurationSec: 2
   _intervalSec: 1
+  _chaseSpeedX: 2.75
   _animation: {fileID: 2320448066669024302}
 --- !u!114 &1243930244234204274
 MonoBehaviour:

@@ -9,13 +9,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
     {
         private float _lastMoveDirection;// 最後に動いた方向 +x方向 = 1, -x方向 = -1
         [SerializeField, Tooltip("地面の接地判定")] protected BoxCaster _groundChecker = null;
-
-        [Header("攻撃（TestEnemy）")]
-        [SerializeField, Tooltip("攻撃判定")] private HitBox _hitBox;
-        [SerializeField, Tooltip("攻撃の射程")] private float _attackRange = 1f;
-        private float SqrAttackRange => _attackRange * _attackRange; // 攻撃の射程の2乗
-        [SerializeField, Tooltip("攻撃CT（秒）")] private float _coolSec = 1f;
-
         [SerializeField, Tooltip("プレイヤーチェッカー")] private CircleCaster _playerChecker = null;
 
         [Header("待機")]
@@ -28,7 +21,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         private const float _offsetSec = 0.5f;
 
         [Header("追跡")]
-        [Tooltip("追跡する際の速さ")] private float _chaseSpeedX = 2.0f;
+        [SerializeField, Tooltip("追跡する際の速さ")] private float _chaseSpeedX = 2.0f;
         private Transform _target;
 
         [Space]
@@ -88,28 +81,11 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
 
         /// <summary>
         /// 攻撃射程にプレイヤーが存在するか返す
+        /// 検知範囲内にいることは前提
         /// </summary>
         public override bool IsPlayerInRange()
         {
-            var hit = _playerChecker.GetHitCollider();
-            if (!hit)
-            {
-                return false;
-            }
-
-            // 以下検知した場合
-            var distance = transform.position - hit.transform.position;
-            return distance.sqrMagnitude <= SqrAttackRange;
-        }
-
-        /// <summary>
-        /// 最後に移動した方向を参照して攻撃判定のポジションをセットする
-        /// X軸のみを移動
-        /// </summary>
-        private void SetAttackColliderByLastMoveDirection()
-        {
-            // 引数は攻撃の射程と向いている向きを考慮したもの
-            _hitBox.SetPosition(Vector3.right * _lastMoveDirection * _attackRange / 2);
+            return _playerChecker.GetHitCollider();
         }
 
         /*
@@ -196,18 +172,14 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
          * バトルステートのアクションを制御
          * ------------------------------------------------------------------
          */
+
+        /// <summary>
+        /// walkerはアタックを使用しない
+        /// TODO：仕様確定次第削除
+        /// </summary>
         public override IEnumerator OnAttack()
         {
-            // 攻撃方向をセット
-            SetAttackColliderByLastMoveDirection();
-
-            // 攻撃開始
-            _hitBox.SetEnableCollider();
-            yield return new WaitForSeconds(1f);
-
-            // 攻撃終了後の隙
-            _hitBox.SetDisableCollider();
-            yield return new WaitForSeconds(_coolSec);
+            yield return null;
         }
 
 
