@@ -413,7 +413,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: {x: 0, y: 0, z: 0}
-  _radius: 2
+  _radius: 5.5
   _targetLayers:
     serializedVersion: 2
     m_Bits: 256
@@ -478,13 +478,11 @@ MonoBehaviour:
   _takeDamageSoundName: SE_PlayerTakeDamage
   _deadSoundName: SE_PlayerDead
   _groundChecker: {fileID: 4866534370304046471}
-  _hitBox: {fileID: 8249786393369527631}
-  _attackRange: 1
-  _coolSec: 1
   _playerChecker: {fileID: 1585226471552130171}
   _moveSpeedX: 1
   _idleDurationSec: 2
   _intervalSec: 1
+  _chaseSpeedX: 2.75
   _animation: {fileID: 2320448066669024302}
 --- !u!114 &1243930244234204274
 MonoBehaviour:

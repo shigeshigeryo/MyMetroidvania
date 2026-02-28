@@ -21,7 +21,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         private const float _offsetSec = 0.5f;
 
         [Header("í«ê’")]
-        [Tooltip("í«ê’Ç∑ÇÈç€ÇÃë¨Ç≥")] private float _chaseSpeedX = 2.0f;
+        [SerializeField, Tooltip("í«ê’Ç∑ÇÈç€ÇÃë¨Ç≥")] private float _chaseSpeedX = 2.0f;
         private Transform _target;
 
         [Space]
