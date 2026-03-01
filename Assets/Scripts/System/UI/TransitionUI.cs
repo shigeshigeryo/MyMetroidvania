@@ -14,5 +14,13 @@ namespace MyMetroidVania.System.UI
                 _animator.SetTrigger(_showId);
             }
         }
+
+        /// <summary>
+        /// トランジションUIフェード開始時に発火
+        /// </summary>
+        public void StartFade()
+        {
+            GameManager.Instance.ChangeStatePlay();
+        }
     }
 }

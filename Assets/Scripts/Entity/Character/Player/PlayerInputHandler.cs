@@ -74,7 +74,15 @@ namespace MyMetroidVania.Entity.Character.Player
 
         private void Update()
         {
-            _inputDirection = Actions.Player.Move.ReadValue<Vector2>();
+            if (GameManager.Instance.IsPlay)
+            {
+                _inputDirection = Actions.Player.Move.ReadValue<Vector2>();
+            }
+            else
+            {
+                // ‘JˆÚ’†‚ÌˆÚ“®‚ð–h‚®
+                _inputDirection = Vector2.zero;
+            }
         }
 
         /// <summary>

@@ -38,6 +38,14 @@ namespace MyMetroidVania.System
         public event Action OnToggledMiniMap;
         [SerializeField, Tooltip("画面遷移フェードUI")] private TransitionUI _transitionUI = null;
 
+        public enum GameState
+        {
+            Transition, // 遷移中
+            Play, // プレイ
+            Pause // ポーズ
+        }
+        private GameState _currentState = GameState.Transition;
+        public bool IsPlay => _currentState == GameState.Play;
 
         private void Awake()
         {
@@ -64,8 +72,14 @@ namespace MyMetroidVania.System
         /// </summary>
         public void ChangeArea(string areaId, Vector3 spawnPosition)
         {
+            _currentState = GameState.Transition;
             _transitionUI.Show();
             WorldManager.Instance.ChangeArea(areaId, spawnPosition);
+        }
+
+        public void ChangeStatePlay()
+        {
+            _currentState = GameState.Play;
         }
 
 
