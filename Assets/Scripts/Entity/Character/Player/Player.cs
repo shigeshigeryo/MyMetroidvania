@@ -334,6 +334,7 @@ namespace MyMetroidVania.Entity.Character.Player
         /// </summary>
         private void OnAttack()
         {
+            if (!GameManager.Instance.IsPlay) return;
             if (_isAttacking) return;
             StartCoroutine(Attack());
         }
@@ -366,6 +367,7 @@ namespace MyMetroidVania.Entity.Character.Player
         /// </summary>
         private void OnJump()
         {
+            if (!GameManager.Instance.IsPlay) return;
             if (!_groundChecker.IsCasted) return;
 
             if (_input.InputDirection.y < -0.5f)
@@ -420,6 +422,7 @@ namespace MyMetroidVania.Entity.Character.Player
         /// </summary>
         private void OnHookStarted()
         {
+            if (!GameManager.Instance.IsPlay) return;
             // フックが使用不可であるかどうか
             if (!_abilityManager.HasAbility(AbilityType.Hook) || !_canHook) return;
 
@@ -443,6 +446,7 @@ namespace MyMetroidVania.Entity.Character.Player
         /// </summary>
         private void OnHookCanceled()
         {
+            if (!GameManager.Instance.IsPlay) return;
             // フック状態であるかどうか
             if (_currentState != ActionState.Hook) return;
 

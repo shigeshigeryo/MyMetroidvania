@@ -420,7 +420,7 @@ GameObject:
   - component: {fileID: 7727335140798458782}
   - component: {fileID: 3357177868949917446}
   - component: {fileID: 1566355988019919562}
-  - component: {fileID: 8575273115032986799}
+  - component: {fileID: 4556344616742460816}
   m_Layer: 5
   m_Name: TransitionUI
   m_TagString: Untagged
@@ -459,7 +459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b7bf75170c28604e90a52500fba6939, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 8575273115032986799}
+  _animator: {fileID: 4556344616742460816}
 --- !u!222 &3357177868949917446
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -481,7 +481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.23773581, g: 0.23773581, b: 0.23773581, a: 1}
+  m_Color: {r: 0.1, g: 0.099528305, b: 0.099528305, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -498,7 +498,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!95 &8575273115032986799
+--- !u!95 &4556344616742460816
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
@@ -707,6 +707,8 @@ MonoBehaviour:
   - {fileID: 1405301118564902434}
   - {fileID: 1276379261064810904}
   - {fileID: 702953715451241747}
+  _scaleFactor: 1.2
+  _duration: 0.5
 --- !u!1 &8674062932788433094
 GameObject:
   m_ObjectHideFlags: 0
