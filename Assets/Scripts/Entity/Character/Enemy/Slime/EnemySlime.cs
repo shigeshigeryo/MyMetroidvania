@@ -262,10 +262,12 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
                 var leftWave = _shockWavePool.Get();
                 leftWave.transform.position = transform.position - Vector3.right * i;
                 leftWave.SetFlipX(false);
+                leftWave.PlayOneShotShockSound();
 
                 var rightWave = _shockWavePool.Get();
                 rightWave.transform.position = transform.position + Vector3.right * i;
                 rightWave.SetFlipX(true);
+                rightWave.PlayOneShotShockSound();
 
                 yield return new WaitForSeconds(_shockWaveInterval);
             }

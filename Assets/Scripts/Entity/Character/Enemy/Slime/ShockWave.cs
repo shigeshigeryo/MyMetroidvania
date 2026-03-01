@@ -1,3 +1,5 @@
+using MyMetroidVania.Data.ScriptableObjects;
+using MyMetroidVania.System;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -7,6 +9,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
     {
         [SerializeField] private HitBox _hitBox = null;
         [SerializeField] private SpriteRenderer _renderer = null;
+        [SerializeField] private AudioSource _audioSource = null;
+        [SerializeField] private string _shockSoundName;
+        private SoundData _shockSound;
 
         private IObjectPool<ShockWave> _pool;
 
@@ -18,6 +23,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         public void Initialize(IDamageDealer dealer)
         {
             _hitBox.Initialize(dealer);
+            _shockSound = AudioManager.Instance.GetSe(_shockSoundName);
         }
 
         public void SetPool(IObjectPool<ShockWave> pool)
@@ -41,6 +47,14 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         public void SetFlipX(bool flip)
         {
             _renderer.flipX = flip;
+        }
+
+        /// <summary>
+        /// è’åÇîgÉTÉEÉìÉhÇçƒê∂
+        /// </summary>
+        public void PlayOneShotShockSound()
+        {
+            _audioSource.PlayOneShot(_shockSound.Clip, _shockSound.Volume);
         }
     }
 }
