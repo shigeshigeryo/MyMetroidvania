@@ -265,7 +265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _targetLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 32832
   _useOverlapBox: 1
   _offsetOverlap: {x: 0, y: -0.625}
   _sizeOverlap: {x: 0.5, y: 0.25}
@@ -475,8 +475,11 @@ MonoBehaviour:
   _audioSource: {fileID: 3540492228128941750}
   _rb: {fileID: 6707840728052785788}
   _statusManager: {fileID: 1243930244234204274}
-  _takeDamageSoundName: SE_PlayerTakeDamage
-  _deadSoundName: SE_PlayerDead
+  _takeDamageSoundName: SE_EnemyTakeDamage
+  _deadSoundName: SE_WalkerDead
+  _landSoundNames:
+  - SE_WalkerWalk1
+  - SE_WalkerWalk2
   _groundChecker: {fileID: 4866534370304046471}
   _playerChecker: {fileID: 1585226471552130171}
   _moveSpeedX: 1
@@ -591,7 +594,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 3
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -627,7 +630,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

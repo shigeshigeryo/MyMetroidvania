@@ -1,7 +1,9 @@
-using CPlayer = MyMetroidVania.Entity.Character.Player.Player;
+using MyMetroidVania.Data.ScriptableObjects;
+using MyMetroidVania.System;
 using MyMetroidVania.Utility;
 using System.Collections;
 using UnityEngine;
+using CPlayer = MyMetroidVania.Entity.Character.Player.Player;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Bat
 {
@@ -9,7 +11,13 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
     {
         private float _lastMoveDirection;// 最後に動いた方向 +x方向 = 1, -x方向 = -1
 
-        [Header("攻撃（TestEnemy）")]
+        [Header("サウンド（Bat）")]
+        [SerializeField, Tooltip("羽ばたき音源ファイル名")] private string _flySoundName;
+        private SoundData _flySound;
+        [SerializeField, Tooltip("攻撃音源ファイル名")] private string _attackSoundName;
+        private SoundData _attackSound;
+
+        [Header("攻撃")]
         [SerializeField, Tooltip("攻撃判定")] private HitBox _hitBox;
         [SerializeField, Tooltip("攻撃の射程")] private float _attackRange = 1f;
         private float SqrAttackRange => _attackRange * _attackRange; // 攻撃の射程の2乗
@@ -42,6 +50,15 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
             }
         }
 
+        public override void InitializeOnce()
+        {
+            base.InitializeOnce();
+
+            _flySound = AudioManager.Instance.GetSe(_flySoundName);
+            _attackSound = AudioManager.Instance.GetSe(_attackSoundName);
+
+        }
+
         public override void Initialize()
         {
             base.Initialize();
@@ -49,6 +66,10 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
 
             _animation.OnAttack += Charge;
             _animation.OnCompleteDeadAnimation += OnCompletedDeadAnimation;
+
+            _audioSource.volume = _flySound.Volume;
+            _audioSource.clip = _flySound.Clip;
+            _audioSource.Play();
         }
 
         public override void Respawn()
@@ -180,9 +201,12 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
         public override IEnumerator OnAttack()
         {
             // 攻撃開始
+            _audioSource.Stop();
+            _audioSource.PlayOneShot(_attackSound.Clip, _attackSound.Volume);
             _animation.TriggerAttack();
             yield return new WaitForSeconds(0.5f);
 
+            _audioSource.Play();
             // 攻撃終了後の隙
             _hitBox.SetDisableCollider();
             StopMove();
@@ -214,6 +238,8 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
 
         private void OnDisable()
         {
+            _audioSource.Stop();
+
             _animation.OnAttack -= Charge;
             _animation.OnCompleteDeadAnimation -= OnCompletedDeadAnimation;
         }

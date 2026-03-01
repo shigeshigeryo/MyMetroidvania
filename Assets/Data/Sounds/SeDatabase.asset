@@ -40,6 +40,9 @@ MonoBehaviour:
   - _clip: {fileID: 8300000, guid: da62fc63a1a8a3c459fc75a54c878aed, type: 3}
     _volume: 0.5
     _isLoop: 0
+  - _clip: {fileID: 8300000, guid: 89b37f949fd7ec540b284b8a17e1d718, type: 3}
+    _volume: 0.5
+    _isLoop: 0
   - _clip: {fileID: 8300000, guid: 9efd70c4822cb554788b20ee2d383837, type: 3}
     _volume: 0.5
     _isLoop: 0
@@ -48,4 +51,37 @@ MonoBehaviour:
     _isLoop: 0
   - _clip: {fileID: 8300000, guid: 804e29faba395c74c84e7d5f9b01e9f9, type: 3}
     _volume: 0.5
+    _isLoop: 0
+  - _clip: {fileID: 8300000, guid: c6a952ae7ebfdac4d82322f50744a5c4, type: 3}
+    _volume: 0.2
+    _isLoop: 0
+  - _clip: {fileID: 8300000, guid: 02e4f2a4b264f774b9377d6f8093e52a, type: 3}
+    _volume: 0.2
+    _isLoop: 0
+  - _clip: {fileID: 8300000, guid: 2d1dcf62a83ae444d8cd2b2009924265, type: 3}
+    _volume: 0.5
+    _isLoop: 0
+  - _clip: {fileID: 8300000, guid: 055f86e4e0638294fa03d7306d91d772, type: 3}
+    _volume: 0.6
+    _isLoop: 1
+  - _clip: {fileID: 8300000, guid: a98e26b8edc50554aba7b6ab2f6128c1, type: 3}
+    _volume: 0.5
+    _isLoop: 0
+  - _clip: {fileID: 8300000, guid: 745882c3374e36a47bf5ff79a18cfe96, type: 3}
+    _volume: 0.5
+    _isLoop: 0
+  - _clip: {fileID: 8300000, guid: 8f6ed39e7fc1e4a4e87a3511d5dc67ff, type: 3}
+    _volume: 0.8
+    _isLoop: 0
+  - _clip: {fileID: 8300000, guid: 25864b6f1f480a346b9249303438a9d9, type: 3}
+    _volume: 0.4
+    _isLoop: 1
+  - _clip: {fileID: 8300000, guid: 545e9008479b1374c91c276ec89cc4c6, type: 3}
+    _volume: 1
+    _isLoop: 0
+  - _clip: {fileID: 8300000, guid: 7279e83691f05fd42b5321c834c9272b, type: 3}
+    _volume: 0.5
+    _isLoop: 0
+  - _clip: {fileID: 8300000, guid: b09498f8b5a2dfb45b5439d6c8ab241e, type: 3}
+    _volume: 0.2
     _isLoop: 0

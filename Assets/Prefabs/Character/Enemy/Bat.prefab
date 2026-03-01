@@ -418,8 +418,10 @@ MonoBehaviour:
   _audioSource: {fileID: 3540492228128941750}
   _rb: {fileID: 6707840728052785788}
   _statusManager: {fileID: 1243930244234204274}
-  _takeDamageSoundName: SE_PlayerTakeDamage
-  _deadSoundName: SE_PlayerDead
+  _takeDamageSoundName: SE_EnemyTakeDamage
+  _deadSoundName: SE_BatDead
+  _flySoundName: SE_BatFly
+  _attackSoundName: SE_BatAttack
   _hitBox: {fileID: 8249786393369527631}
   _attackRange: 2.5
   _power: 8
@@ -526,16 +528,16 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 3
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -571,7 +573,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

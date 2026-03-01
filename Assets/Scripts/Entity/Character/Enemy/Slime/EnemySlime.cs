@@ -3,6 +3,8 @@ using MyMetroidVania.Utility;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
+using MyMetroidVania.Data.ScriptableObjects;
+using MyMetroidVania.System;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Slime
 {
@@ -10,10 +12,18 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
     {
         private float _lastMoveDirection;// 最後に動いた方向 +x方向 = 1, -x方向 = -1
 
-        [Header("待機（TestEnemy）")]
+        [Header("サウンド（Slime）")]
+        [SerializeField, Tooltip("スライム移動用")] private AudioSource _moveAudioSource = null;
+        [SerializeField, Tooltip("移動音源ファイル名")] private string _moveSoundName;
+        private SoundData _moveSound;
+        [SerializeField, Tooltip("押しつぶし音源ファイル名")] private string _crushUpSoundName;
+        private SoundData _crushUpSound;
+        [SerializeField, Tooltip("スライムボール生成音源ファイル名")] 
+        private string _generateSlimeBallSoundName;
+        private SoundData _generateSlimeBallSound;
+
+        [Header("待機")]
         [SerializeField, Tooltip("x軸の移動の速さ")] protected float _moveSpeedX = 5f;
-        [SerializeField, Tooltip("ループで発生するインターバル秒")]
-        private float _intervalSec = 1f;
         [SerializeField, Tooltip("時間にランダム性を持たせる最大オフセット値")]
         private const float _offsetSec = 0.5f;
 
@@ -54,6 +64,17 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
 
                 return _sleepState;
             }
+        }
+
+        public override void InitializeOnce()
+        {
+            base.InitializeOnce();
+
+            _moveSound = AudioManager.Instance.GetSe(_moveSoundName);
+            _moveAudioSource.clip = _moveSound.Clip;
+            _moveAudioSource.volume = _moveSound.Volume;
+            _crushUpSound = AudioManager.Instance.GetSe(_crushUpSoundName);
+            _generateSlimeBallSound = AudioManager.Instance.GetSe(_generateSlimeBallSoundName);
         }
 
         public override void Initialize()
@@ -126,6 +147,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         private void FixedUpdate()
         {
             _animation.UpdateParam(_rb.linearVelocityX);
+            if (_rb.linearVelocityX < 0.01f && _moveAudioSource.isPlaying) _moveAudioSource.Stop(); // 移動音をストップ
         }
 
         /// <summary>
@@ -225,6 +247,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         private void CrushUp()
         {
             _hitBox.SetEnableCollider();
+            _audioSource.PlayOneShot(_crushUpSound.Clip, _crushUpSound.Volume);
             StartCoroutine(GenerateShockWave());
         }
 
@@ -239,10 +262,12 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
                 var leftWave = _shockWavePool.Get();
                 leftWave.transform.position = transform.position - Vector3.right * i;
                 leftWave.SetFlipX(false);
+                leftWave.PlayOneShotShockSound();
 
                 var rightWave = _shockWavePool.Get();
                 rightWave.transform.position = transform.position + Vector3.right * i;
                 rightWave.SetFlipX(true);
+                rightWave.PlayOneShotShockSound();
 
                 yield return new WaitForSeconds(_shockWaveInterval);
             }
@@ -254,14 +279,16 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         /// </summary>
         public override IEnumerator OnChase()
         {
-            Debug.Log("スライムが近づくよ");
+            Debug.Log("chase start");
+            _moveAudioSource.Play();
+
             var dir = _target.position - transform.position;
             _lastMoveDirection = dir.x < 0 ? -1 : 1;
             float timer = 0f;
 
             while (timer < _timeLimit)
             {
-                if ((_target.position - transform.position).sqrMagnitude < SqrAttackRange) yield break;
+                if (IsPlayerInRange()) break;
 
                 _rb.linearVelocityX = _lastMoveDirection * _moveSpeedX;
                 yield return new WaitForFixedUpdate();
@@ -282,7 +309,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         /// </summary>
         public IEnumerator OnEscape()
         {
-            Debug.Log("スライムが離れるよ");
+            Debug.Log("escape start");
+            _moveAudioSource.Play();
+
             var dir = _target.position - transform.position;
             // 逃げる挙動のため、ベクトルとは逆向きをとる
             _lastMoveDirection = dir.x < 0 ? 1 : -1;
@@ -290,7 +319,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
 
             while (timer < _timeLimit)
             {
-                if (!IsPlayerInRange()) yield break;
+                if (!IsPlayerInRange()) break;
 
                 _rb.linearVelocityX = _lastMoveDirection * _moveSpeedX;
                 yield return new WaitForFixedUpdate();
@@ -307,6 +336,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         {
             // 攻撃開始
             _animation.TriggerAbility();
+            _audioSource.PlayOneShot(_generateSlimeBallSound.Clip, _generateSlimeBallSound.Volume);
             yield return new WaitForSeconds(1f);
 
             // 攻撃終了後の隙
