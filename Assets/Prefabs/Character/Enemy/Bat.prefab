@@ -419,7 +419,7 @@ MonoBehaviour:
   _rb: {fileID: 6707840728052785788}
   _statusManager: {fileID: 1243930244234204274}
   _takeDamageSoundName: SE_PlayerTakeDamage
-  _deadSoundName: SE_PlayerDead
+  _deadSoundName: SE_BatDead
   _flySoundName: SE_BatFly
   _attackSoundName: SE_BatAttack
   _hitBox: {fileID: 8249786393369527631}

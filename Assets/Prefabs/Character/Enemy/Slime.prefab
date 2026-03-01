@@ -360,7 +360,7 @@ MonoBehaviour:
   _rb: {fileID: 3970123696582234940}
   _statusManager: {fileID: 7359065457032652910}
   _takeDamageSoundName: SE_PlayerTakeDamage
-  _deadSoundName: SE_PlayerDead
+  _deadSoundName: SE_SlimeDead
   _moveAudioSource: {fileID: 5863573713680290827}
   _moveSoundName: SE_SlimeMove
   _crushUpSoundName: SE_SlimeCrushUp

@@ -476,7 +476,7 @@ MonoBehaviour:
   _rb: {fileID: 6707840728052785788}
   _statusManager: {fileID: 1243930244234204274}
   _takeDamageSoundName: SE_PlayerTakeDamage
-  _deadSoundName: SE_PlayerDead
+  _deadSoundName: SE_WalkerDead
   _landSoundNames:
   - SE_WalkerWalk1
   - SE_WalkerWalk2
