@@ -359,7 +359,7 @@ MonoBehaviour:
   _audioSource: {fileID: 1023828005703127084}
   _rb: {fileID: 3970123696582234940}
   _statusManager: {fileID: 7359065457032652910}
-  _takeDamageSoundName: SE_PlayerTakeDamage
+  _takeDamageSoundName: SE_EnemyTakeDamage
   _deadSoundName: SE_SlimeDead
   _moveAudioSource: {fileID: 5863573713680290827}
   _moveSoundName: SE_SlimeMove

@@ -418,7 +418,7 @@ MonoBehaviour:
   _audioSource: {fileID: 3540492228128941750}
   _rb: {fileID: 6707840728052785788}
   _statusManager: {fileID: 1243930244234204274}
-  _takeDamageSoundName: SE_PlayerTakeDamage
+  _takeDamageSoundName: SE_EnemyTakeDamage
   _deadSoundName: SE_BatDead
   _flySoundName: SE_BatFly
   _attackSoundName: SE_BatAttack
