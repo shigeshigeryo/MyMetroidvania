@@ -454,6 +454,16 @@ namespace MyMetroidVania.Entity.Character.Player
         private void OnHookCanceled()
         {
             if (!GameManager.Instance.IsPlay) return;
+            CancelHook();
+        }
+
+
+        /// <summary>
+        /// フックをキャンセル
+        /// リスポーン時（エリア変更）の際にも発火
+        /// </summary>
+        public void CancelHook()
+        {
             // フック状態であるかどうか
             if (_currentState != ActionState.Hook) return;
 
