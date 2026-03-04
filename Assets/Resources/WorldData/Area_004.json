@@ -5,12 +5,12 @@
       "TargetId": "Save_001",
       "State": 0
     },
-    "Door_001": {
-      "TargetId": "Door_001",
+    "Door_000": {
+      "TargetId": "Door_000",
       "State": 2
     },
-    "Boss_001": {
-      "TargetId": "Boss_001",
+    "Boss_000": {
+      "TargetId": "Boss_000",
       "State": 0
     },
     "UnlockAbilityItem_000": {
