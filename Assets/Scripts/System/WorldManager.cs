@@ -91,6 +91,8 @@ namespace MyMetroidVania.System
             _currentAreaManager.InitializeAreaState();
             // ˆÚ“®æ‚ÉƒXƒ|[ƒ“‚³‚¹‚é
             _player.transform.position = spawnPosition;
+
+            _player.CancelHook();
         }
 
         /// <summary>
