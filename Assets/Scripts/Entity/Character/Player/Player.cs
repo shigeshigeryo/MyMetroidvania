@@ -114,6 +114,13 @@ namespace MyMetroidVania.Entity.Character.Player
 
         private void DisposeEvents()
         {
+            // プレイヤーの操作
+            _input.OnJumpStarted -= OnJump;
+            _input.OnHookStarted -= OnHookStarted;
+            _input.OnHookCanceled -= OnHookCanceled;
+            _input.OnAttackStarted -= OnAttack;
+            _input.OnInteractStarted -= OnInteract;
+
             // ステータス周り
             _statusManager.OnDamageTaken -= _input.VibrateController;
             _statusManager.OnDead -= _input.VibrateController;
