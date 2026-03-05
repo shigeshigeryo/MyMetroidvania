@@ -444,6 +444,7 @@ namespace MyMetroidVania.Entity.Character.Player
                 _currentState = ActionState.Hook;
                 _hookPosition = hit.point;
                 _visualEffect.PlayHookEffect(_hookPosition);
+                _visualEffect.StopRunSound();
             }
         }
 
@@ -467,8 +468,15 @@ namespace MyMetroidVania.Entity.Character.Player
             // フック状態であるかどうか
             if (_currentState != ActionState.Hook) return;
 
-            _currentState = ActionState.Run;
-            _visualEffect.StopHookEffect();
+            if (_physics.IsFalling)
+            {
+                _currentState = ActionState.Fall;
+            }
+            else
+            {
+                _currentState = ActionState.JumpAnticipation;
+            }
+                _visualEffect.StopHookEffect();
             if (_hookCoolDownRoutine == null)
             {
                 // フックのクールダウン開始

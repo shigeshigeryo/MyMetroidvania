@@ -10,7 +10,7 @@ namespace MyMetroidVania.Entity.Character.Player
         private static readonly int _runId = Animator.StringToHash("IsRun");
         private static readonly int _jumpId = Animator.StringToHash("Jump");
         private static readonly int _groundedId = Animator.StringToHash("IsGrounded");
-        private static readonly int _fallId = Animator.StringToHash("IsFall");
+        private static readonly int _VelocityYId = Animator.StringToHash("VelocityY");
         private static readonly int _takenDamageId = Animator.StringToHash("TakenDamage");
 
 
@@ -25,8 +25,8 @@ namespace MyMetroidVania.Entity.Character.Player
         public void UpdateParam(Vector2 vel, bool isGrounded)
         {
             _animator.SetBool(_runId, Mathf.Abs(vel.x) > 0.01f);
-            _animator.SetBool(_fallId, vel.y < -0.01f);
             _animator.SetBool(_groundedId, isGrounded);
+            _animator.SetFloat(_VelocityYId, vel.y);
         }
 
         /// <summary>
