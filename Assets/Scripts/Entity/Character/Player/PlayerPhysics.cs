@@ -17,6 +17,7 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField, Tooltip("—Ž‰º‘¬ãŒÀ")] private float _maxFallingSpeed = 13f;
         public Vector2 Velocity => _rb.linearVelocity;
         public bool IsMoving => Mathf.Abs(_rb.linearVelocityX) > 0.01f;
+        public bool IsFalling => _rb.linearVelocityY < -0.01f;
 
 
         /*
