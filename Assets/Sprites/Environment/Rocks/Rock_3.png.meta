@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b04dfe7e3044e6a4f8dd683aaf27b4b2
+guid: dc69f9baa217d0242957847b92c7d966
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4297358921808510260
-    second: Mushroom_2_0
+      213: -2130380498941829248
+    second: Rock_3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,10 +46,10 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
+  alignment: 7
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Mushroom_2_0
+      name: Rock_3_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 3
         y: 0
-        width: 17
-        height: 21
+        width: 38
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cc28f3934d6bc54c0800000000000000
-      internalID: -4297358921808510260
+      spriteID: 08f1724393e5f62e0800000000000000
+      internalID: -2130380498941829248
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Mushroom_2_0: -4297358921808510260
+      Rock_3_0: -2130380498941829248
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
