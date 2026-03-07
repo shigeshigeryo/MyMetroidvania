@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 671716f6c2a868742b10afc81e50549f
+guid: 9c173f93caca7224d978e77f7aa33488
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6998946965740132853
-    second: Rock_Cave_3_0
+      213: 1208753020551815531
+    second: Grass_2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,10 +46,10 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
+  alignment: 7
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
@@ -126,12 +126,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Rock_Cave_3_0
+      name: Grass_2_0
       rect:
         serializedVersion: 2
-        x: 3
+        x: 0
         y: 0
-        width: 38
+        width: 21
         height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b06e24111debede90800000000000000
-      internalID: -6998946965740132853
+      spriteID: b61eb2bc77a56c010800000000000000
+      internalID: 1208753020551815531
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Rock_Cave_3_0: -6998946965740132853
+      Grass_2_0: 1208753020551815531
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
