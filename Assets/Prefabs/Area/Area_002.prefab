@@ -4067,6 +4067,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TutorialInfoUI_1
       objectReference: {fileID: 0}
+    - target: {fileID: 8904942738086791198, guid: 5beafc890f857a549b3c0b05cca9820e, type: 3}
+      propertyPath: m_text
+      value: "\u3057\u305F + \u30B8\u30E3\u30F3\u30D7\n\uFF1A\u3042\u3057\u3070\u304B\u3089\u304A\u308A\u308B"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4131,7 +4135,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8904942738086791198, guid: 5beafc890f857a549b3c0b05cca9820e, type: 3}
       propertyPath: m_text
-      value: "\u3072\u3060\u308A\u30AF\u30EA\u30C3\u30AF / \u25A0 \n\u3057\u3085\u308A\u3051\u3093\u3092\u306A\u3052\u308B"
+      value: "X\uFF1A\u3057\u3085\u308A\u3051\u3093\u3092\u306A\u3052\u308B"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918307365111045548, guid: 5beafc890f857a549b3c0b05cca9820e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
