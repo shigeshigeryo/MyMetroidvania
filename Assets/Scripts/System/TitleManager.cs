@@ -1,5 +1,7 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -32,7 +34,7 @@ namespace MyMetroidVania.System
         {
             AudioManager.Instance.GetAndPlayBgm("BGM_Title");
 
-            if(_startButton != null)
+            if (_startButton != null)
             {
                 _startButton.onClick.AddListener(() => _animator.SetTrigger(_outroId));
                 _startButton.onClick.AddListener(() => AudioManager.Instance.FadeOutBGM());
@@ -42,6 +44,18 @@ namespace MyMetroidVania.System
             if (_exitButton != null)
             {
                 _exitButton.onClick.AddListener(QuitGame);
+            }
+        }
+
+        private void Update()
+        {
+            Gamepad pad = Gamepad.current;
+            if (pad == null) return;
+
+            // ボタン選択が外れてしまった際の対応
+            if (pad.aButton.wasPressedThisFrame && EventSystem.current.currentSelectedGameObject == null)
+            {
+                EventSystem.current.SetSelectedGameObject(_startButton.gameObject);
             }
         }
 
