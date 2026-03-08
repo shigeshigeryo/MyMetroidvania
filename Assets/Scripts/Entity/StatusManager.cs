@@ -78,7 +78,8 @@ namespace MyMetroidVania.Entity
         public void LifeUp()
         {
             _defaultStatus.UpdateLife(1);
-            _currentStatus.UpdateLife(1);
+            // ‘S‰ñ•œ
+            _currentStatus.UpdateLife(_defaultStatus.Life - _currentStatus.Life);
 
             OnLifeCountChanged?.Invoke(_defaultStatus.Life);
             OnLifeChanged?.Invoke(_currentStatus.Life);
