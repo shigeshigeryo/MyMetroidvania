@@ -9,8 +9,11 @@ namespace MyMetroidVania.System
     {
         public static TitleManager Instance { get; private set; } = null;
 
+        [SerializeField] private Animator _animator = null;
         [SerializeField] private Button _startButton = null;
         [SerializeField] private Button _exitButton = null;
+
+        private static readonly int _outroId = Animator.StringToHash("Outro");
 
         private void Awake()
         {
@@ -31,7 +34,8 @@ namespace MyMetroidVania.System
 
             if(_startButton != null)
             {
-                _startButton.onClick.AddListener(LoadInGameScene);
+                _startButton.onClick.AddListener(() => _animator.SetTrigger(_outroId));
+                _startButton.onClick.AddListener(() => AudioManager.Instance.FadeOutBGM());
                 _startButton.Select();
             }
 
@@ -41,7 +45,7 @@ namespace MyMetroidVania.System
             }
         }
 
-        private void LoadInGameScene()
+        public void LoadInGameScene()
         {
             SceneManager.LoadScene("InGameScene");
         }
