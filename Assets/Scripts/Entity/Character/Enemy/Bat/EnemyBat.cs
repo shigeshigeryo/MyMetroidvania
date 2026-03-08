@@ -208,7 +208,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
 
             _audioSource.Play();
             // UŒ‚I—¹Œã‚ÌŒ„
-            _hitBox.SetDisableCollider();
+            CancelHitCollider();
             StopMove();
             yield return new WaitForSeconds(_coolSec);
         }
@@ -224,6 +224,13 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
             _rb.AddForce(dir * _power, ForceMode2D.Impulse);
         }
 
+        /// <summary>
+        /// UŒ‚”»’è‚ğ‚È‚­‚·
+        /// </summary>
+        public void CancelHitCollider()
+        {
+            _hitBox.SetDisableCollider();
+        }
 
         /*
          * ------------------------------------------------------------------
