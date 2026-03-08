@@ -22,7 +22,19 @@ namespace MyMetroidVania.Entity.Gimmick
         private SoundData _winSound = null;
         private bool _isPlayingBossSound = false;
         [SerializeField] private List<EnemyBase> _bossList = new List<EnemyBase>();
-        [SerializeField] private LayerMask _playerLayer;
+        private static int _playerLayer = -1;
+        // LazyInit
+        private static int PlayerLayer
+        {
+            get
+            {
+                if (_playerLayer == -1)
+                {
+                    _playerLayer = LayerMask.NameToLayer("Player");
+                }
+                return _playerLayer;
+            }
+        }
 
         public event Action OnUnlocked;
 
@@ -116,7 +128,7 @@ namespace MyMetroidVania.Entity.Gimmick
         {
             if (_currentState == State.Beaten) return;
 
-            if (1 << collision.gameObject.layer == _playerLayer)
+            if (collision.gameObject.layer == PlayerLayer)
             {
                 PlayBossSound();
             }
@@ -126,7 +138,7 @@ namespace MyMetroidVania.Entity.Gimmick
         {
             if (_currentState == State.Beaten) return;
 
-            if (1 << collision.gameObject.layer == _playerLayer)
+            if (collision.gameObject.layer == PlayerLayer)
             {
                 ReturnBackupSound();
             }

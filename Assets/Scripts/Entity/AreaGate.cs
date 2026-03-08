@@ -10,9 +10,23 @@ namespace MyMetroidVania.Entity
         [SerializeField, Tooltip("移動先エリアのプレイヤーのスポーン場所")] private Transform _spawnPoint;
         public Transform SpawnPoint => _spawnPoint;
 
+        private static int _playerLayer = -1;
+        // LazyInit
+        private static int PlayerLayer
+        {
+            get 
+            { 
+                if(_playerLayer == -1)
+                {
+                    _playerLayer = LayerMask.NameToLayer("Player");
+                }
+                return _playerLayer;
+            }
+        }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.CompareTag("Player"))
+            if (collision.gameObject.layer == PlayerLayer)
             {
                 GameManager.Instance.ChangeArea(_nextAreaId, SpawnPoint.position);
             }
