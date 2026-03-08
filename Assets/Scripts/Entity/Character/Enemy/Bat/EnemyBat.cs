@@ -67,9 +67,12 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
             _animation.OnAttack += Charge;
             _animation.OnCompleteDeadAnimation += OnCompletedDeadAnimation;
 
-            _audioSource.volume = _flySound.Volume;
-            _audioSource.clip = _flySound.Clip;
-            _audioSource.Play();
+            if (gameObject.activeSelf)
+            {
+                _audioSource.volume = _flySound.Volume;
+                _audioSource.clip = _flySound.Clip;
+                _audioSource.Play();
+            }
         }
 
         public override void Respawn()
@@ -141,7 +144,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
             // à⁄ìÆï˚å¸ÇåàíË
             var dir = _initialPosition - transform.position;
             Vector2 val = dir.normalized * _moveSpeed;
-            _lastMoveDirection = val.x >= 0 ? 1 : -1; 
+            _lastMoveDirection = val.x >= 0 ? 1 : -1;
 
             while (true)
             {
@@ -208,7 +211,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
 
             _audioSource.Play();
             // çUåÇèIóπå„ÇÃåÑ
-            _hitBox.SetDisableCollider();
+            CancelHitCollider();
             StopMove();
             yield return new WaitForSeconds(_coolSec);
         }
@@ -224,6 +227,13 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
             _rb.AddForce(dir * _power, ForceMode2D.Impulse);
         }
 
+        /// <summary>
+        /// çUåÇîªíËÇÇ»Ç≠Ç∑
+        /// </summary>
+        public void CancelHitCollider()
+        {
+            _hitBox.SetDisableCollider();
+        }
 
         /*
          * ------------------------------------------------------------------

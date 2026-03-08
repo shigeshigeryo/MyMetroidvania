@@ -71,6 +71,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
         {
             // コルーチンは全てStateクラスから発火される想定なので、全てのコルーチンを止めてよい。
             _owner.StopAllCoroutines();
+            _owner.CancelHitCollider();
         }
 
         private IEnumerator BattleRoutine()
