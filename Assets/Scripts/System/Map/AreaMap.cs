@@ -9,7 +9,7 @@ namespace MyMetroidVania.System.Map
 
         [SerializeField, Tooltip("エリアID")] private string _areaId;
         [SerializeField, Tooltip("エリア間のつながりを表現する線の配列")] private LineMap[] _lineMaps = null;
-        void Start()
+        private void Awake()
         {
             AreaMapList.Add(_areaId, this);
             gameObject.SetActive(false);
