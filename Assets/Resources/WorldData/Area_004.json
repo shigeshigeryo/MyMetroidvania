@@ -1,0 +1,21 @@
+{
+  "AreaId": "Area_004",
+  "ObjectStateDataList": {
+    "Save_001": {
+      "TargetId": "Save_001",
+      "State": 0
+    },
+    "Door_000": {
+      "TargetId": "Door_000",
+      "State": 2
+    },
+    "Boss_000": {
+      "TargetId": "Boss_000",
+      "State": 0
+    },
+    "UnlockAbilityItem_000": {
+      "TargetId": "UnlockAbilityItem_000",
+      "State": 1
+    }
+  }
+}

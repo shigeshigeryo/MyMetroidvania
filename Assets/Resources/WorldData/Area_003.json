@@ -1,0 +1,9 @@
+{
+  "AreaId": "Area_003",
+  "ObjectStateDataList": {
+      "LifeUpItem_001":{
+      "TargetId":"LifeUpItem_001",
+      "State":1
+    }
+  }
+}
