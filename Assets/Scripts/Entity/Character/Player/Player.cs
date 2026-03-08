@@ -1,3 +1,4 @@
+using MyMetroidVania.Data;
 using MyMetroidVania.Entity.Gimmick;
 using MyMetroidVania.System;
 using MyMetroidVania.Utility;
@@ -60,6 +61,7 @@ namespace MyMetroidVania.Entity.Character.Player
             Hook,             // フック
         }
         private ActionState _currentState = ActionState.Idle;
+        private TargetStateData _life = null;
 
         void Start()
         {
@@ -71,6 +73,13 @@ namespace MyMetroidVania.Entity.Character.Player
         private void Initialize()
         {
             _currentState = ActionState.Idle;
+
+            // 初期ステータス更新
+            if(WorldManager.Instance.WorldStateData.TryGetAllAreaTargetState("Life", out _life))
+            {
+                Debug.Log(_life.State);
+                _statusManager.UpdateLife(_life.State);
+            }
 
             // 手裏剣プール
             _shurikenPool = new ObjectPool<Shuriken>(
@@ -520,6 +529,14 @@ namespace MyMetroidVania.Entity.Character.Player
             if (obj.TryGetComponent<IInteractable>(out var interactable))
             {
                 interactable.Interact(this);
+            }
+        }
+
+        private void OnDisable()
+        {
+            if(_life != null)
+            {
+                _life.SetState(_statusManager.DefaultStatus.Life);
             }
         }
 

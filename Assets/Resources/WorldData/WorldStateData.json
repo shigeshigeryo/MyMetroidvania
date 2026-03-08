@@ -1,6 +1,10 @@
 {
   "LastRespawnAreaId": "Area_000",
   "AllAreaTargetStateDataList": {
+    "Life": {
+      "TargetId": "Life",
+      "State": 3
+    },
     "Ability": {
       "TargetId": "Ability",
       "State": 0
