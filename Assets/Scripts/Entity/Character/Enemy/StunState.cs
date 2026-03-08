@@ -8,7 +8,7 @@ namespace MyMetroidVania.Entity.Character.Enemy
     public class StunState : EnemyState<EnemyBase>
     {
         public EnemyState NextState; // スリープ解除時に遷移するステート
-        private const float STUN_TIMER = 0.5f;
+        private const float STUN_TIMER = 0.1f;
         private float _stunTimer = 0f;
 
         public StunState(EnemyBase enemy, EnemyState nextState) : base(enemy)
