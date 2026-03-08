@@ -64,6 +64,9 @@ namespace MyMetroidVania.System
         {
             AudioManager.Instance.GetAndPlayBgm("BGM_InGame");
 
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
             // UI‚Ì‘€ì‚ð“o˜^
             InputActions.UI.Enable();
             InputActions.UI.ToggleMiniMap.started += _ =>  OnToggledMiniMap?.Invoke();
