@@ -82,10 +82,10 @@ public static class JsonHandler
         try
         {
             Debug.Log("セーブデータを削除します。");
-            Directory.Delete(Application.persistentDataPath, true);
+            Directory.Delete(Application.persistentDataPath + "/WorldData", true);
             Debug.Log("セーブデータを削除しました。");
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Debug.LogError("セーブデータの削除に失敗しました。<br>" + e.ToString());
         }
