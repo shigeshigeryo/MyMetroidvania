@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: BgmDatabase
   m_EditorClassIdentifier: 
   _soundDataList:
+  - _clip: {fileID: 8300000, guid: 7b3a050e73856744a8c7f6dde1e1eb60, type: 3}
+    _volume: 0.25
+    _isLoop: 1
   - _clip: {fileID: 8300000, guid: c0e50c55d62b0bb4b94b0da8d7cbd0b3, type: 3}
     _volume: 0.25
     _isLoop: 1
