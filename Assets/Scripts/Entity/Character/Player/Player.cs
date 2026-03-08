@@ -115,6 +115,7 @@ namespace MyMetroidVania.Entity.Character.Player
             _input.OnInteractStarted += OnInteract;
 
             // ステータス周り
+            _statusManager.OnLifeCountChanged += _life.SetState;
             _statusManager.OnDamageTaken += _input.VibrateController;
             _statusManager.OnDead += _input.VibrateController;
             _statusManager.OnDead += OnDead;
@@ -130,6 +131,7 @@ namespace MyMetroidVania.Entity.Character.Player
             _input.OnInteractStarted -= OnInteract;
 
             // ステータス周り
+            _statusManager.OnLifeCountChanged -= _life.SetState;
             _statusManager.OnDamageTaken -= _input.VibrateController;
             _statusManager.OnDead -= _input.VibrateController;
             _statusManager.OnDead -= OnDead;
@@ -529,14 +531,6 @@ namespace MyMetroidVania.Entity.Character.Player
             if (obj.TryGetComponent<IInteractable>(out var interactable))
             {
                 interactable.Interact(this);
-            }
-        }
-
-        private void OnDisable()
-        {
-            if(_life != null)
-            {
-                _life.SetState(_statusManager.DefaultStatus.Life);
             }
         }
 
