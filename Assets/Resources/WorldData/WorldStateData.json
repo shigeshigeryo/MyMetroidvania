@@ -4,10 +4,6 @@
     "Ability": {
       "TargetId": "Ability",
       "State": 0
-    },
-    "GlobalSwitch_001": {
-      "TargetId": "GlobalSwitch_001",
-      "State": 2
     }
   },
   "VisitedAreaIdList": [
