@@ -2,6 +2,7 @@ using PlayerInputActions = MyMetroidVania.Entity.Character.Player.PlayerInputAct
 using System;
 using UnityEngine;
 using MyMetroidVania.System.UI;
+using UnityEngine.SceneManagement;
 
 namespace MyMetroidVania.System
 {
@@ -37,12 +38,14 @@ namespace MyMetroidVania.System
 
         public event Action OnToggledMiniMap;
         [SerializeField, Tooltip("画面遷移フェードUI")] private TransitionUI _transitionUI = null;
+        [SerializeField, Tooltip("クリアUI")] private GameClearUI _clearUI = null;
 
         public enum GameState
         {
             Transition, // 遷移中
             Play, // プレイ
-            Pause // ポーズ
+            Pause, // ポーズ
+            Clear // クリア
         }
         private GameState _currentState = GameState.Transition;
         public bool IsPlay => _currentState == GameState.Play;
@@ -82,6 +85,17 @@ namespace MyMetroidVania.System
             _currentState = GameState.Play;
         }
 
+        public void GameClear()
+        {
+            _currentState = GameState.Clear;
+            AudioManager.Instance.FadeOutBGM();
+            _clearUI.Show();
+        }
+
+        public void LoadTitleScene()
+        {
+            SceneManager.LoadScene("Title");
+        }
 
         private void OnDestroy()
         {
