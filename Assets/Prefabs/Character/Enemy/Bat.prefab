@@ -428,7 +428,7 @@ MonoBehaviour:
   _coolSec: 1
   _playerChecker: {fileID: 1585226471552130171}
   _moveSpeed: 0.9
-  _chaseSpeed: 4
+  _chaseSpeed: 5
   _animation: {fileID: 314976735127857316}
 --- !u!114 &1243930244234204274
 MonoBehaviour:
@@ -442,7 +442,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b24cfea9e01ae5749b75829f18ef80ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultStatus: {fileID: 11400000, guid: 85108276d8f499443b3c5f222b27b8a4, type: 2}
+  _defaultStatus: {fileID: 11400000, guid: 10189e88f8ccc21458606384df5b597e, type: 2}
 --- !u!50 &6707840728052785788
 Rigidbody2D:
   serializedVersion: 5

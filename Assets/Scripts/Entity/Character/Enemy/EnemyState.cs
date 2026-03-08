@@ -8,7 +8,7 @@ namespace MyMetroidVania.Entity.Character.Enemy
     public abstract class EnemyState
     {
         protected float _timer = 0;
-        protected const float TICK_INTERVAL_SEC = 0.25f; // Tickインターバル秒
+        protected const float TICK_INTERVAL_SEC = 0.1f; // Tickインターバル秒
 
         /// <summary>
         /// ステートに遷移時に発火
