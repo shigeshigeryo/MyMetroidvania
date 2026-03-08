@@ -26,9 +26,14 @@ namespace MyMetroidVania.Data.ScriptableObjects
             return newInstance;
         }
 
-        public void UpdateLife(int value)
+        public void AddLife(int value)
         {
             _life += value;
+        }
+
+        public void SetLife(int value)
+        {
+            _life = value;
         }
     }
 }

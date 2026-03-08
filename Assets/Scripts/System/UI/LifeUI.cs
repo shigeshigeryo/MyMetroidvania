@@ -14,7 +14,7 @@ namespace MyMetroidVania.System.UI
         [SerializeField, Tooltip("ライフ増加時の画像拡大率")] private float _scaleFactor = 1.2f;
         [SerializeField, Tooltip("ライフ拡大にかかる時間")] private float _duration = 0.5f;
 
-        private void Start()
+        private void Awake()
         {
             _statusManager.OnLifeCountChanged += UpdateLifeCount;
             _statusManager.OnLifeChanged += UpdateValue;
@@ -35,6 +35,7 @@ namespace MyMetroidVania.System.UI
                         StartCoroutine(ScaleRoutine(_lifeImageList[i].transform));
                     }
                     _lifeImageList[i].enabled = true;
+                    _lifeImageList[i].sprite = _lifeSprite;
                 }
                 else
                 {

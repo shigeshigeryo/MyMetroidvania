@@ -9,6 +9,7 @@ namespace MyMetroidVania.Entity
     {
         [SerializeField, Tooltip("ステータスの初期値")]
         private Status _defaultStatus = null;
+        public Status DefaultStatus => _defaultStatus;
         // 現在のステータス
         private Status _currentStatus = null;
         public Status CurrentStatus => _currentStatus;
@@ -28,7 +29,7 @@ namespace MyMetroidVania.Entity
         public void Heal()
         {
             int healValue = _defaultStatus.Life - _currentStatus.Life;
-            _currentStatus.UpdateLife(healValue);
+            _currentStatus.AddLife(healValue);
             OnLifeChanged?.Invoke(_currentStatus.Life);
         }
 
@@ -37,7 +38,7 @@ namespace MyMetroidVania.Entity
             // 無敵状態、または体力が0以下の場合は処理をスキップ
             if (_isInvincible || (_currentStatus.Life <= 0)) return;
 
-            _currentStatus.UpdateLife(-damage); //ダメージなので負の数で計算
+            _currentStatus.AddLife(-damage); //ダメージなので負の数で計算
             if (_currentStatus.Life <= 0)
             {
                 OnDead?.Invoke();
@@ -77,12 +78,20 @@ namespace MyMetroidVania.Entity
         /// </summary>
         public void LifeUp()
         {
-            _defaultStatus.UpdateLife(1);
+            _defaultStatus.AddLife(1);
             // 全回復
-            _currentStatus.UpdateLife(_defaultStatus.Life - _currentStatus.Life);
-
             OnLifeCountChanged?.Invoke(_defaultStatus.Life);
-            OnLifeChanged?.Invoke(_currentStatus.Life);
+            Heal();
+        }
+
+        /// <summary>
+        /// ライフ最大値を更新（初期化時）
+        /// </summary>
+        public void UpdateLife(int value)
+        {
+            _defaultStatus.SetLife(value);
+            _currentStatus.SetLife(value);
+            OnLifeCountChanged?.Invoke(_defaultStatus.Life);
         }
 
         public int GetAttackPower()
