@@ -77,6 +77,20 @@ public static class JsonHandler
         File.WriteAllText(fullPath, json);
     }
 
+    public static void DeleteAllData()
+    {
+        try
+        {
+            Debug.Log("セーブデータを削除します。");
+            Directory.Delete(Application.persistentDataPath, true);
+            Debug.Log("セーブデータを削除しました。");
+        }
+        catch(Exception e)
+        {
+            Debug.LogError("セーブデータの削除に失敗しました。<br>" + e.ToString());
+        }
+    }
+
 
     /// <summary>
     /// Jsonファイルの内容を取得し、その成否を返す。

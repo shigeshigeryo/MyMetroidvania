@@ -57,6 +57,12 @@ namespace MyMetroidVania.System
             {
                 EventSystem.current.SetSelectedGameObject(_startButton.gameObject);
             }
+
+            // デバッグコマンド セーブデータの削除
+            if (pad.xButton.wasPressedThisFrame && pad.yButton.wasPressedThisFrame)
+            {
+                JsonHandler.DeleteAllData();
+            }
         }
 
         public void LoadInGameScene()
