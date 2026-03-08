@@ -16,13 +16,16 @@ MonoBehaviour:
   - _clip: {fileID: 8300000, guid: ae2a7b1698c93554aa88965a3935e2dd, type: 3}
     _volume: 0.5
     _isLoop: 0
+  - _clip: {fileID: 8300000, guid: 56f3c3212d6ec7348997e708cecfee48, type: 3}
+    _volume: 0.5
+    _isLoop: 0
+  - _clip: {fileID: 8300000, guid: a6f5e3246a7d8ef4ea61f82e9b1a99ba, type: 3}
+    _volume: 0.5
+    _isLoop: 0
   - _clip: {fileID: 8300000, guid: 56915ed14a10064498012e56b51c1d1d, type: 3}
     _volume: 0.5
     _isLoop: 0
   - _clip: {fileID: 8300000, guid: a767234afb0b2d244b5c3fd2742b5822, type: 3}
-    _volume: 0.5
-    _isLoop: 0
-  - _clip: {fileID: 8300000, guid: a6f5e3246a7d8ef4ea61f82e9b1a99ba, type: 3}
     _volume: 0.5
     _isLoop: 0
   - _clip: {fileID: 8300000, guid: 4930190427d877640bf06a33699919e6, type: 3}
@@ -31,11 +34,8 @@ MonoBehaviour:
   - _clip: {fileID: 8300000, guid: 8e8119352f732234e85a9efbe3f1aa26, type: 3}
     _volume: 0.5
     _isLoop: 0
-  - _clip: {fileID: 8300000, guid: 56f3c3212d6ec7348997e708cecfee48, type: 3}
-    _volume: 0.5
-    _isLoop: 0
   - _clip: {fileID: 8300000, guid: 0bdad86511b3f0a46a60f9b7e2e77a35, type: 3}
-    _volume: 0.25
+    _volume: 0.15
     _isLoop: 1
   - _clip: {fileID: 8300000, guid: da62fc63a1a8a3c459fc75a54c878aed, type: 3}
     _volume: 0.5
