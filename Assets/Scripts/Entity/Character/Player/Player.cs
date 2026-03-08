@@ -46,7 +46,6 @@ namespace MyMetroidVania.Entity.Character.Player
         private Vector2 _hookPosition;
         private bool _canHook = true;
         private Coroutine _hookCoolDownRoutine = null;
-        public event Action<float> OnCoolHook = null; // フックUIで購読
 
         [Header("インタラクト")]
         [SerializeField, Tooltip("インタラクト検知範囲")] private BoxCaster _interactChecker;

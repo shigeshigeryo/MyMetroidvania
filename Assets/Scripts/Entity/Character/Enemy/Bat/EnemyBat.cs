@@ -67,9 +67,12 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
             _animation.OnAttack += Charge;
             _animation.OnCompleteDeadAnimation += OnCompletedDeadAnimation;
 
-            _audioSource.volume = _flySound.Volume;
-            _audioSource.clip = _flySound.Clip;
-            _audioSource.Play();
+            if (gameObject.activeSelf)
+            {
+                _audioSource.volume = _flySound.Volume;
+                _audioSource.clip = _flySound.Clip;
+                _audioSource.Play();
+            }
         }
 
         public override void Respawn()
@@ -141,7 +144,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
             // ˆÚ“®•ûŒü‚ðŒˆ’è
             var dir = _initialPosition - transform.position;
             Vector2 val = dir.normalized * _moveSpeed;
-            _lastMoveDirection = val.x >= 0 ? 1 : -1; 
+            _lastMoveDirection = val.x >= 0 ? 1 : -1;
 
             while (true)
             {
