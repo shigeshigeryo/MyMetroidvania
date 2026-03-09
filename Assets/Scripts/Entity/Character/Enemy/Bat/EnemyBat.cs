@@ -243,7 +243,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
         protected override void OnTakenDamage()
         {
             base.OnTakenDamage();
-            Debug.Log($"Life:{_statusManager.CurrentStatus.Life}", _statusManager);
         }
 
         private void OnDisable()

@@ -2,7 +2,6 @@ using MyMetroidVania.Data;
 using MyMetroidVania.Entity.Gimmick;
 using MyMetroidVania.System;
 using MyMetroidVania.Utility;
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -77,7 +76,6 @@ namespace MyMetroidVania.Entity.Character.Player
             // 初期ステータス更新
             if(WorldManager.Instance.WorldStateData.TryGetAllAreaTargetState("Life", out _life))
             {
-                Debug.Log(_life.State);
                 _statusManager.UpdateLife(_life.State);
             }
 

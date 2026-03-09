@@ -39,8 +39,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
         /// </summary>
         protected override void OnTick()
         {
-            Debug.Log("Batのバトルステート行動中");
-
             if (!_isAttacking && _owner.IsStun)
             {
                 // ダメージを受けてスタンした

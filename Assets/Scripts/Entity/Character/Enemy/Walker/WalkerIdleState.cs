@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEngine;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Walker
 {
@@ -53,7 +52,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         /// </summary>
         protected override void OnTick()
         {
-            Debug.Log("ウォーカーの待機ステート行動中");
             if (_owner.IsStun)
             {
                 // ダメージを受けてスタンした

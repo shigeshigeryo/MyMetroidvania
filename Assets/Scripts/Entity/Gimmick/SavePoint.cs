@@ -50,7 +50,6 @@ namespace MyMetroidVania.Entity.Gimmick
 
         public void Interact(Player player)
         {
-            Debug.Log($"インタラクト:{_id}");
             AudioManager.Instance.PlayOneShotSe(_interactedSound);
             player.Heal();
             

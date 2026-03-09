@@ -56,8 +56,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         /// </summary>
         protected override void OnTick()
         {
-            Debug.Log("スライムの遠距離バトルステート行動中");
-
             if (_owner.IsStun)
             {
                 // スタンしないためスタン状態を回復する

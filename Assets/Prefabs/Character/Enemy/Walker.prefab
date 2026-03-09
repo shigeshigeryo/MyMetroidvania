@@ -482,6 +482,7 @@ MonoBehaviour:
   - SE_WalkerWalk2
   _groundChecker: {fileID: 4866534370304046471}
   _playerChecker: {fileID: 1585226471552130171}
+  _hitBox: {fileID: 8249786393369527631}
   _moveSpeedX: 1
   _idleDurationSec: 2
   _intervalSec: 1
