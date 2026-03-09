@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace MyMetroidVania.Entity.Character.Enemy
 {
     /// <summary>
@@ -18,8 +16,6 @@ namespace MyMetroidVania.Entity.Character.Enemy
         /// </summary>
         protected override void OnTick()
         {
-            Debug.Log("スリープステート中", _owner.gameObject);
-
             if (_owner.IsVisible())
             {
                 // 画面内に映っている場合にステートを変更

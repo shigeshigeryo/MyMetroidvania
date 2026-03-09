@@ -279,7 +279,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         /// </summary>
         public override IEnumerator OnChase()
         {
-            Debug.Log("chase start");
             _moveAudioSource.Play();
 
             var dir = _target.position - transform.position;
@@ -309,7 +308,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         /// </summary>
         public IEnumerator OnEscape()
         {
-            Debug.Log("escape start");
             _moveAudioSource.Play();
 
             var dir = _target.position - transform.position;
@@ -348,7 +346,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         /// </summary>
         private void UseAbility()
         {
-            Debug.Log("アビリティを処理");
             ScatterSlimeBall();
         }
 
@@ -375,7 +372,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         protected override void OnTakenDamage()
         {
             base.OnTakenDamage();
-            Debug.Log($"Life:{_statusManager.CurrentStatus.Life}", _statusManager);
         }
 
         private void OnDisable()

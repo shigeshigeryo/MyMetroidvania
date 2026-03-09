@@ -226,7 +226,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         protected override void OnTakenDamage()
         {
             base.OnTakenDamage();
-            Debug.Log($"Life:{_statusManager.CurrentStatus.Life}", _statusManager);
         }
 
         protected override void OnDead()

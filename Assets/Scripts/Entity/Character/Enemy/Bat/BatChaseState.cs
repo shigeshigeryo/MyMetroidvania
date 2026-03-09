@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEngine;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Bat
 {
@@ -54,7 +53,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
         /// </summary>
         protected override void OnTick()
         {
-            Debug.Log("Batの追跡ステート行動中");
             if (_owner.IsStun)
             {
                 // ダメージを受けてスタンした

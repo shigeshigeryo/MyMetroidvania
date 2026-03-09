@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEngine;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Slime
 {
@@ -51,7 +50,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         /// </summary>
         protected override void OnTick()
         {
-            Debug.Log("スライムの待機ステート行動中");
             if (_owner.IsStun)
             {
                 // ダメージを受けてスタンした

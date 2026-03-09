@@ -88,7 +88,6 @@ namespace MyMetroidVania.Entity.Gimmick
                 if (!_bossList[i].IsDead) return;
             }
 
-            Debug.Log("ボス討伐確認");
             // ボスをすべて討伐した場合
             DestroyBosses();
 
@@ -120,7 +119,6 @@ namespace MyMetroidVania.Entity.Gimmick
         /// </summary>
         public void Unlock()
         {
-            Debug.Log("アンロック処理");
             OnUnlocked?.Invoke();
         }
 
