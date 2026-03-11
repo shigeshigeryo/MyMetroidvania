@@ -35,6 +35,9 @@ namespace MyMetroidVania.Entity.Character.Player
         // 移動入力方向
         private Vector2 _inputDirection = Vector2.zero;
         public Vector2 InputDirection => _inputDirection;
+        private Vector2 _lastInputDirection = Vector2.zero;
+        // 最後に入力した方向
+        public Vector2 LastInputDirection => _lastInputDirection;
 
         // ジャンプボタンが押されているかどうか
         public bool IsPressedJumpButton => Actions.Player.Jump.IsPressed();
@@ -76,7 +79,13 @@ namespace MyMetroidVania.Entity.Character.Player
         {
             if (GameManager.Instance.IsPlay)
             {
-                _inputDirection = Actions.Player.Move.ReadValue<Vector2>();
+                var dir = Actions.Player.Move.ReadValue<Vector2>();
+                // 入力情報がない場合は値の保持をしない
+                if (dir.sqrMagnitude > 0.01f)
+                {
+                    _lastInputDirection = dir;
+                }
+                _inputDirection = dir;
             }
             else
             {
