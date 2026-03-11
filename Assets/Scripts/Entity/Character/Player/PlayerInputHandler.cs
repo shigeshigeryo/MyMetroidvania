@@ -33,11 +33,9 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField, Tooltip("U“®‚ÌŽ‘±•b”")] private float _vibrationSec = 0.1f;
 
         // ˆÚ“®“ü—Í•ûŒü
-        private Vector2 _inputDirection = Vector2.zero;
-        public Vector2 InputDirection => _inputDirection;
-        private Vector2 _lastInputDirection = Vector2.zero;
+        public Vector2 InputDirection { get; private set; } = Vector2.zero;
         // ÅŒã‚É“ü—Í‚µ‚½•ûŒü
-        public Vector2 LastInputDirection => _lastInputDirection;
+        public Vector2 LastInputDirection { get; private set; } = Vector2.zero;
 
         // ƒWƒƒƒ“ƒvƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
         public bool IsPressedJumpButton => Actions.Player.Jump.IsPressed();
@@ -83,14 +81,14 @@ namespace MyMetroidVania.Entity.Character.Player
                 // “ü—Íî•ñ‚ª‚È‚¢ê‡‚Í’l‚Ì•ÛŽ‚ð‚µ‚È‚¢
                 if (dir.sqrMagnitude > 0.01f)
                 {
-                    _lastInputDirection = dir;
+                    LastInputDirection = dir;
                 }
-                _inputDirection = dir;
+                InputDirection = dir;
             }
             else
             {
                 // ‘JˆÚ’†‚ÌˆÚ“®‚ð–h‚®
-                _inputDirection = Vector2.zero;
+                InputDirection = Vector2.zero;
             }
         }
 
