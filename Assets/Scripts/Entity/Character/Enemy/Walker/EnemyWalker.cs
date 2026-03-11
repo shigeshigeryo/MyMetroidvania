@@ -69,6 +69,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
 
             _animation.OnLand += PlayOneShotLandSound;
             _animation.OnCompleteDeadAnimation += OnCompletedDeadAnimation;
+            _hitBox.SetEnableCollider();
         }
 
         public override void Respawn()
