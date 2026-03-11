@@ -139,7 +139,11 @@ namespace MyMetroidVania.Entity.Character.Player
         {
             // 現在の入力情報を保持
             var dir = _input.InputDirection;
-
+            // 入力情報がない場合最後に動いたX軸方向のベクトルにリセットする。
+            if (dir.sqrMagnitude < 0.01f)
+            {
+                dir = _input.LastInputDirection.x < 0f ? Vector2.left : Vector2.right;
+            }
             // プレイヤーの向きをセット
             _visualEffect.SetFlip(dir.x);
 
