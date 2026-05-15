@@ -78,9 +78,17 @@ namespace MyMetroidVania.System
         /// </summary>
         public void ChangeArea(string areaId, Vector3 spawnPosition)
         {
+            ShowTransition();
+            WorldManager.Instance.ChangeArea(areaId, spawnPosition);
+        }
+
+        /// <summary>
+        /// ‘JˆÚó‘Ô‚ğ•\¦
+        /// </summary>
+        public void ShowTransition()
+        {
             _currentState = GameState.Transition;
             _transitionUI.Show();
-            WorldManager.Instance.ChangeArea(areaId, spawnPosition);
         }
 
         public void ChangeStatePlay()
