@@ -1,8 +1,9 @@
-using MyMetroidVania.System.Map;
-using UnityEngine;
-using MyMetroidVania.Entity.Gimmick;
-using MyMetroidVania.Entity.Character.Player;
 using MyMetroidVania.Data;
+using MyMetroidVania.Entity.Character.Player;
+using MyMetroidVania.Entity.Gimmick;
+using MyMetroidVania.System.Map;
+using MyMetroidVania.System.UI;
+using UnityEngine;
 
 namespace MyMetroidVania.System
 {
@@ -119,6 +120,7 @@ namespace MyMetroidVania.System
             }
             else
             {
+                GameManager.Instance.ShowTransition();
                 _player.transform.position = _respawnPosition;
             }
 
