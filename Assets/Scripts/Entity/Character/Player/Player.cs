@@ -367,6 +367,7 @@ namespace MyMetroidVania.Entity.Character.Player
             var shuriken = _shurikenPool.Get();
             shuriken.Initialize(_hitBoxOriginTransform.position,
                     _hitBoxOriginTransform.rotation,
+                    Mathf.Abs(_physics.Velocity.x),
                     _statusManager.GetAttackPower());
             _visualEffect.PlayShurikenSound();
 
