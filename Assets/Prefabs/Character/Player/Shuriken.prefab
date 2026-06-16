@@ -184,6 +184,7 @@ MonoBehaviour:
   _groundChecker: {fileID: 6195979247602159115}
   _hitBox: {fileID: 7939168803998028402}
   _visual: {fileID: 7608703402685229344}
+  _speed: 10
   _moveDistance: 3
   _moveTimeSec: 0.3
   _rotateSpeed: 360
