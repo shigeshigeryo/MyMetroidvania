@@ -1,3 +1,4 @@
+using MyMetroidVania.System;
 using MyMetroidVania.Utility;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -10,7 +11,7 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField] private HitBox _hitBox = null;
         [SerializeField] private SpriteRenderer _visual = null;
         [Header("挙動")]
-        [SerializeField, Tooltip("移動距離")] private float _moveDistance;
+        [SerializeField, Tooltip("速さ")] private float _speed = 10f;
         [SerializeField, Tooltip("移動時間（秒）")] private float _moveTimeSec;
         [SerializeField, Tooltip("毎秒の回転速度")] private float _rotateSpeed;
 
@@ -48,7 +49,7 @@ namespace MyMetroidVania.Entity.Character.Player
 
             // 初期位置、到達位置を設定
             _startPosition = position;
-            _arrivalPosition = _startPosition + (transform.right * _moveDistance);
+            _arrivalPosition = _startPosition + (transform.right * _speed * _moveTimeSec);
 
             _currentTime = 0;
 
