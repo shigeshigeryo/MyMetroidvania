@@ -41,6 +41,7 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField, Tooltip("フックの原点")] private Transform _hookOriginTransform = null;
         [SerializeField, Tooltip("フックの箱判定")] private BoxCaster _hookCheckerBox = null;
         [SerializeField, Tooltip("フックが引き寄せる時の早さ")] private float _hookSpeed = 15f;
+        [SerializeField, Tooltip("フックの長さ")] private float _hookRange = 5f;
         [SerializeField, Tooltip("フックが切れる長さ")] private float _hookCancelRange = 0.5f;
         [SerializeField, Tooltip("フックのクールタイム（秒）")] private float _hookCTSeconds = 0.5f;
         private Vector2 _hookPosition;
@@ -62,11 +63,12 @@ namespace MyMetroidVania.Entity.Character.Player
         private ActionState _currentState = ActionState.Idle;
         private TargetStateData _life = null;
 
-        void Start()
+        private void Start()
         {
             Initialize();
             InitializeEvents();
             _visualEffect.Initialize();
+            _hookCheckerBox.SetDistanceCast(_hookRange);
         }
 
         private void Initialize()
@@ -74,7 +76,7 @@ namespace MyMetroidVania.Entity.Character.Player
             _currentState = ActionState.Idle;
 
             // 初期ステータス更新
-            if(WorldManager.Instance.WorldStateData.TryGetAllAreaTargetState("Life", out _life))
+            if (WorldManager.Instance.WorldStateData.TryGetAllAreaTargetState("Life", out _life))
             {
                 _statusManager.UpdateLife(_life.State);
             }
@@ -452,7 +454,11 @@ namespace MyMetroidVania.Entity.Character.Player
                 hit = _hookCheckerBox.GetBoxCast();
             }
 
-            if (hit.collider != null)
+            if (hit.collider == null)
+            {
+                StartCoroutine(OnFailedHook());
+            }
+            else
             {
                 _currentState = ActionState.Hook;
                 _hookPosition = hit.point;
@@ -489,7 +495,7 @@ namespace MyMetroidVania.Entity.Character.Player
             {
                 _currentState = ActionState.JumpAnticipation;
             }
-                _visualEffect.StopHookEffect();
+            _visualEffect.StopHookEffect();
             if (_hookCoolDownRoutine == null)
             {
                 // フックのクールダウン開始
@@ -516,6 +522,18 @@ namespace MyMetroidVania.Entity.Character.Player
             _visualEffect.PlayHookCTCompleteEffect();
             _hookCoolDownRoutine = null;
             _canHook = true;
+        }
+
+        /// <summary>
+        /// フック失敗時のフック表示処理
+        /// 0.1s待機
+        /// </summary>
+        private IEnumerator OnFailedHook()
+        {
+            Vector3 pos = _hookOriginTransform.position + _hookOriginTransform.right * _hookRange;
+            _visualEffect.PlayHookEffect(pos);
+            yield return new WaitForSeconds(0.1f);
+            _visualEffect.StopHookEffect();
         }
 
 
