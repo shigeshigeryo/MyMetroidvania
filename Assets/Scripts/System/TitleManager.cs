@@ -54,6 +54,12 @@ namespace MyMetroidVania.System
 
         private void Update()
         {
+            // デバッグコマンド セーブデータの削除 c, j キー同時押し
+            if (Keyboard.current.cKey.isPressed && Keyboard.current.jKey.wasPressedThisFrame)
+            {
+                JsonHandler.DeleteAllData();
+            }
+
             Gamepad pad = Gamepad.current;
             if (pad == null) return;
 
@@ -61,12 +67,6 @@ namespace MyMetroidVania.System
             if (pad.aButton.wasPressedThisFrame && EventSystem.current.currentSelectedGameObject == null)
             {
                 EventSystem.current.SetSelectedGameObject(_startButton.gameObject);
-            }
-
-            // デバッグコマンド セーブデータの削除
-            if (pad.xButton.wasPressedThisFrame && pad.yButton.wasPressedThisFrame)
-            {
-                JsonHandler.DeleteAllData();
             }
         }
 
