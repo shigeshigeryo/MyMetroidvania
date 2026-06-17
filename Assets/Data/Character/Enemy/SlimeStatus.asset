@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90adc8b07312aac428d2c70ea53b1046, type: 3}
   m_Name: SlimeStatus
   m_EditorClassIdentifier: 
-  _life: 20
+  _life: 12
   _attackPower: 1
   _invincibleSec: 0.5

@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace MyMetroidVania.Entity.Character.Enemy
 {
     /// <summary>
@@ -30,8 +28,6 @@ namespace MyMetroidVania.Entity.Character.Enemy
         /// </summary>
         protected override void OnTick()
         {
-            Debug.Log("スタンステート中", _owner.gameObject);
-
             if (_stunTimer <= 0f)
             {
                 // スタン時間が過ぎたらステートを変更

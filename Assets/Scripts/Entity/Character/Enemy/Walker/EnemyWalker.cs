@@ -20,6 +20,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         [Space]
         [SerializeField, Tooltip("地面の接地判定")] protected BoxCaster _groundChecker = null;
         [SerializeField, Tooltip("プレイヤーチェッカー")] private CircleCaster _playerChecker = null;
+        [SerializeField, Tooltip("攻撃判定")] private HitBox _hitBox;
 
         [Header("待機")]
         [SerializeField, Tooltip("x軸の移動の速さ")] protected float _moveSpeedX = 5f;
@@ -68,6 +69,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
 
             _animation.OnLand += PlayOneShotLandSound;
             _animation.OnCompleteDeadAnimation += OnCompletedDeadAnimation;
+            _hitBox.SetEnableCollider();
         }
 
         public override void Respawn()
@@ -225,7 +227,12 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         protected override void OnTakenDamage()
         {
             base.OnTakenDamage();
-            Debug.Log($"Life:{_statusManager.CurrentStatus.Life}", _statusManager);
+        }
+
+        protected override void OnDead()
+        {
+            base.OnDead();
+            _hitBox.SetDisableCollider();
         }
 
         private void OnDisable()

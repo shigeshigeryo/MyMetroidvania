@@ -1,3 +1,4 @@
+using MyMetroidVania.System;
 using MyMetroidVania.Utility;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -10,7 +11,8 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField] private HitBox _hitBox = null;
         [SerializeField] private SpriteRenderer _visual = null;
         [Header("挙動")]
-        [SerializeField, Tooltip("移動距離")] private float _moveDistance;
+        [SerializeField, Tooltip("速さ")] private float _initialSpeed = 10f;
+        private float _speed;
         [SerializeField, Tooltip("移動時間（秒）")] private float _moveTimeSec;
         [SerializeField, Tooltip("毎秒の回転速度")] private float _rotateSpeed;
 
@@ -39,7 +41,7 @@ namespace MyMetroidVania.Entity.Character.Player
             _hitBox.OnTriggered += Disappear;
         }
 
-        public void Initialize(Vector3 position, Quaternion rotation, int atkPower)
+        public void Initialize(Vector3 position, Quaternion rotation, float speed, int atkPower)
         {
             // 現在位置と角度と攻撃力を初期化
             transform.position = position;
@@ -48,7 +50,9 @@ namespace MyMetroidVania.Entity.Character.Player
 
             // 初期位置、到達位置を設定
             _startPosition = position;
-            _arrivalPosition = _startPosition + (transform.right * _moveDistance);
+            // プレイヤーのX速度をみてプレイヤーとの相対速度を一定にする
+            _speed = _initialSpeed + speed;
+            _arrivalPosition = _startPosition + (transform.right * _speed * _moveTimeSec);
 
             _currentTime = 0;
 

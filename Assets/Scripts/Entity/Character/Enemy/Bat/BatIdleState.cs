@@ -50,7 +50,6 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
         /// </summary>
         protected override void OnTick()
         {
-            Debug.Log("Batの待機ステート行動中");
             if (_owner.IsStun)
             {
                 // ダメージを受けてスタンした

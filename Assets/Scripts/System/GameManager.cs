@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using MyMetroidVania.System.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 namespace MyMetroidVania.System
 {
@@ -73,14 +74,31 @@ namespace MyMetroidVania.System
             InputActions.UI.ToggleMiniMap.canceled += _ => OnToggledMiniMap?.Invoke();
         }
 
+        private void Update()
+        {
+            // デバッグコマンド タイトルシーンに遷移 c, tキー同時押し
+            if (Keyboard.current.cKey.isPressed && Keyboard.current.tKey.wasPressedThisFrame)
+            {
+                SceneManager.LoadScene("Title");
+            }
+        }
+
         /// <summary>
         /// エリア移動時処理
         /// </summary>
         public void ChangeArea(string areaId, Vector3 spawnPosition)
         {
+            ShowTransition();
+            WorldManager.Instance.ChangeArea(areaId, spawnPosition);
+        }
+
+        /// <summary>
+        /// 遷移状態を表示
+        /// </summary>
+        public void ShowTransition()
+        {
             _currentState = GameState.Transition;
             _transitionUI.Show();
-            WorldManager.Instance.ChangeArea(areaId, spawnPosition);
         }
 
         public void ChangeStatePlay()
