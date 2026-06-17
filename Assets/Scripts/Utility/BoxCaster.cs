@@ -100,6 +100,15 @@ namespace MyMetroidVania.Utility
                                      _targetLayers);
         }
 
+        /// <summary>
+        /// キャストする長さをセットする
+        /// </summary>
+        /// <param name="value"></param>
+        public void SetDistanceCast(float value)
+        {
+            _distanceCast = value;
+        }
+
         private void OnEnable()
         {
             // Inactive時に判定結果の初期化をしておく

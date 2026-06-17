@@ -41,6 +41,7 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField, Tooltip("フックの原点")] private Transform _hookOriginTransform = null;
         [SerializeField, Tooltip("フックの箱判定")] private BoxCaster _hookCheckerBox = null;
         [SerializeField, Tooltip("フックが引き寄せる時の早さ")] private float _hookSpeed = 15f;
+        [SerializeField, Tooltip("フックの長さ")] private float _hookRange = 5f;
         [SerializeField, Tooltip("フックが切れる長さ")] private float _hookCancelRange = 0.5f;
         [SerializeField, Tooltip("フックのクールタイム（秒）")] private float _hookCTSeconds = 0.5f;
         private Vector2 _hookPosition;
@@ -62,11 +63,12 @@ namespace MyMetroidVania.Entity.Character.Player
         private ActionState _currentState = ActionState.Idle;
         private TargetStateData _life = null;
 
-        void Start()
+        private void Start()
         {
             Initialize();
             InitializeEvents();
             _visualEffect.Initialize();
+            _hookCheckerBox.SetDistanceCast(_hookRange);
         }
 
         private void Initialize()
