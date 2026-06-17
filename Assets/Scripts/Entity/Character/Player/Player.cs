@@ -76,7 +76,7 @@ namespace MyMetroidVania.Entity.Character.Player
             _currentState = ActionState.Idle;
 
             // 初期ステータス更新
-            if(WorldManager.Instance.WorldStateData.TryGetAllAreaTargetState("Life", out _life))
+            if (WorldManager.Instance.WorldStateData.TryGetAllAreaTargetState("Life", out _life))
             {
                 _statusManager.UpdateLife(_life.State);
             }
@@ -454,7 +454,11 @@ namespace MyMetroidVania.Entity.Character.Player
                 hit = _hookCheckerBox.GetBoxCast();
             }
 
-            if (hit.collider != null)
+            if (hit.collider == null)
+            {
+                StartCoroutine(OnFailedHook());
+            }
+            else
             {
                 _currentState = ActionState.Hook;
                 _hookPosition = hit.point;
@@ -491,7 +495,7 @@ namespace MyMetroidVania.Entity.Character.Player
             {
                 _currentState = ActionState.JumpAnticipation;
             }
-                _visualEffect.StopHookEffect();
+            _visualEffect.StopHookEffect();
             if (_hookCoolDownRoutine == null)
             {
                 // フックのクールダウン開始
@@ -518,6 +522,18 @@ namespace MyMetroidVania.Entity.Character.Player
             _visualEffect.PlayHookCTCompleteEffect();
             _hookCoolDownRoutine = null;
             _canHook = true;
+        }
+
+        /// <summary>
+        /// フック失敗時のフック表示処理
+        /// 0.1s待機
+        /// </summary>
+        private IEnumerator OnFailedHook()
+        {
+            Vector3 pos = _hookOriginTransform.position + _hookOriginTransform.right * _hookRange;
+            _visualEffect.PlayHookEffect(pos);
+            yield return new WaitForSeconds(0.1f);
+            _visualEffect.StopHookEffect();
         }
 
 
