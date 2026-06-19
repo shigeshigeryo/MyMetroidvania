@@ -302,7 +302,7 @@ namespace MyMetroidVania.Entity.Character.Player
             }
 
             // アニメーションで参照するパラメータ値を更新
-            _animation.UpdateParam(_physics.Velocity, _groundChecker.IsCasted);
+            _animation.UpdateParam(_physics.Velocity, _physics.IsMoving, _groundChecker.IsCasted);
         }
 
 

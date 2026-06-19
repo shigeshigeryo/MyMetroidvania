@@ -22,7 +22,7 @@ namespace MyMetroidVania.Entity.Character.Player
         /// <summary>
         /// ˆÚ“®’†‚Ìê‡true
         /// </summary>
-        public bool IsMoving => Mathf.Abs(_rb.linearVelocityX) > 0.01f;
+        public bool IsMoving => Mathf.Abs(_rb.linearVelocityX) > 0.05f;
         /// <summary>
         /// —‰º’†iY²ˆÚ“®‘¬“x‚ª•‰j‚Ìê‡true
         /// </summary>

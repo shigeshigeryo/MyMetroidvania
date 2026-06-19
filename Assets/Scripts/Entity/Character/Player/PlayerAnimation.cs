@@ -30,9 +30,9 @@ namespace MyMetroidVania.Entity.Character.Player
         /// </summary>
         /// <param name="vel">ˆÚ“®‘¬“x</param>
         /// <param name="isGrounded">Ú’nó‘Ô</param>
-        public void UpdateParam(Vector2 vel, bool isGrounded)
+        public void UpdateParam(Vector2 vel, bool isMoving, bool isGrounded)
         {
-            _animator.SetBool(_runId, Mathf.Abs(vel.x) > 0.01f);
+            _animator.SetBool(_runId, isMoving);
             _animator.SetBool(_groundedId, isGrounded);
             _animator.SetFloat(_VelocityYId, vel.y);
         }
