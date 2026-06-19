@@ -9,8 +9,14 @@ using UnityEngine.UI;
 
 namespace MyMetroidVania.System
 {
+    /// <summary>
+    /// タイトルを管理
+    /// </summary>
     public class TitleManager : MonoBehaviour
     {
+        /// <summary>
+        /// シングルトンインスタンス
+        /// </summary>
         public static TitleManager Instance { get; private set; } = null;
 
         [SerializeField] private Animator _animator = null;
@@ -19,6 +25,9 @@ namespace MyMetroidVania.System
 
         private static readonly int _outroId = Animator.StringToHash("Outro");
 
+        /// <summary>
+        /// シングルトン化処理
+        /// </summary>
         private void Awake()
         {
             if (Instance == null)
@@ -32,6 +41,9 @@ namespace MyMetroidVania.System
             }
         }
 
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         private void Start()
         {
             AudioManager.Instance.GetAndPlayBgm("BGM_Title");
@@ -52,6 +64,9 @@ namespace MyMetroidVania.System
             Cursor.visible = false;
         }
 
+        /// <summary>
+        /// ボタン管理処理
+        /// </summary>
         private void Update()
         {
             // デバッグコマンド セーブデータの削除 c, j キー同時押し
@@ -70,11 +85,17 @@ namespace MyMetroidVania.System
             }
         }
 
+        /// <summary>
+        /// InGameに遷移する
+        /// </summary>
         public void LoadInGameScene()
         {
             SceneManager.LoadScene("InGameScene");
         }
 
+        /// <summary>
+        /// ゲームを終了する
+        /// </summary>
         private void QuitGame()
         {
 #if UNITY_EDITOR
@@ -84,6 +105,9 @@ namespace MyMetroidVania.System
 #endif
         }
 
+        /// <summary>
+        /// イベント購読解除処理
+        /// </summary>
         private void OnDestroy()
         {
             _startButton.onClick.RemoveAllListeners();

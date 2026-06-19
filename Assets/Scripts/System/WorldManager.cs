@@ -2,7 +2,6 @@ using MyMetroidVania.Data;
 using MyMetroidVania.Entity.Character.Player;
 using MyMetroidVania.Entity.Gimmick;
 using MyMetroidVania.System.Map;
-using MyMetroidVania.System.UI;
 using UnityEngine;
 
 namespace MyMetroidVania.System
@@ -12,11 +11,16 @@ namespace MyMetroidVania.System
     /// </summary>
     public class WorldManager : MonoBehaviour
     {
+        /// <summary>
+        /// シングルトンインスタンス
+        /// </summary>
         public static WorldManager Instance { get; private set; }
 
         private const string WORLD_STATE_DATA_PATH = "WorldData/WorldStateData";
-        // 世界共通の状態データ
         private WorldStateData _worldStateData;
+        /// <summary>
+        /// 世界共通の状態データ
+        /// </summary>
         public WorldStateData WorldStateData => _worldStateData;
         private string _lastRespawnAreaId;
 
@@ -36,6 +40,10 @@ namespace MyMetroidVania.System
         [SerializeField, Tooltip("デバッグ用初期スポーン地点")] private Transform _debugSpawnPoint = null;
 #endif
 
+        /// <summary>
+        /// 初期化処理
+        /// Jsonから状態をロードし適用
+        /// </summary>
         private void Awake()
         {
             if (Instance == null)
@@ -58,6 +66,9 @@ namespace MyMetroidVania.System
             Debug.Assert(_worldStateData != default);
         }
 
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         private void Start()
         {
             MapManager.Instance.Initialize(_worldStateData.VisitedAreaIdList);
@@ -168,6 +179,9 @@ namespace MyMetroidVania.System
             }
         }
 
+        /// <summary>
+        /// 世界の情報をセーブする
+        /// </summary>
         private void SaveWorldStateData()
         {
 #if UNITY_EDITOR
@@ -177,6 +191,9 @@ namespace MyMetroidVania.System
             JsonHandler.WriteJsonFile(WORLD_STATE_DATA_PATH, _worldStateData);
         }
 
+        /// <summary>
+        /// 終了時に世界の情報をセーブする
+        /// </summary>
         private void OnDestroy()
         {
             SaveWorldStateData();
