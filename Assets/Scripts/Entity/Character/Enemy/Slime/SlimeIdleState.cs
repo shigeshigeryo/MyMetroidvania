@@ -2,6 +2,9 @@ using System.Collections;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Slime
 {
+    /// <summary>
+    /// スライムの待機時のステートを管理
+    /// </summary>
     public class SlimeIdleState : EnemyState<EnemySlime>
     {
         public SlimeIdleState(EnemySlime enemy) : base(enemy) { }
@@ -40,6 +43,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
             }
         }
 
+        /// <summary>
+        /// ステートに遷移時に発火
+        /// </summary>
         public override void Enter()
         {
             _owner.StartCoroutine(IdleRoutine());
@@ -73,6 +79,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
             }
         }
 
+        /// <summary>
+        /// 次のステートに遷移する前に発火
+        /// </summary>
         public override void Exit()
         {
             // コルーチンは全てStateクラスから発火される想定なので、全てのコルーチンを止めてよい。
@@ -80,7 +89,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
             _owner.StopMove();
         }
 
-
+        /// <summary>
+        /// 待機時の挙動を管理
+        /// </summary>
         private IEnumerator IdleRoutine()
         {
             yield return _owner.OnIdle();

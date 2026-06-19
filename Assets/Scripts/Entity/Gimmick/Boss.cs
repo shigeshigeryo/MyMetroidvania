@@ -1,14 +1,18 @@
-using MyMetroidVania.Data.ScriptableObjects;
 using MyMetroidVania.Entity.Character.Enemy;
-using MyMetroidVania.System;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace MyMetroidVania.Entity.Gimmick
 {
+    /// <summary>
+    /// ボスギミックを管理
+    /// </summary>
     public class Boss : GimmickBase, IUnlockKey
     {
+        /// <summary>
+        /// ボスの状態
+        /// </summary>
         [Serializable]
         public enum State
         {
@@ -23,7 +27,6 @@ namespace MyMetroidVania.Entity.Gimmick
         private bool _isPlayingBossSound = false;
         [SerializeField] private List<EnemyBase> _bossList = new List<EnemyBase>();
         private static int _playerLayer = -1;
-        // LazyInit
         private static int PlayerLayer
         {
             get
@@ -36,8 +39,14 @@ namespace MyMetroidVania.Entity.Gimmick
             }
         }
 
+        /// <summary>
+        /// ボスが倒されアンロックするイベント
+        /// </summary>
         public event Action OnUnlocked;
 
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         public override void InitializeState()
         {
             if (_stateData.State == (int)State.Beaten)
@@ -67,7 +76,7 @@ namespace MyMetroidVania.Entity.Gimmick
             _isPlayingBossSound = true;
         }
         /// <summary>
-        /// ボスBGMを流す
+        /// バックアップしていたBGMを流す
         /// </summary>
         private void ReturnBackupSound()
         {
@@ -78,7 +87,7 @@ namespace MyMetroidVania.Entity.Gimmick
         }
 
         /// <summary>
-        /// ボス死亡時に呼ばれる
+        /// ボス死亡時に発火する処理
         /// </summary>
         private void CheckConditions()
         {
@@ -102,6 +111,9 @@ namespace MyMetroidVania.Entity.Gimmick
             _stateData.SetState((int)State.Beaten);
         }
 
+        /// <summary>
+        /// ボスが撃破を削除する処理
+        /// </summary>
         private void DestroyBosses()
         {
             for (int i = 0; i < _bossList.Count; i++)
@@ -122,6 +134,11 @@ namespace MyMetroidVania.Entity.Gimmick
             OnUnlocked?.Invoke();
         }
 
+        /// <summary>
+        /// トリガー処理
+        /// ボス悲劇派の場合に戦闘BGMを流す
+        /// </summary>
+        /// <param name="collision">トリガー対象</param>
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (_currentState == State.Beaten) return;
@@ -131,7 +148,12 @@ namespace MyMetroidVania.Entity.Gimmick
                 PlayBossSound();
             }
         }
-
+        
+        /// <summary>
+        /// トリガーexit処理
+        /// 戦闘BGMから元のBGMに戻す
+        /// </summary>
+        /// <param name="collision"></param>
         private void OnTriggerExit2D(Collider2D collision)
         {
             if (_currentState == State.Beaten) return;

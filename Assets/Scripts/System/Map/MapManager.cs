@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace MyMetroidVania.System.Map
 {
+    /// <summary>
+    /// 全てのエリアマップを管理
+    /// </summary>
     public class MapManager : MonoBehaviour
     {
         public static MapManager Instance { get; private set; }

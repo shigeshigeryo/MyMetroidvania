@@ -3,11 +3,18 @@ using System;
 using System.IO;
 using UnityEngine;
 
-// Newtonsoft.Json を用いたJsonファイルを操作するクラス
-// com.unity.nuget.newtonsoft-json
+/// <summary>
+/// Newtonsoft.Json を用いたJsonファイルを操作するクラス
+/// com.unity.nuget.newtonsoft-json
+/// </summary>
 public static class JsonHandler
 {
-    // ResourcesフォルダからJsonファイルのデータを取得する
+    /// <summary>
+    /// ResourcesフォルダからJsonファイルのデータを取得する
+    /// </summary>
+    /// <typeparam name="T">取得したいデータの型</typeparam>
+    /// <param name="path">ファイルのパス</param>
+    /// <returns>取得したデータ</returns>
     public static T LoadResourcesJsonFile<T>(string path)
     {
         // Newtonsoft.Json は try-catch推奨
@@ -24,7 +31,13 @@ public static class JsonHandler
         }
     }
 
+    /// <summary>
     /// Jsonファイルからデータを取得し、その成否を返す
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="path">ファイルのパス</param>
+    /// <param name="data">取得するデータを返す</param>
+    /// <returns>取得の成否</returns>
     public static bool TryLoadJsonFile<T>(string path, out T data)
     {
         // Newtonsoft.Json は try-catch推奨
@@ -50,7 +63,12 @@ public static class JsonHandler
         }
     }
 
-    // Jsonファイルにデータを書き込む
+    /// <summary>
+    /// Jsonファイルにデータを書き込む
+    /// </summary>
+    /// <typeparam name="T">入力したいデータの型</typeparam>
+    /// <param name="path">ファイルのパス</param>
+    /// <param name="obj">入力するデータ</param>
     public static void WriteJsonFile<T>(string path, T obj)
     {
         string fullPath = Application.persistentDataPath + "/" + path + ".json";
@@ -77,6 +95,9 @@ public static class JsonHandler
         File.WriteAllText(fullPath, json);
     }
 
+    /// <summary>
+    /// 全てのJSONデータファイルを削除する
+    /// </summary>
     public static void DeleteAllData()
     {
         try
@@ -97,7 +118,7 @@ public static class JsonHandler
     /// </summary>
     /// <param name="path">取得したいファイルのパス</param>
     /// <param name="text">ファイルの内容を格納する 失敗の場合は空文字</param>
-    /// <returns></returns>
+    /// <returns>取得の成否</returns>
     private static bool TryGetJsonText(string path, out string text)
     {
         try

@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 namespace MyMetroidVania.System.UI
 {
+    /// <summary>
+    /// ライフのUIを管理
+    /// </summary>
     public class LifeUI : MonoBehaviour
     {
         [SerializeField] private StatusManager _statusManager;
@@ -14,6 +17,9 @@ namespace MyMetroidVania.System.UI
         [SerializeField, Tooltip("ライフ増加時の画像拡大率")] private float _scaleFactor = 1.2f;
         [SerializeField, Tooltip("ライフ拡大にかかる時間")] private float _duration = 0.5f;
 
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         private void Awake()
         {
             _statusManager.OnLifeCountChanged += UpdateLifeCount;
@@ -21,9 +27,9 @@ namespace MyMetroidVania.System.UI
         }
 
         /// <summary>
-        /// ステータスのライフ数の情報でUIを更新
+        /// 最大ライフ数のUIを更新
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">最大ライフ数</param>
         private void UpdateLifeCount(int value)
         {
             for (int i = 0; i < _lifeImageList.Length; i++)
@@ -45,7 +51,7 @@ namespace MyMetroidVania.System.UI
         }
 
         /// <summary>
-        /// ステータスのライフの情報でUIを更新
+        /// ライフ数のUIを更新
         /// </summary>
         /// <param name="value">残りライフ</param>
         private void UpdateValue(int value)
@@ -64,7 +70,7 @@ namespace MyMetroidVania.System.UI
         }
 
         /// <summary>
-        /// 一瞬大きくする
+        /// ライフを一瞬大きくする
         /// </summary>
         private IEnumerator ScaleRoutine(Transform imgTransform)
         {
@@ -82,6 +88,9 @@ namespace MyMetroidVania.System.UI
             transform.localScale = originalScale;
         }
 
+        /// <summary>
+        /// イベント購読解除処理
+        /// </summary>
         private void OnDestroy()
         {
             _statusManager.OnLifeCountChanged -= UpdateLifeCount;

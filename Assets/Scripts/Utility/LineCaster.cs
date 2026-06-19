@@ -2,7 +2,9 @@ using UnityEngine;
 
 namespace MyMetroidVania.Utility
 {
-    // 指定した判定対象のコライダーと交差しているかを判定する機能を提供します。
+    /// <summary>
+    /// 指定した判定対象のコライダーと交差しているかを判定する
+    /// </summary>
     public class LineCaster : MonoBehaviour
     {
         [SerializeField]
@@ -21,7 +23,9 @@ namespace MyMetroidVania.Utility
         // 判定対象と交差している場合はtrue、交差していない場合はfalse
         public bool IsCasted { get; private set; } = false;
 
-        // 固定フレームレートで呼び出される更新処理です。
+        /// <summary>
+        /// 交差判定の監視処理
+        /// </summary>
         void FixedUpdate()
         {
             // 交差判定用の座標を設定
@@ -32,6 +36,10 @@ namespace MyMetroidVania.Utility
             IsCasted = Physics2D.Linecast(start, end, _targetLayers);
         }
 
+        /// <summary>
+        /// レイのヒットを取得する
+        /// </summary>
+        /// <returns>ヒットしたオブジェクト</returns>
         public RaycastHit2D GetRaycastHit()
         {
             var start = transform.TransformPoint(_startOffset);
@@ -40,13 +48,15 @@ namespace MyMetroidVania.Utility
             return Physics2D.Raycast(start, dir.normalized, dir.magnitude, _targetLayers);
         }
 
+        /// <summary>
+        /// 判定結果の初期化
+        /// </summary>
         private void OnEnable()
         {
             // Inactive時に判定結果の初期化をしておく
             IsCasted = false;
         }
 
-        // Unityエディター上で常時描画するギズモを記述します。
         private void OnDrawGizmos()
         {
             // 交差判定用のポイントを設定

@@ -12,7 +12,6 @@ namespace MyMetroidVania.Utility
         [Tooltip("判定対象のレイヤーを指定")]
         private LayerMask _targetLayers = default;
 
-        // TODO：カスタムでフラグの値によって表示、非表示を切り替えられると良い
         [Header("Overlap")]
         [SerializeField]
         [Tooltip("OverlapBoxを使用するか")]
@@ -109,11 +108,15 @@ namespace MyMetroidVania.Utility
             _distanceCast = value;
         }
 
+        /// <summary>
+        /// 判定結果の初期化
+        /// </summary>
         private void OnEnable()
         {
             // Inactive時に判定結果の初期化をしておく
             IsCasted = false;
         }
+
         private void OnDrawGizmos()
         {
             var angle = transform.eulerAngles.z;

@@ -2,12 +2,13 @@ using CPlayer = MyMetroidVania.Entity.Character.Player.Player;
 using MyMetroidVania.Utility;
 using System.Collections;
 using UnityEngine;
-using MyMetroidVania.Data.ScriptableObjects;
 using System.Collections.Generic;
-using MyMetroidVania.System;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Walker
 {
+    /// <summary>
+    /// ウォーカーの挙動を管理
+    /// </summary>
     public class EnemyWalker : EnemyBase
     {
         private float _lastMoveDirection;// 最後に動いた方向 +x方向 = 1, -x方向 = -1
@@ -52,6 +53,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
             }
         }
 
+        /// <summary>
+        /// 初期化処理（初回のみ）
+        /// </summary>
         public override void InitializeOnce()
         {
             base.InitializeOnce();
@@ -62,6 +66,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
             }
         }
 
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         public override void Initialize()
         {
             base.Initialize();
@@ -72,12 +79,18 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
             _hitBox.SetEnableCollider();
         }
 
+        /// <summary>
+        /// リスポーン処理
+        /// </summary>
         public override void Respawn()
         {
             base.Respawn();
             ChangeState(SleepState);
         }
 
+        /// <summary>
+        /// 速度をアニメーション側に渡す
+        /// </summary>
         private void FixedUpdate()
         {
             _animation.UpdateParam(_rb.linearVelocityX);
@@ -224,17 +237,26 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
          * リアクションを制御
          * ------------------------------------------------------------------
          */
+        /// <summary>
+        /// 被弾処理
+        /// </summary>
         protected override void OnTakenDamage()
         {
             base.OnTakenDamage();
         }
 
+        /// <summary>
+        /// 死亡時処理
+        /// </summary>
         protected override void OnDead()
         {
             base.OnDead();
             _hitBox.SetDisableCollider();
         }
 
+        /// <summary>
+        /// イベント購読の解除
+        /// </summary>
         private void OnDisable()
         {
             _animation.OnLand -= PlayOneShotLandSound;

@@ -1,10 +1,12 @@
-using MyMetroidVania.Data.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace MyMetroidVania.System.UI
 {
+    /// <summary>
+    /// サウンドがなるボタンを管理
+    /// </summary>
     public class ButtonSoundManager : MonoBehaviour, IDeselectHandler
     {
         private Button _button = null;
@@ -22,11 +24,18 @@ namespace MyMetroidVania.System.UI
             }
         }
 
+        /// <summary>
+        /// deselect時にサウンドを鳴らす
+        /// </summary>
+        /// <param name="eventData">鳴らすサウンド</param>
         public void OnDeselect(BaseEventData eventData)
         {
             AudioManager.Instance.PlayOneShotSe(_deselectSound);
         }
 
+        /// <summary>
+        /// clean処理
+        /// </summary>
         private void OnDestroy()
         {
             if (_button != null)

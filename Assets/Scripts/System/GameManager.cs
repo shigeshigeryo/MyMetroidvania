@@ -7,9 +7,15 @@ using UnityEngine.InputSystem;
 
 namespace MyMetroidVania.System
 {
+    /// <summary>
+    /// ゲーム全体を管理
+    /// </summary>
     public class GameManager : MonoBehaviour
     {
         private static GameManager _instance = null;
+        /// <summary>
+        /// シングルトンインスタンス
+        /// </summary>
         public static GameManager Instance
         {
             get
@@ -37,10 +43,16 @@ namespace MyMetroidVania.System
             }
         }
 
+        /// <summary>
+        /// ミニマップ切り替え時に発火するイベント
+        /// </summary>
         public event Action OnToggledMiniMap;
         [SerializeField, Tooltip("画面遷移フェードUI")] private TransitionUI _transitionUI = null;
         [SerializeField, Tooltip("クリアUI")] private GameClearUI _clearUI = null;
 
+        /// <summary>
+        /// ゲームのステート
+        /// </summary>
         public enum GameState
         {
             Transition, // 遷移中
@@ -49,8 +61,14 @@ namespace MyMetroidVania.System
             Clear // クリア
         }
         private GameState _currentState = GameState.Transition;
+        /// <summary>
+        /// プレイ中かどうか
+        /// </summary>
         public bool IsPlay => _currentState == GameState.Play;
 
+        /// <summary>
+        /// シングルトン化処理
+        /// </summary>
         private void Awake()
         {
             // シングルトン
@@ -61,6 +79,9 @@ namespace MyMetroidVania.System
             }
         }
 
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         private void Start()
         {
             AudioManager.Instance.GetAndPlayBgm("BGM_InGame");
@@ -74,6 +95,9 @@ namespace MyMetroidVania.System
             InputActions.UI.ToggleMiniMap.canceled += _ => OnToggledMiniMap?.Invoke();
         }
 
+        /// <summary>
+        /// デバッグコマンド用処理
+        /// </summary>
         private void Update()
         {
             // デバッグコマンド タイトルシーンに遷移 c, tキー同時押し
@@ -101,11 +125,17 @@ namespace MyMetroidVania.System
             _transitionUI.Show();
         }
 
+        /// <summary>
+        /// Play状態に遷移
+        /// </summary>
         public void ChangeStatePlay()
         {
             _currentState = GameState.Play;
         }
 
+        /// <summary>
+        /// クリアする
+        /// </summary>
         public void GameClear()
         {
             _currentState = GameState.Clear;
@@ -113,11 +143,17 @@ namespace MyMetroidVania.System
             _clearUI.Show();
         }
 
+        /// <summary>
+        /// タイトルに遷移する
+        /// </summary>
         public void LoadTitleScene()
         {
             SceneManager.LoadScene("Title");
         }
 
+        /// <summary>
+        /// イベント購読解除処理
+        /// </summary>
         private void OnDestroy()
         {
             // 購読解除

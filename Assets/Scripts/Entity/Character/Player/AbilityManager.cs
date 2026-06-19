@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace MyMetroidVania.Entity.Character.Player
 {
-    // ビットフラグで管理する
+    /// <summary>
+    /// アビリティタイプ
+    /// ビットフラグで管理する
+    /// </summary>
     [Flags]
     public enum AbilityType
     {
@@ -13,7 +16,9 @@ namespace MyMetroidVania.Entity.Character.Player
         Hook = 1 << 0,
     }
 
-    // アビリティのアンロック、習得状況の管理
+    /// <summary>
+    /// アビリティのアンロック、習得状況の管理
+    /// </summary>
     public class AbilityManager : MonoBehaviour
     {
         private TargetStateData _stateData;
@@ -21,6 +26,9 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField]
         private AbilityType _unlockedAbilities;
 
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         public void Start()
         {
             // WorldStateDataはAwakeで取得済み
@@ -28,12 +36,21 @@ namespace MyMetroidVania.Entity.Character.Player
             _unlockedAbilities = (AbilityType)_stateData.State;
         }
 
+        /// <summary>
+        /// アビリティをアンロックする
+        /// </summary>
+        /// <param name="type">アンロックするアビリティ</param>
         public void UnlockAbility(AbilityType type)
         {
             _unlockedAbilities |= type;
             _stateData.SetState((int)_unlockedAbilities);
         }
 
+        /// <summary>
+        /// アビリティを習得しているかどうかを取得する
+        /// </summary>
+        /// <param name="type">確認したいアビリティ</param>
+        /// <returns>習得していればtrue</returns>
         public bool HasAbility(AbilityType type)
         {
             return (_unlockedAbilities & type) == type;

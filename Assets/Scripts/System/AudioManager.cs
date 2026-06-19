@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    /// <summary>
+    /// サウンドの管理
+    /// </summary>
     public static AudioManager Instance { get; private set; }
 
     [Header("BGM")]
@@ -53,10 +56,10 @@ public class AudioManager : MonoBehaviour
     }
 
     /*
-        * ------------------------------
-        * BGM
-        * ------------------------------
-        */
+     * ------------------------------
+     * BGM
+     * ------------------------------
+     */
     /// <summary>
     /// 名前をハッシュ化し、ゲットする。
     /// </summary>
@@ -71,6 +74,11 @@ public class AudioManager : MonoBehaviour
         }
         return bgm;
     }
+
+    /// <summary>
+    /// BGMを再生する
+    /// </summary>
+    /// <param name="bgm">再生するBGM</param>
     public void PlayBgm(SoundData bgm)
     {
         Action playHandler = () =>
@@ -113,6 +121,10 @@ public class AudioManager : MonoBehaviour
         _backupBgm = null;
     }
 
+    /// <summary>
+    /// 名前からBGMを再生する
+    /// </summary>
+    /// <param name="clipName">再生するBGM名</param>
     public void GetAndPlayBgm(string clipName)
     {
         SoundData bgm = GetBgm(clipName);
@@ -124,7 +136,6 @@ public class AudioManager : MonoBehaviour
     /// </summary>
     /// <param name="maxVolume">フェードイン音量上限</param>
     /// <param name="callback">コールバック関数</param>
-
     public void FadeInBGM(float maxVolume, Action callback = null)
     {
         _bgmSource.volume = 0;
@@ -134,7 +145,7 @@ public class AudioManager : MonoBehaviour
     /// <summary>
     /// BGMをフェードインさせる
     /// </summary>
-    /// <param name="maxVolume"></param>
+    /// <param name="maxVolume">フェードイン終了後の音量</param>
     /// <param name="callback">コールバック関数</param>
     private IEnumerator OnFadeInBGM(float maxVolume, Action callback = null)
     {
@@ -192,10 +203,10 @@ public class AudioManager : MonoBehaviour
     }
 
     /*
-        * ------------------------------
-        * Jingle
-        * ------------------------------
-        */
+     * ------------------------------
+     * Jingle
+     * ------------------------------
+     */
     /// <summary>
     /// ジングル再生
     /// </summary>
@@ -230,10 +241,10 @@ public class AudioManager : MonoBehaviour
     }
 
     /*
-        * ------------------------------
-        * SE
-        * ------------------------------
-        */
+     * ------------------------------
+     * SE
+     * ------------------------------
+     */
     /// <summary>
     /// 名前をハッシュ化し、ゲットする。
     /// </summary>
@@ -249,12 +260,22 @@ public class AudioManager : MonoBehaviour
         return se;
     }
 
+    /// <summary>
+    /// SEを再生する（ループ対応）
+    /// </summary>
+    /// <param name="se">再生するSE</param>
     public void PlaySe(SoundData se)
     {
         _seSource.clip = se.Clip;
         _seSource.volume = se.Volume;
+        _seSource.loop = se.IsLoop;
         _seSource.Play();
     }
+
+    /// <summary>
+    /// SEを再生する
+    /// </summary>
+    /// <param name="se">再生するSE</param>
     public void PlayOneShotSe(SoundData se)
     {
         _seSource.PlayOneShot(se.Clip, se.Volume);

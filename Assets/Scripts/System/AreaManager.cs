@@ -8,7 +8,7 @@ using UnityEngine;
 namespace MyMetroidVania.System
 {
     /// <summary>
-    /// エリアの状態を管理するスクリプト
+    /// エリアの状態を管理
     /// </summary>
     public class AreaManager : MonoBehaviour
     {
@@ -16,12 +16,21 @@ namespace MyMetroidVania.System
         private List<EnemyBase> _enemyList = new List<EnemyBase>();
 
         [SerializeField, Tooltip("エリアID")] private string _areaId;
+        /// <summary>
+        /// エリアID
+        /// </summary>
         public string AreaId => _areaId;
         // エリアの初期の状態データ
         private AreaStateData _areaStateData;
+        /// <summary>
+        /// エリアの状態
+        /// </summary>
         public AreaStateData AreaStateData => _areaStateData;
         private string _areaStateDataPath;
 
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         private void Awake()
         {
             AreaManagerList.Add(_areaId, this);
@@ -114,20 +123,8 @@ namespace MyMetroidVania.System
         /// </summary>
         private void RespawnAllEnemies()
         {
-            //bool isFirst = _enemyList == default;
-            //if (isFirst)
-            //{
-            //    // lazyLoad
-            //    _enemyList = GetComponentsInChildren<EnemyBase>().ToList<EnemyBase>();
-            //}
-
             foreach (var enemy in _enemyList)
             {
-                //if (isFirst)
-                //{
-                //    enemy.InitializeOnce(); // 初回時のみ実行する初期化
-                //    enemy.OnDestroyed += RemoveEnemy;
-                //}
                 enemy.Respawn();
             }
         }
@@ -154,6 +151,9 @@ namespace MyMetroidVania.System
             JsonHandler.WriteJsonFile(_areaStateDataPath, _areaStateData);
         }
 
+        /// <summary>
+        /// clean処理
+        /// </summary>
         private void OnDestroy()
         {
             AreaManagerList.Remove(_areaId);

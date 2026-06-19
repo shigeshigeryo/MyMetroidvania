@@ -1,11 +1,15 @@
-using MyMetroidVania.System;
 using UnityEngine;
-using MyMetroidVania.Data.ScriptableObjects;
 
 namespace MyMetroidVania.Entity.Gimmick.Item
 {
+    /// <summary>
+    /// アイテムの基底クラス
+    /// </summary>
     public abstract class ItemBase : GimmickBase
     {
+        /// <summary>
+        /// アイテムの状態
+        /// </summary>
         public enum State 
         {
             Normal, // 通常アイテム（再配置あり）
@@ -18,13 +22,16 @@ namespace MyMetroidVania.Entity.Gimmick.Item
         private SoundData _getSoundData;
         private bool isTrigger = false;
 
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         protected virtual void Start()
         {
             _getSoundData = AudioManager.Instance.GetSe(_getSoundName);
         }
 
         /// <summary>
-        /// アイテムの初期化
+        /// アイテムの状態の初期化
         /// </summary>
         public override void InitializeState()
         {
@@ -35,9 +42,17 @@ namespace MyMetroidVania.Entity.Gimmick.Item
             }
         }
 
-        // 取得したときの処理内容
+        /// <summary>
+        /// 取得したときの処理内容
+        /// </summary>
+        /// <param name="collision">このアイテムを取得した対象</param>
         protected abstract void Apply(Collider2D collision);
 
+        /// <summary>
+        /// トリガー処理
+        /// SEの再生や非表示処理
+        /// </summary>
+        /// <param name="collision">このアイテムを取得した対象</param>
         protected void OnTriggerEnter2D(Collider2D collision)
         {
             if (isTrigger) return;

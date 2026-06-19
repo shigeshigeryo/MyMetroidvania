@@ -2,11 +2,17 @@ using UnityEngine;
 
 namespace MyMetroidVania.System.UI
 {
+    /// <summary>
+    /// ƒGƒŠƒA‘JˆÚ‚ÌUI‚ğŠÇ—
+    /// </summary>
     public class TransitionUI : MonoBehaviour
     {
         [SerializeField] Animator _animator = null;
         private readonly int _showId = Animator.StringToHash("Show");
 
+        /// <summary>
+        /// •\¦‚·‚é
+        /// </summary>
         public void Show()
         {
             if (_animator != null)
