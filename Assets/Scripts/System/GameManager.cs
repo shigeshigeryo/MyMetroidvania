@@ -62,6 +62,7 @@ namespace MyMetroidVania.System
         /// ƒvƒŒƒC’†‚©‚Ç‚¤‚©
         /// </summary>
         public bool IsPlay => _currentState == GameState.Play;
+        private Action<InputAction.CallbackContext> _toggleMapAction;
 
         /// <summary>
         /// ƒVƒ“ƒOƒ‹ƒgƒ“‰»ˆ—
@@ -87,9 +88,10 @@ namespace MyMetroidVania.System
             Cursor.visible = false;
 
             // UI‚Ì‘€ì‚ð“o˜^
+            _toggleMapAction = _ => _miniMapUI.ToggleMiniMap();
             InputActions.UI.Enable();
-            InputActions.UI.ToggleMiniMap.started += _ =>  _miniMapUI.ToggleMiniMap();
-            InputActions.UI.ToggleMiniMap.canceled += _ => _miniMapUI.ToggleMiniMap();
+            InputActions.UI.ToggleMiniMap.started += _toggleMapAction;
+            InputActions.UI.ToggleMiniMap.canceled += _toggleMapAction;
         }
 
         /// <summary>
@@ -154,8 +156,8 @@ namespace MyMetroidVania.System
         private void OnDestroy()
         {
             // w“Ç‰ðœ
-            InputActions.UI.ToggleMiniMap.started -= _ => _miniMapUI.ToggleMiniMap();
-            InputActions.UI.ToggleMiniMap.canceled -= _ => _miniMapUI.ToggleMiniMap();
+            InputActions.UI.ToggleMiniMap.started -= _toggleMapAction;
+            InputActions.UI.ToggleMiniMap.canceled -= _toggleMapAction;
         }
     }
 }
