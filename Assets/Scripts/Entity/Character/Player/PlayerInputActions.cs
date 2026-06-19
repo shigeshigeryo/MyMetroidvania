@@ -585,7 +585,7 @@ namespace MyMetroidVania.Entity.Character.Player
                 {
                     ""name"": """",
                     ""id"": ""0c3b073b-d2dd-4d52-bd57-4355ca430e9c"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
