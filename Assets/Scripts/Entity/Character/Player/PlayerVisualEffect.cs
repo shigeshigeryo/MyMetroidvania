@@ -1,6 +1,4 @@
-using MyMetroidVania.Data.ScriptableObjects;
 using MyMetroidVania.Entity.Effect;
-using MyMetroidVania.System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -44,6 +42,9 @@ namespace MyMetroidVania.Entity.Character.Player
 
         private Coroutine _lineRendererRoutine = null;
 
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         public void Initialize()
         {
             _lineRenderer.enabled = false;
@@ -51,7 +52,6 @@ namespace MyMetroidVania.Entity.Character.Player
             InitializeEffects();
             InitializeSounds();
         }
-
 
         /// <summary>
         /// エフェクト（プール）の初期化
@@ -137,7 +137,7 @@ namespace MyMetroidVania.Entity.Character.Player
             {
                 _renderer.flipX = false;
             }
-            else if(dirX < -0.01f)
+            else if (dirX < -0.01f)
             {
                 _renderer.flipX = true;
             }
@@ -187,7 +187,7 @@ namespace MyMetroidVania.Entity.Character.Player
         /// </summary>
         public void StopHookEffect()
         {
-            if(_lineRendererRoutine != null)
+            if (_lineRendererRoutine != null)
             {
                 _lineRenderer.enabled = false;
                 StopCoroutine(_lineRendererRoutine);
@@ -235,7 +235,7 @@ namespace MyMetroidVania.Entity.Character.Player
         /// </summary>
         public void PlayRunSound()
         {
-            if(_runAudioSource.clip == null)
+            if (_runAudioSource.clip == null)
             {
                 SoundData runSound = AudioManager.Instance.GetSe(_runSoundName);
                 _runAudioSource.clip = runSound.Clip;
@@ -260,7 +260,7 @@ namespace MyMetroidVania.Entity.Character.Player
         /// </summary>
         public void PlayShurikenSound()
         {
-             _audioSource.PlayOneShot(_shurikenSound.Clip, _shurikenSound.Volume);
+            _audioSource.PlayOneShot(_shurikenSound.Clip, _shurikenSound.Volume);
         }
     }
 }

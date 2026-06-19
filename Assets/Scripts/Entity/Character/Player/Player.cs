@@ -9,7 +9,7 @@ using UnityEngine.Pool;
 namespace MyMetroidVania.Entity.Character.Player
 {
     /// <summary>
-    /// プレイヤーの全ての挙動を管理する
+    /// プレイヤーの挙動を管理する
     /// </summary>
     public class Player : MonoBehaviour
     {
@@ -23,6 +23,9 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField, Tooltip("アビリティの取得状況を管理")]
         private AbilityManager _abilityManager;
         [SerializeField, Tooltip("当たり判定の中心")] private Transform _center;
+        /// <summary>
+        /// 当たり判定の中心
+        /// </summary>
         public Transform Center => _center;
 
         [Header("ジャンプ")]
@@ -51,6 +54,9 @@ namespace MyMetroidVania.Entity.Character.Player
         [Header("インタラクト")]
         [SerializeField, Tooltip("インタラクト検知範囲")] private BoxCaster _interactChecker;
 
+        /// <summary>
+        /// アクションのステート
+        /// </summary>
         private enum ActionState
         {
             Idle,             // 待機
@@ -63,6 +69,9 @@ namespace MyMetroidVania.Entity.Character.Player
         private ActionState _currentState = ActionState.Idle;
         private TargetStateData _life = null;
 
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         private void Start()
         {
             Initialize();
@@ -71,6 +80,9 @@ namespace MyMetroidVania.Entity.Character.Player
             _hookCheckerBox.SetDistanceCast(_hookRange);
         }
 
+        /// <summary>
+        /// メインの初期化処理
+        /// </summary>
         private void Initialize()
         {
             _currentState = ActionState.Idle;
@@ -105,6 +117,10 @@ namespace MyMetroidVania.Entity.Character.Player
                 maxSize: 5 // 最大数（仮）
             );
         }
+
+        /// <summary>
+        /// イベント購読処理
+        /// </summary>
         private void InitializeEvents()
         {
             // プレイヤーの操作
@@ -121,6 +137,9 @@ namespace MyMetroidVania.Entity.Character.Player
             _statusManager.OnDead += OnDead;
         }
 
+        /// <summary>
+        /// イベント購読解除処理
+        /// </summary>
         private void DisposeEvents()
         {
             // プレイヤーの操作
@@ -137,6 +156,10 @@ namespace MyMetroidVania.Entity.Character.Player
             _statusManager.OnDead -= OnDead;
         }
 
+        /// <summary>
+        /// 毎フレーム処理
+        /// input情報の反映とそのリアクションを処理する
+        /// </summary>
         private void Update()
         {
             // 現在の入力情報を保持
@@ -200,6 +223,9 @@ namespace MyMetroidVania.Entity.Character.Player
             }
         }
 
+        /// <summary>
+        /// 物理挙動とそれに伴う処理
+        /// </summary>
         private void FixedUpdate()
         {
             // 移動処理
@@ -285,11 +311,18 @@ namespace MyMetroidVania.Entity.Character.Player
          * ステータスを制御
          * ------------------------------------------------------------------
          */
+        /// <summary>
+        /// アビリティをアンロックする
+        /// </summary>
+        /// <param name="type"></param>
         public void UnlockAbility(AbilityType type)
         {
             _abilityManager.UnlockAbility(type);
         }
 
+        /// <summary>
+        /// 回復する
+        /// </summary>
         public void Heal()
         {
             _statusManager.Heal();
@@ -555,6 +588,9 @@ namespace MyMetroidVania.Entity.Character.Player
             }
         }
 
+        /// <summary>
+        /// Clean処理
+        /// </summary>
         private void OnDestroy()
         {
             DisposeEvents();
