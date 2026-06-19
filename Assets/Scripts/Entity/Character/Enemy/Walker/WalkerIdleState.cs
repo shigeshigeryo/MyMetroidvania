@@ -42,6 +42,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
             }
         }
 
+        /// <summary>
+        /// ステートに遷移時に発火
+        /// </summary>
         public override void Enter()
         {
             _owner.StartCoroutine(IdleRoutine());
@@ -75,6 +78,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
             }
         }
 
+        /// <summary>
+        /// 次のステートに遷移する前に発火
+        /// </summary>
         public override void Exit()
         {
             // コルーチンは全てStateクラスから発火される想定なので、全てのコルーチンを止めてよい。
@@ -83,6 +89,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         }
 
 
+        /// <summary>
+        /// 待機時の挙動を管理
+        /// </summary>
         private IEnumerator IdleRoutine()
         {
             while (true)

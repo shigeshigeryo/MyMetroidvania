@@ -66,6 +66,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
             _owner.StopChase();
         }
 
+        /// <summary>
+        /// ’ÇÕ‚Ì‹““®‚ğŠÇ—
+        /// </summary>
         private IEnumerator ChaseRoutine()
         {
             while (true)
