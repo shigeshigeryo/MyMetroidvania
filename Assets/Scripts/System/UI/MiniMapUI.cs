@@ -12,7 +12,6 @@ namespace MyMetroidVania.System.UI
         /// </summary>
         private void Start()
         {
-            GameManager.Instance.OnToggledMiniMap += ToggleMiniMap;
             foreach(Transform t in transform)
             {
                 t.gameObject.SetActive(false);
@@ -22,7 +21,7 @@ namespace MyMetroidVania.System.UI
         /// <summary>
         /// ミニマップ切り替え処理
         /// </summary>
-        private void ToggleMiniMap()
+        public void ToggleMiniMap()
         {
             foreach (Transform t in transform)
             {

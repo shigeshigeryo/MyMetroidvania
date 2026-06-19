@@ -43,11 +43,8 @@ namespace MyMetroidVania.System
             }
         }
 
-        /// <summary>
-        /// ミニマップ切り替え時に発火するイベント
-        /// </summary>
-        public event Action OnToggledMiniMap;
         [SerializeField, Tooltip("画面遷移フェードUI")] private TransitionUI _transitionUI = null;
+        [SerializeField, Tooltip("ミニマップUI")] private MiniMapUI _miniMapUI = null;
         [SerializeField, Tooltip("クリアUI")] private GameClearUI _clearUI = null;
 
         /// <summary>
@@ -65,6 +62,7 @@ namespace MyMetroidVania.System
         /// プレイ中かどうか
         /// </summary>
         public bool IsPlay => _currentState == GameState.Play;
+        private Action<InputAction.CallbackContext> _toggleMapAction;
 
         /// <summary>
         /// シングルトン化処理
@@ -90,9 +88,10 @@ namespace MyMetroidVania.System
             Cursor.visible = false;
 
             // UIの操作を登録
+            _toggleMapAction = _ => _miniMapUI.ToggleMiniMap();
             InputActions.UI.Enable();
-            InputActions.UI.ToggleMiniMap.started += _ =>  OnToggledMiniMap?.Invoke();
-            InputActions.UI.ToggleMiniMap.canceled += _ => OnToggledMiniMap?.Invoke();
+            InputActions.UI.ToggleMiniMap.started += _toggleMapAction;
+            InputActions.UI.ToggleMiniMap.canceled += _toggleMapAction;
         }
 
         /// <summary>
@@ -157,8 +156,8 @@ namespace MyMetroidVania.System
         private void OnDestroy()
         {
             // 購読解除
-            InputActions.UI.ToggleMiniMap.started -= _ => OnToggledMiniMap?.Invoke();
-            InputActions.UI.ToggleMiniMap.canceled -= _ => OnToggledMiniMap?.Invoke();
+            InputActions.UI.ToggleMiniMap.started -= _toggleMapAction;
+            InputActions.UI.ToggleMiniMap.canceled -= _toggleMapAction;
         }
     }
 }
