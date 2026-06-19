@@ -3,6 +3,9 @@ using MyMetroidVania.Data;
 
 namespace MyMetroidVania.Entity.Gimmick
 {
+    /// <summary>
+    /// ギミックの基底クラス
+    /// </summary>
     public abstract class GimmickBase : MonoBehaviour
     {
         [SerializeField, Tooltip("ID")] protected string _id;
@@ -16,6 +19,10 @@ namespace MyMetroidVania.Entity.Gimmick
         /// </summary>
         public abstract void InitializeState();
 
+        /// <summary>
+        /// ギミックの状態のデータを設定する
+        /// </summary>
+        /// <param name="stateData">設定するギミックの状態</param>
         public void SetGimmickStateData(TargetStateData stateData)
         {
             _stateData = stateData;
