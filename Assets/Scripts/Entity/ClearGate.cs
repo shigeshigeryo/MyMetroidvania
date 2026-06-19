@@ -1,27 +1,40 @@
 using MyMetroidVania.System;
 using UnityEngine;
 
-public class ClearGate : MonoBehaviour
+namespace MyMetroidVania.Entity
 {
-    private static int _playerLayer = -1;
-    // LazyInit
-    private static int PlayerLayer
+    /// <summary>
+    /// クリアのゲートを管理
+    /// </summary>
+    public class ClearGate : MonoBehaviour
     {
-        get
+        private static int _playerLayer = -1;
+        /// <summary>
+        /// プレイヤーのレイヤーを取得
+        /// </summary>
+        private static int PlayerLayer
         {
-            if (_playerLayer == -1)
+            get
             {
-                _playerLayer = LayerMask.NameToLayer("Player");
+                if (_playerLayer == -1)
+                {
+                    _playerLayer = LayerMask.NameToLayer("Player");
+                }
+                return _playerLayer;
             }
-            return _playerLayer;
         }
-    }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == PlayerLayer)
+        /// <summary>
+        /// トリガー処理
+        /// クリアする
+        /// </summary>
+        /// <param name="collision">トリガー対象</param>
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            GameManager.Instance.GameClear();
+            if (collision.gameObject.layer == PlayerLayer)
+            {
+                GameManager.Instance.GameClear();
+            }
         }
     }
 }
