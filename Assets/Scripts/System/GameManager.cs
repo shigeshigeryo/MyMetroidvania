@@ -102,6 +102,7 @@ namespace MyMetroidVania.System
             // デバッグコマンド タイトルシーンに遷移 c, tキー同時押し
             if (Keyboard.current.cKey.isPressed && Keyboard.current.tKey.wasPressedThisFrame)
             {
+                AudioManager.Instance.StopBGM();
                 SceneManager.LoadScene("Title");
             }
         }
