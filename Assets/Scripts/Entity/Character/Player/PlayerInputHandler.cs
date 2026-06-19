@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 namespace MyMetroidVania.Entity.Character.Player
 {
     /// <summary>
-    /// プレイヤーの入力周りの管理
+    /// プレイヤーの入の管理
     /// </summary>
     public class PlayerInputHandler : MonoBehaviour
     {
@@ -32,19 +32,39 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField, Tooltip("振動のパワー"), Range(0f, 1f)] private float _vibrationPower = 0.4f;
         [SerializeField, Tooltip("振動の持続秒数")] private float _vibrationSec = 0.1f;
 
-        // 移動入力方向
+        /// <summary>
+        /// 移動入力方向
+        /// </summary>
         public Vector2 InputDirection { get; private set; } = Vector2.zero;
-        // 最後に入力した方向
+        /// <summary>
+        /// 最後に入力した方向
+        /// </summary>
         public Vector2 LastInputDirection { get; private set; } = Vector2.zero;
 
-        // ジャンプボタンが押されているかどうか
+        /// <summary>
+        /// ジャンプボタンが押されている場合true
+        /// </summary>
         public bool IsPressedJumpButton => Actions.Player.Jump.IsPressed();
 
-        // ボタンイベント（別クラスからサブスクする）
+        /// <summary>
+        /// ジャンプ時に発火するイベント
+        /// </summary>
         public event Action OnJumpStarted;
+        /// <summary>
+        /// フックを開始した時に発火するイベント
+        /// </summary>
         public event Action OnHookStarted;
+        /// <summary>
+        /// フックをキャンセルした時に発火するイベント
+        /// </summary>
         public event Action OnHookCanceled;
+        /// <summary>
+        /// 攻撃時に発火するイベント
+        /// </summary>
         public event Action OnAttackStarted;
+        /// <summary>
+        /// インタラクト時に発火するイベント
+        /// </summary>
         public event Action OnInteractStarted;
 
         /// <summary>
@@ -73,6 +93,9 @@ namespace MyMetroidVania.Entity.Character.Player
             Actions.Player.Interact.started -= _ => OnInteractStarted?.Invoke();
         }
 
+        /// <summary>
+        /// 入力情報の取得
+        /// </summary>
         private void Update()
         {
             if (GameManager.Instance.IsPlay)
@@ -100,6 +123,10 @@ namespace MyMetroidVania.Entity.Character.Player
             StartCoroutine(OnVibrateController());
         }
 
+        /// <summary>
+        /// コントローラーの振動処理の管理
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator OnVibrateController()
         {
             var pad = Gamepad.current;

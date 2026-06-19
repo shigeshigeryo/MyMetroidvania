@@ -4,6 +4,9 @@ using UnityEngine.Pool;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Slime
 {
+    /// <summary>
+    /// スライムから出るボールを管理
+    /// </summary>
     public class SlimeBall : MonoBehaviour
     {
         [SerializeField] private HitBox _hitBox = null;
@@ -22,11 +25,18 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
             _hitBox.Initialize(dealer);
         }
 
+        /// <summary>
+        /// プールを設定する
+        /// </summary>
+        /// <param name="pool">設定するプール</param>
         public void SetPool(IObjectPool<SlimeBall> pool)
         {
             _pool = pool;
         }
 
+        /// <summary>
+        /// 接地判定でボールが消える処理
+        /// </summary>
         private void FixedUpdate()
         {
             // 接地判定でリリース

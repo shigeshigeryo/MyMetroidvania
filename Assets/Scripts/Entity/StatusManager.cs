@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace MyMetroidVania.Entity
 {
+    /// <summary>
+    /// ステータスを管理
+    /// </summary>
     public class StatusManager : MonoBehaviour, IDamageDealer
     {
         [SerializeField, Tooltip("ステータスの初期値")]
@@ -14,18 +17,39 @@ namespace MyMetroidVania.Entity
         private Status _currentStatus = null;
         public Status CurrentStatus => _currentStatus;
         private bool _isInvincible = false;
+        /// <summary>
+        /// 死亡しているかどうか
+        /// </summary>
         public bool IsDead => _currentStatus.Life <= 0;
 
+        /// <summary>
+        /// 被ダメージ時に発火するイベント
+        /// </summary>
         public event Action OnDamageTaken;
+        /// <summary>
+        /// 死亡時に発火するイベント
+        /// </summary>
         public event Action OnDead;
-        public event Action<int> OnLifeCountChanged; // ライフ数のUIを更新
-        public event Action<int> OnLifeChanged; // ライフのUIを更新
+        /// <summary>
+        /// 最大ライフが変更された場合に発火するイベント
+        /// </summary>
+        public event Action<int> OnLifeCountChanged;
+        /// <summary>
+        /// ライフが変更された場合に発火するイベント
+        /// </summary>
+        public event Action<int> OnLifeChanged;
 
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         private void Start()
         {
             InitializeStatus();
         }
 
+        /// <summary>
+        /// ライフの回復処理
+        /// </summary>
         public void Heal()
         {
             int healValue = _defaultStatus.Life - _currentStatus.Life;
@@ -33,6 +57,10 @@ namespace MyMetroidVania.Entity
             OnLifeChanged?.Invoke(_currentStatus.Life);
         }
 
+        /// <summary>
+        /// ダメージを受ける処理
+        /// </summary>
+        /// <param name="damage">受けるダメージ量</param>
         public void TakeDamage(int damage)
         {
             // 無敵状態、または体力が0以下の場合は処理をスキップ
@@ -94,6 +122,10 @@ namespace MyMetroidVania.Entity
             OnLifeCountChanged?.Invoke(_defaultStatus.Life);
         }
 
+        /// <summary>
+        /// 攻撃力を取得する
+        /// </summary>
+        /// <returns>攻撃力の値</returns>
         public int GetAttackPower()
         {
             return _currentStatus.AttackPower;

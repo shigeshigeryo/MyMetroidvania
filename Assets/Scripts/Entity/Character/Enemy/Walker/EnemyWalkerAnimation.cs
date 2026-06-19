@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Walker
 {
+    /// <summary>
+    /// ウォーカーのアニメーションを管理
+    /// </summary>
     public class EnemyWalkerAnimation : MonoBehaviour
     {
         [SerializeField] private Animator _animator;
@@ -14,7 +17,13 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
         private static readonly int _takenDamageId = Animator.StringToHash("TakenDamage"); // 被弾アニメーション
         private static readonly int _deadId = Animator.StringToHash("Dead"); // 死亡アニメーション
 
+        /// <summary>
+        /// 着地時に発火するイベント
+        /// </summary>
         public event Action OnLand;
+        /// <summary>
+        /// 死亡アニメーション完了時に発火するイベント
+        /// </summary>
         public event Action OnCompleteDeadAnimation;
 
         /// <summary>
@@ -88,6 +97,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Walker
             OnCompleteDeadAnimation?.Invoke();
         }
 
+        /// <summary>
+        /// イベント購読解除処理
+        /// </summary>
         private void OnDestroy()
         {
             _statusManager.OnDamageTaken -= TriggerTakenDamage;

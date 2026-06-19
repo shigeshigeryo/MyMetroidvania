@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Slime
 {
+    /// <summary>
+    /// スライムの近距離のバトルステートを管理
+    /// </summary>
     public class SlimeCloseRangeBattleState : EnemyState<EnemySlime>
     {
         private bool _isAttacking = false;
@@ -88,6 +91,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
             _owner.StopAllCoroutines();
         }
 
+        /// <summary>
+        /// 近距離のバトルステート時の挙動を管理
+        /// </summary>
         private IEnumerator CloseRangeBattleRoutine()
         {
             while (true)

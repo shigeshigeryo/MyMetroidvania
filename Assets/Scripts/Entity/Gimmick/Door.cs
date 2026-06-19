@@ -1,14 +1,18 @@
-using MyMetroidVania.Data.ScriptableObjects;
 using MyMetroidVania.Entity.Character.Player;
-using MyMetroidVania.System;
 using System;
 using System.Collections;
 using UnityEngine;
 
 namespace MyMetroidVania.Entity.Gimmick
 {
+    /// <summary>
+    /// ドアギミックを管理
+    /// </summary>
     public class Door : GimmickBase, IInteractable
     {
+        /// <summary>
+        /// ドアの状態
+        /// </summary>
         [Serializable]
         public enum State
         {
@@ -35,6 +39,10 @@ namespace MyMetroidVania.Entity.Gimmick
         private IUnlockKey _unlockKey = null;
 
         private Coroutine _lockedRoutine = null;
+
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         private void OnEnable()
         {
             if (_unlockKey == null && _unlockKeyObj != null)
@@ -56,6 +64,9 @@ namespace MyMetroidVania.Entity.Gimmick
             }
         }
 
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         private void Start()
         {
             _closedSound = AudioManager.Instance.GetSe(_closedSoundName);
@@ -90,6 +101,9 @@ namespace MyMetroidVania.Entity.Gimmick
             }
         }
 
+        /// <summary>
+        /// インタラクト時処理
+        /// </summary>
         public void Interact(Player _)
         {
             switch (_currentState)
@@ -122,7 +136,7 @@ namespace MyMetroidVania.Entity.Gimmick
         }
 
         /// <summary>
-        /// ロック反応
+        /// ロック時のリアクション
         /// </summary>
         private IEnumerator ReactInLocked()
         {
@@ -145,6 +159,9 @@ namespace MyMetroidVania.Entity.Gimmick
             _currentState = State.Close;
         }
 
+        /// <summary>
+        /// Clean処理
+        /// </summary>
         private void OnDisable()
         {
             _lockedRoutine = null;

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Bat
 {
+    /// <summary>
+    /// コウモリの攻撃ステートを管理
+    /// </summary>
     public class BatBattleState : EnemyState<EnemyBat>
     {
         private bool _isAttacking = false;
@@ -72,6 +75,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
             _owner.CancelHitCollider();
         }
 
+        /// <summary>
+        /// 攻撃ステート時の挙動の処理
+        /// </summary>
         private IEnumerator BattleRoutine()
         {
             while (true)

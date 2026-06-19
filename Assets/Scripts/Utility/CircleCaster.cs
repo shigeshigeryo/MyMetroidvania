@@ -27,18 +27,24 @@ namespace MyMetroidVania.Utility
             }
         }
 
+        /// <summary>
+        /// 検知したコライダーを取得する
+        /// </summary>
+        /// <returns></returns>
         public Collider2D GetHitCollider()
         {
             return Physics2D.OverlapCircle(transform.position, _radius, _targetLayers);
         }
 
+        /// <summary>
+        /// 判定結果の初期化
+        /// </summary>
         private void OnEnable()
         {
             // Inactive時に判定結果の初期化をしておく
             IsCasted = false;
         }
 
-        // Unityエディター上で常時描画するギズモを記述します。
         private void OnDrawGizmos()
         {
             // 判定ラインを描画

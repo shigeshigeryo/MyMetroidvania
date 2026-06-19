@@ -1,5 +1,3 @@
-using MyMetroidVania.Data.ScriptableObjects;
-using MyMetroidVania.System;
 using MyMetroidVania.Utility;
 using System.Collections;
 using UnityEngine;
@@ -7,6 +5,9 @@ using CPlayer = MyMetroidVania.Entity.Character.Player.Player;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Bat
 {
+    /// <summary>
+    /// コウモリの動作を管理
+    /// </summary>
     public class EnemyBat : EnemyBase
     {
         private float _lastMoveDirection;// 最後に動いた方向 +x方向 = 1, -x方向 = -1
@@ -50,6 +51,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
             }
         }
 
+        /// <summary>
+        /// 初期化処理（初回のみ）
+        /// </summary>
         public override void InitializeOnce()
         {
             base.InitializeOnce();
@@ -59,6 +63,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
 
         }
 
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         public override void Initialize()
         {
             base.Initialize();
@@ -67,6 +74,7 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
             _animation.OnAttack += Charge;
             _animation.OnCompleteDeadAnimation += OnCompletedDeadAnimation;
 
+            // 羽ばたき音
             if (gameObject.activeSelf)
             {
                 _audioSource.volume = _flySound.Volume;
@@ -75,12 +83,18 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
             }
         }
 
+        /// <summary>
+        /// リスポーン処理
+        /// </summary>
         public override void Respawn()
         {
             base.Respawn();
             ChangeState(SleepState);
         }
 
+        /// <summary>
+        /// 速度をアニメーション側に渡す
+        /// </summary>
         private void FixedUpdate()
         {
             _animation.UpdateParam(_rb.linearVelocity);
@@ -240,11 +254,17 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
          * リアクションを制御
          * ------------------------------------------------------------------
          */
+        /// <summary>
+        /// 被弾処理
+        /// </summary>
         protected override void OnTakenDamage()
         {
             base.OnTakenDamage();
         }
 
+        /// <summary>
+        /// Cleanする
+        /// </summary>
         private void OnDisable()
         {
             _audioSource.Stop();

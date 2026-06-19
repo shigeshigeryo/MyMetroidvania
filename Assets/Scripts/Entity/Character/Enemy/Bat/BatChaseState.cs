@@ -2,6 +2,9 @@ using System.Collections;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Bat
 {
+    /// <summary>
+    /// コウモリの追跡ステートを管理
+    /// </summary>
     public class BatChaseState : EnemyState<EnemyBat>
     {
         public BatChaseState(EnemyBat enemy) : base(enemy) { }
@@ -86,6 +89,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
             _owner.StopChase();
         }
 
+        /// <summary>
+        /// 追跡時の挙動を管理
+        /// </summary>
         private IEnumerator ChaseRoutine()
         {
             while (true)

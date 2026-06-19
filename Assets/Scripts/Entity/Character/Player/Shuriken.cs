@@ -1,10 +1,12 @@
-using MyMetroidVania.System;
 using MyMetroidVania.Utility;
 using UnityEngine;
 using UnityEngine.Pool;
 
 namespace MyMetroidVania.Entity.Character.Player
 {
+    /// <summary>
+    /// 手裏剣の管理
+    /// </summary>
     public class Shuriken : MonoBehaviour, IDamageDealer
     {
         [SerializeField] private CircleCaster _groundChecker = null;
@@ -23,12 +25,19 @@ namespace MyMetroidVania.Entity.Character.Player
         private float _currentTime = 0f;
 
         private IObjectPool<Shuriken> _pool;
+
+        /// <summary>
+        /// プールを設定する
+        /// </summary>
+        /// <param name="pool">設定するプール</param>
         public void SetPool(IObjectPool<Shuriken> pool)
         {
             _pool = pool;
         }
 
-
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         private void Start()
         {
             if (_hitBox == null)
@@ -41,6 +50,14 @@ namespace MyMetroidVania.Entity.Character.Player
             _hitBox.OnTriggered += Disappear;
         }
 
+        /// <summary>
+        /// メインの初期化処理
+        /// 出現位置や手裏剣のステータスを反映
+        /// </summary>
+        /// <param name="position">出現ポイント</param>
+        /// <param name="rotation">手裏剣の初期回転</param>
+        /// <param name="speed">とうてきスピード</param>
+        /// <param name="atkPower">攻撃力</param>
         public void Initialize(Vector3 position, Quaternion rotation, float speed, int atkPower)
         {
             // 現在位置と角度と攻撃力を初期化
@@ -59,6 +76,10 @@ namespace MyMetroidVania.Entity.Character.Player
             _isInit = true;
         }
 
+        /// <summary>
+        /// 毎フレーム処理
+        /// 移動や消滅の処理
+        /// </summary>
         private void Update()
         {
             if (!_isInit) return;
@@ -87,7 +108,9 @@ namespace MyMetroidVania.Entity.Character.Player
             return _atkPower;
         }
 
-        // 時間経過、敵、壁にヒットで消滅
+        /// <summary>
+        /// 消滅処理
+        /// </summary>
         private void Disappear()
         {
             if (!_isInit) return;
@@ -96,7 +119,9 @@ namespace MyMetroidVania.Entity.Character.Player
             _pool.Release(this);
         }
 
-
+        /// <summary>
+        /// イベント購読解除処理
+        /// </summary>
         private void OnDestroy()
         {
             // イベント購読解除

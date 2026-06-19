@@ -3,15 +3,18 @@ using UnityEngine;
 
 namespace MyMetroidVania.Entity.Gimmick.Item
 {
+    /// <summary>
+    /// アビリティをアンロックするアイテムを管理
+    /// </summary>
     public class UnlockAbilityItem : ItemBase
     {
         [SerializeField, Tooltip("アンロックするアビリティ")] private AbilityType _unlockAbilityType;
 
         /// <summary>
-        /// ItemBaseのOnTriggerEnter2D時に発火
+        /// 取得したときの処理
         /// アビリティをアンロックする
         /// </summary>
-        /// <param name="collision"></param>
+        /// <param name="collision">このアイテムを取得した対象</param>
         protected override void Apply(Collider2D collision)
         {
             _currentState = State.PickedUpUnique;

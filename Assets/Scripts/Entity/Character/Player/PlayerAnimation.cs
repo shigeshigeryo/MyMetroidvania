@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace MyMetroidVania.Entity.Character.Player
 {
+    /// <summary>
+    /// プレイヤーのアニメーションを管理
+    /// </summary>
     public class PlayerAnimation : MonoBehaviour
     {
         [SerializeField] private Animator _animator;
@@ -22,6 +25,11 @@ namespace MyMetroidVania.Entity.Character.Player
             _statusManager.OnDamageTaken += TriggerTakenDamage;
         }
 
+        /// <summary>
+        /// 移動速度や接地状態を更新
+        /// </summary>
+        /// <param name="vel">移動速度</param>
+        /// <param name="isGrounded">接地状態</param>
         public void UpdateParam(Vector2 vel, bool isGrounded)
         {
             _animator.SetBool(_runId, Mathf.Abs(vel.x) > 0.01f);
@@ -45,6 +53,9 @@ namespace MyMetroidVania.Entity.Character.Player
             _animator.SetTrigger(_takenDamageId);
         }
 
+        /// <summary>
+        /// イベント購読解除処理
+        /// </summary>
         private void OnDestroy()
         {
             _statusManager.OnDamageTaken -= TriggerTakenDamage;

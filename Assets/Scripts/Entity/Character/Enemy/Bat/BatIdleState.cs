@@ -1,8 +1,10 @@
 using System.Collections;
-using UnityEngine;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Bat
 {
+    /// <summary>
+    /// コウモリの待機ステートを管理
+    /// </summary>
     public class BatIdleState : EnemyState<EnemyBat>
     {
         public BatIdleState(EnemyBat enemy) : base(enemy) { }
@@ -40,6 +42,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
             }
         }
 
+        /// <summary>
+        /// ステートに遷移時に発火
+        /// </summary>
         public override void Enter()
         {
             _owner.StartCoroutine(IdleRoutine());
@@ -73,6 +78,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
             }
         }
 
+        /// <summary>
+        /// 次のステートに遷移する前に発火
+        /// </summary>
         public override void Exit()
         {
             // コルーチンは全てStateクラスから発火される想定なので、全てのコルーチンを止めてよい。
@@ -80,7 +88,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Bat
             _owner.StopMove();
         }
 
-
+        /// <summary>
+        /// 待機時の挙動を管理
+        /// </summary>
         private IEnumerator IdleRoutine()
         {
             yield return _owner.OnIdle();

@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace MyMetroidVania.Entity.Character.Player
 {
+    /// <summary>
+    /// プレイヤーの物理挙動を管理
+    /// </summary>
     public class PlayerPhysics : MonoBehaviour
     {
         [SerializeField] private Rigidbody2D _rb = null;
@@ -16,7 +19,13 @@ namespace MyMetroidVania.Entity.Character.Player
         [SerializeField, Tooltip("ジャンプボタン押下時にかかる+yの加速度")] private float _jumpAccel = 10f;
         [SerializeField, Tooltip("落下速上限")] private float _maxFallingSpeed = 13f;
         public Vector2 Velocity => _rb.linearVelocity;
+        /// <summary>
+        /// 移動中の場合true
+        /// </summary>
         public bool IsMoving => Mathf.Abs(_rb.linearVelocityX) > 0.01f;
+        /// <summary>
+        /// 落下中（Y軸移動速度が負）の場合true
+        /// </summary>
         public bool IsFalling => _rb.linearVelocityY < -0.01f;
 
 
@@ -28,9 +37,8 @@ namespace MyMetroidVania.Entity.Character.Player
         /// <summary>
         /// 移動速度をセットする
         /// フック後で速度が出ている場合はそのままの速度を保たせる
-        /// TODO：フック後に移動していないと不自然に止まるので、直すかどうか検討
         /// </summary>
-        /// <param name="dirX"></param>
+        /// <param name="dirX">X軸移動速度</param>
         public void SetMoveVelocity(float dirX)
         {
             if (Mathf.Abs(_moveSpeedX * dirX) > Mathf.Abs(_rb.linearVelocityX) // 入力値が現在の早さを上回るか
