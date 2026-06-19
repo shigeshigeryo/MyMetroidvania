@@ -196,10 +196,18 @@ public class AudioManager : MonoBehaviour
             yield return null;
         }
 
-        _bgmSource.volume = 0;
-        _isFading = false;
-
+        StopBGM();
         callback?.Invoke();
+    }
+
+    /// <summary>
+    /// BGM‚ðŽ~‚ß‚é
+    /// </summary>
+    public void StopBGM()
+    {
+        _isFading = false;
+        _currentBgm = null;
+        _bgmSource.Stop();
     }
 
     /*
