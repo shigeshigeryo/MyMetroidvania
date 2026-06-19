@@ -1,10 +1,11 @@
-using MyMetroidVania.Data.ScriptableObjects;
-using MyMetroidVania.System;
 using UnityEngine;
 using UnityEngine.Pool;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Slime
 {
+    /// <summary>
+    /// 衝撃波を管理
+    /// </summary>
     public class ShockWave : MonoBehaviour
     {
         [SerializeField] private HitBox _hitBox = null;
@@ -26,6 +27,10 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
             _shockSound = AudioManager.Instance.GetSe(_shockSoundName);
         }
 
+        /// <summary>
+        /// プールを設定する
+        /// </summary>
+        /// <param name="pool">設定するプール</param>
         public void SetPool(IObjectPool<ShockWave> pool)
         {
             _pool = pool;

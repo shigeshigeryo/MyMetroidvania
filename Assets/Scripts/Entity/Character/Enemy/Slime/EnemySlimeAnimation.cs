@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Slime
 {
+    /// <summary>
+    /// スライムのアニメーションを管理
+    /// </summary>
     public class EnemySlimeAnimation : MonoBehaviour
     {
         [SerializeField] private Animator _animator;
@@ -16,8 +19,17 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
         private static readonly int _attackId = Animator.StringToHash("Attack"); // 攻撃アニメーション
         private static readonly int _abilityId = Animator.StringToHash("Ability"); // 攻撃アニメーション
 
+        /// <summary>
+        /// 攻撃時に発火するイベント
+        /// </summary>
         public event Action OnAttack;
+        /// <summary>
+        /// アビリティ発動時に発火するイベント
+        /// </summary>
         public event Action OnAbility;
+        /// <summary>
+        /// 死亡アニメーション完了時に発火するイベント
+        /// </summary>
         public event Action OnCompleteDeadAnimation;
 
         /// <summary>
@@ -117,6 +129,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
             OnCompleteDeadAnimation?.Invoke();
         }
 
+        /// <summary>
+        /// イベント購読解除処理
+        /// </summary>
         private void OnDestroy()
         {
             _statusManager.OnDamageTaken -= TriggerTakenDamage;

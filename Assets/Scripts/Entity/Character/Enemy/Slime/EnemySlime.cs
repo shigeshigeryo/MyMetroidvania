@@ -3,11 +3,12 @@ using MyMetroidVania.Utility;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
-using MyMetroidVania.Data.ScriptableObjects;
-using MyMetroidVania.System;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Slime
 {
+    /// <summary>
+    /// スライムの挙動を管理
+    /// </summary>
     public class EnemySlime : EnemyBase
     {
         private float _lastMoveDirection;// 最後に動いた方向 +x方向 = 1, -x方向 = -1
@@ -66,6 +67,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
             }
         }
 
+        /// <summary>
+        /// 初期化処理（初回のみ）
+        /// </summary>
         public override void InitializeOnce()
         {
             base.InitializeOnce();
@@ -77,6 +81,9 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
             _generateSlimeBallSound = AudioManager.Instance.GetSe(_generateSlimeBallSoundName);
         }
 
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         public override void Initialize()
         {
             base.Initialize();
@@ -138,12 +145,18 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
             );
         }
 
+        /// <summary>
+        /// リスポーン処理
+        /// </summary>
         public override void Respawn()
         {
             base.Respawn();
             ChangeState(SleepState);
         }
 
+        /// <summary>
+        /// 速度をアニメーション側に渡す
+        /// </summary>
         private void FixedUpdate()
         {
             _animation.UpdateParam(_rb.linearVelocityX);
@@ -330,6 +343,10 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
          * 遠距離バトルステートのアクションを制御
          * ------------------------------------------------------------------
          */
+        /// <summary>
+        /// アビリティを使用する
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator OnAbility()
         {
             // 攻撃開始
@@ -369,11 +386,17 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
          * リアクションを制御
          * ------------------------------------------------------------------
          */
+        /// <summary>
+        /// 被弾処理
+        /// </summary>
         protected override void OnTakenDamage()
         {
             base.OnTakenDamage();
         }
 
+        /// <summary>
+        /// イベント購読の解除
+        /// </summary>
         private void OnDisable()
         {
             _animation.OnAttack -= CrushUp;

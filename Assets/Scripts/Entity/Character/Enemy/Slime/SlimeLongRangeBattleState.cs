@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace MyMetroidVania.Entity.Character.Enemy.Slime
 {
+    /// <summary>
+    /// スライムの遠距離のバトルステートを管理
+    /// </summary>
     public class SlimeLongRangeBattleState : EnemyState<EnemySlime>
     {
         private bool _isAttacking = false;
@@ -87,6 +90,10 @@ namespace MyMetroidVania.Entity.Character.Enemy.Slime
             _owner.StopAllCoroutines();
         }
 
+        /// <summary>
+        /// 遠距離のバトルステートの挙動を管理
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator LongRangeBattleRoutine()
         {
             while (true)
