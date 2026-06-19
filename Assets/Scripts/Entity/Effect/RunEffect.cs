@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace MyMetroidVania.Entity.Effect
 {
+    /// <summary>
+    /// プレイヤーが走った際の砂埃エフェクト
+    /// </summary>
     public class RunEffect : MonoBehaviour
     {
         private Animator _animator;
