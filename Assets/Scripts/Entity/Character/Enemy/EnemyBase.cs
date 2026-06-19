@@ -1,17 +1,21 @@
-using MyMetroidVania.Data.ScriptableObjects;
-using MyMetroidVania.System;
 using System;
 using System.Collections;
 using UnityEngine;
 
 namespace MyMetroidVania.Entity.Character.Enemy
 {
+    /// <summary>
+    /// エネミーの基底クラス
+    /// </summary>
     public abstract class EnemyBase : MonoBehaviour
     {
         [Header("EnemyBase")]
         [SerializeField] protected AudioSource _audioSource = null;
         [SerializeField] protected Rigidbody2D _rb = null;
         [SerializeField] protected StatusManager _statusManager = null;
+        /// <summary>
+        /// 死亡してるかどうか
+        /// </summary>
         public bool IsDead => _statusManager.IsDead;
 
         [Header("サウンド（Enemy Base）")]
@@ -25,9 +29,18 @@ namespace MyMetroidVania.Entity.Character.Enemy
 
         // ダメージを受けたかどうか
         private bool _isStun = false;
+        /// <summary>
+        /// スタン中かどうか
+        /// </summary>
         public bool IsStun => _isStun;
 
+        /// <summary>
+        /// 死亡アニメーション完了時に発火するイベント
+        /// </summary>
         public event Action OnCompletedDeadAnimationEvent;
+        /// <summary>
+        /// Destroy時に発火するイベント
+        /// </summary>
         public event Action<EnemyBase> OnDestroyed;
 
         /// <summary>
@@ -94,14 +107,17 @@ namespace MyMetroidVania.Entity.Character.Enemy
             _currentState = newState;
             newState.Enter(); // ステートに入る処理
         }
+
         /// <summary>
         /// 検知範囲内にプレイヤーが存在するか返す
         /// </summary>
         public abstract bool IsPlayerDetected();
+
         /// <summary>
         /// 攻撃射程にプレイヤーが存在するか返す
         /// </summary>
         public abstract bool IsPlayerInRange();
+
         /// <summary>
         /// スタン状態を解除
         /// </summary>
@@ -181,6 +197,9 @@ namespace MyMetroidVania.Entity.Character.Enemy
                 && pos.y > camPos.y - halfH - 2f && pos.y < camPos.y + halfH + 2f;
         }
 
+        /// <summary>
+        /// OnDestroyedイベントを発火
+        /// </summary>
         private void OnDestroy()
         {
             OnDestroyed?.Invoke(this);

@@ -1,7 +1,7 @@
 namespace MyMetroidVania.Entity.Character.Enemy
 {
     /// <summary>
-    /// 全エネミー共通のスリープ状態のステートを管理
+    /// 全エネミー共通のスタン状態のステートを管理
     /// </summary>
     public class StunState : EnemyState<EnemyBase>
     {
@@ -46,6 +46,10 @@ namespace MyMetroidVania.Entity.Character.Enemy
             _owner.RecoverStun();
         }
 
+        /// <summary>
+        /// 次に遷移するステートを設定する
+        /// </summary>
+        /// <param name="state">次に遷移するステート</param>
         public void SetNextState(EnemyState state)
         {
             NextState = state;

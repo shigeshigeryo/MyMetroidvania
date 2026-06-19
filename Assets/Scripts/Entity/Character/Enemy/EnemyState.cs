@@ -30,6 +30,9 @@ namespace MyMetroidVania.Entity.Character.Enemy
 
             OnTick();
         }
+        /// <summary>
+        /// 毎インターバル時に発火する処理
+        /// </summary>
         protected abstract void OnTick();
         /// <summary>
         /// 次のステートに遷移する前に発火
